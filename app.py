@@ -758,6 +758,25 @@ def init_db():
                 db.session.add(r)
         db.session.commit()
 
+    # Load all countries from static/countries.json to ensure they exist in DB for the map links
+    try:
+        json_path = os.path.join(app.root_path, 'static', 'countries.json')
+        if os.path.exists(json_path):
+            with open(json_path, 'r', encoding='utf-8') as f:
+                countries_data = json.load(f)
+                for country_item in countries_data:
+                    country_name = country_item.get('country')
+                    if country_name:
+                        # Check if exists (case-insensitive)
+                        existing = Country.query.filter(Country.name.ilike(country_name)).first()
+                        if not existing:
+                            new_country = Country(name=country_name)
+                            db.session.add(new_country)
+            db.session.commit()
+            print("Loaded countries from static/countries.json")
+    except Exception as e:
+        print(f"Error loading countries from JSON: {e}")
+
 def load_system_recipes():
     """Load recipes from system_recipes/recipes.json file"""
     system_user = User.query.filter_by(username='System').first()
