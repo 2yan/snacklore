@@ -116,6 +116,18 @@
             content: "→";
             color: #666;
         }
+        .countries-list {
+            max-height: 300px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        .countries-list li {
+            margin-bottom: 0.25rem;
+        }
+        .countries-list a {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.9rem;
+        }
         .recipes-section {
             margin-top: 2rem;
         }
@@ -258,15 +270,14 @@
                     <h3>World & Location</h3>
                     <ul class="site-map-links">
                         <li><a href="{{ url_for('world_map') }}">World Map</a></li>
-                        {% if countries %}
-                            {% for country in countries[:10] %}
-                            <li><a href="{{ url_for('view_country', country_slug=country.name|country_slug) }}">{{ country.name }}</a></li>
-                            {% endfor %}
-                            {% if countries|length > 10 %}
-                            <li class="empty-state">... and {{ countries|length - 10 }} more</li>
-                            {% endif %}
-                        {% endif %}
                     </ul>
+                    {% if countries %}
+                    <ul class="site-map-links countries-list">
+                        {% for country in countries %}
+                        <li><a href="{{ url_for('view_country', country_slug=country.name|country_slug) }}">{{ country.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
                 </div>
                 
                 <div class="site-map-section">
@@ -293,7 +304,7 @@
                     <ul class="site-map-links">
                         {% if recipes %}
                             {% for recipe in recipes[:10] %}
-                            <li><a href="{% if recipe.primary_country and recipe.primary_state %}{{ url_for('view_recipe', country_name=recipe.primary_country.name, state_name=recipe.primary_state.name, recipe_slug=recipe.slug) }}{% else %}{{ url_for('view_recipe_old', recipe_id=recipe.id) }}{% endif %}">{{ recipe.name }}</a></li>
+                            <li><a href="{% if recipe.primary_state %}{{ url_for('view_recipe', country_slug=recipe.primary_country.name|country_slug, state_slug=recipe.primary_state.name|country_slug, recipe_slug=recipe.slug) }}{% elif recipe.primary_country %}{{ url_for('view_recipe_country_only', country_slug=recipe.primary_country.name|country_slug, recipe_slug=recipe.slug) }}{% else %}{{ url_for('view_recipe_old', recipe_id=recipe.id) }}{% endif %}">{{ recipe.name }}</a></li>
                             {% endfor %}
                             {% if recipes|length > 10 %}
                             <li class="empty-state">... and {{ recipes|length - 10 }} more</li>
@@ -319,7 +330,7 @@
             <div class="recipes-grid">
                 {% for recipe in recipes %}
                 <div class="recipe-card">
-                    <a href="{% if recipe.primary_country and recipe.primary_state %}{{ url_for('view_recipe', country_name=recipe.primary_country.name, state_name=recipe.primary_state.name, recipe_slug=recipe.slug) }}{% else %}{{ url_for('view_recipe_old', recipe_id=recipe.id) }}{% endif %}">
+                    <a href="{% if recipe.primary_state %}{{ url_for('view_recipe', country_slug=recipe.primary_country.name|country_slug, state_slug=recipe.primary_state.name|country_slug, recipe_slug=recipe.slug) }}{% elif recipe.primary_country %}{{ url_for('view_recipe_country_only', country_slug=recipe.primary_country.name|country_slug, recipe_slug=recipe.slug) }}{% else %}{{ url_for('view_recipe_old', recipe_id=recipe.id) }}{% endif %}">
                         <h4>{{ recipe.name }}</h4>
                         <div class="recipe-meta">
                             {% if recipe.primary_country %}

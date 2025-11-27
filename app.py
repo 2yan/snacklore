@@ -253,6 +253,64 @@ def view_country(country_slug):
     breadcrumbs = [{'label': 'World', 'url': url_for('world_map')}, {'label': country.name, 'url': None}]
     return render_template('country.html', country=country, states=states, recipes=recipes, breadcrumbs=breadcrumbs)
 
+@app.route('/c/<country_slug>/<state_slug>/<recipe_slug>')
+def view_recipe(country_slug, state_slug, recipe_slug):
+    # Convert slugs to names
+    country_name = slug_to_country_name(country_slug)
+    state_name = slug_to_country_name(state_slug)  # Reusing the function for state
+    
+    # Find country and state
+    country = Country.query.filter(Country.name.ilike(country_name)).first_or_404()
+    state = State.query.filter_by(country_id=country.id).filter(State.name.ilike(state_name)).first_or_404()
+    
+    # Find recipe by slug
+    recipe = Recipe.query.filter_by(slug=recipe_slug).first_or_404()
+    
+    # Verify recipe belongs to this country and state
+    if recipe.primary_country_id != country.id or recipe.primary_state_id != state.id:
+        flash('Recipe location mismatch', 'error')
+        return redirect(url_for('view_country', country_slug=country_slug))
+    
+    # Aggregate ingredients from all steps
+    ingredients = []
+    if recipe.steps:
+        for step in recipe.steps:
+            ingredients.extend(step.ingredients)
+    
+    breadcrumbs = [
+        {'label': 'World', 'url': url_for('world_map')},
+        {'label': country.name, 'url': url_for('view_country', country_slug=country_slug)},
+        {'label': state.name, 'url': None},
+        {'label': recipe.name, 'url': None}
+    ]
+    return render_template('recipe_detail.html', recipe=recipe, ingredients=ingredients, steps=recipe.steps, breadcrumbs=breadcrumbs)
+
+@app.route('/c/<country_slug>/<recipe_slug>')
+def view_recipe_country_only(country_slug, recipe_slug):
+    # Convert slug to country name
+    country_name = slug_to_country_name(country_slug)
+    country = Country.query.filter(Country.name.ilike(country_name)).first_or_404()
+    
+    # Find recipe by slug
+    recipe = Recipe.query.filter_by(slug=recipe_slug).first_or_404()
+    
+    # Verify recipe belongs to this country
+    if recipe.primary_country_id != country.id:
+        flash('Recipe location mismatch', 'error')
+        return redirect(url_for('view_country', country_slug=country_slug))
+    
+    # Aggregate ingredients from all steps
+    ingredients = []
+    if recipe.steps:
+        for step in recipe.steps:
+            ingredients.extend(step.ingredients)
+    
+    breadcrumbs = [
+        {'label': 'World', 'url': url_for('world_map')},
+        {'label': country.name, 'url': url_for('view_country', country_slug=country_slug)},
+        {'label': recipe.name, 'url': None}
+    ]
+    return render_template('recipe_detail.html', recipe=recipe, ingredients=ingredients, steps=recipe.steps, breadcrumbs=breadcrumbs)
 
 # Keep old route for backwards compatibility, redirect to new route
 @app.route('/recipe/<int:recipe_id>')
