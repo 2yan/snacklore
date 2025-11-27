@@ -1,387 +1,928 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Snacklore - Site Directory</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Savor | Global Recipe Explorer</title>
+
+    <!-- Leaflet CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: #000;
-            min-height: 100vh;
-            padding: 2rem;
+      :root {
+        --primary: #d35400; /* Burnt Orange */
+        --primary-dark: #a04000;
+        --secondary: #2c3e50; /* Dark Slate */
+        --accent: #27ae60; /* Sage Green */
+        --bg-warm: #fdfbf7; /* Warm White */
+        --bg-white: #ffffff;
+        --text-main: #2c3e50;
+        --text-light: #7f8c8d;
+        --border: #ebdccb;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: var(--bg-warm);
+        color: var(--text-main);
+        line-height: 1.6;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4 {
+        font-family: "Playfair Display", serif;
+        color: var(--secondary);
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+        transition: color 0.2s;
+      }
+
+      /* Navbar */
+      .navbar {
+        background: var(--bg-white);
+        padding: 1rem 5%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .logo {
+        font-family: "Playfair Display", serif;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--primary);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 2rem;
+        align-items: center;
+      }
+
+      .nav-link {
+        font-weight: 500;
+        color: var(--secondary);
+        font-size: 0.95rem;
+      }
+
+      .nav-link:hover {
+        color: var(--primary);
+      }
+
+      .auth-buttons {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+      }
+
+      .btn {
+        padding: 0.6rem 1.2rem;
+        border-radius: 4px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: inline-block;
+      }
+
+      .btn-ghost {
+        color: var(--secondary);
+        border: 1px solid transparent;
+        background: transparent;
+      }
+
+      .btn-ghost:hover {
+        background: rgba(0, 0, 0, 0.03);
+      }
+
+      .btn-primary {
+        background: var(--primary);
+        color: white;
+        border: 1px solid var(--primary);
+      }
+
+      .btn-primary:hover {
+        background: var(--primary-dark);
+        border-color: var(--primary-dark);
+        color: white;
+      }
+
+      /* Hero Section */
+      .hero {
+        background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+          url("https://images.unsplash.com/photo-1543353071-873f17a7a088?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80");
+        background-size: cover;
+        background-position: center;
+        height: 60vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        color: white;
+        padding: 0 1rem;
+      }
+
+      .hero h1 {
+        font-size: 3.5rem;
+        color: white;
+        margin-bottom: 1rem;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .hero p {
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+        max-width: 600px;
+        font-weight: 300;
+      }
+
+      .search-bar {
+        background: white;
+        padding: 0.5rem;
+        border-radius: 50px;
+        display: flex;
+        width: 100%;
+        max-width: 500px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      }
+
+      .search-bar input {
+        border: none;
+        padding: 0.8rem 1.5rem;
+        flex: 1;
+        font-size: 1rem;
+        outline: none;
+        border-radius: 50px;
+      }
+
+      .search-bar button {
+        background: var(--primary);
+        color: white;
+        border: none;
+        padding: 0 2rem;
+        border-radius: 50px;
+        cursor: pointer;
+        font-weight: 600;
+      }
+
+      /* Container */
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 4rem 1.5rem;
+      }
+
+      /* Flash Messages */
+      .flash-messages {
+        margin-bottom: 2rem;
+      }
+      .flash {
+        padding: 1rem;
+        margin-bottom: 1rem;
+        border-radius: 4px;
+        border: 1px solid transparent;
+      }
+      .flash.error {
+        background-color: #fce4e4;
+        color: #cc0000;
+        border-color: #fcc2c2;
+      }
+      .flash.success {
+        background-color: #d4edda;
+        color: #155724;
+        border-color: #c3e6cb;
+      }
+      .flash.info {
+        background-color: #d1ecf1;
+        color: #0c5460;
+        border-color: #bee5eb;
+      }
+
+      /* Section Headers */
+      .section-header {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+
+      .section-header h2 {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .section-header p {
+        color: var(--text-light);
+      }
+
+      /* Categories Grid */
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        margin-bottom: 4rem;
+      }
+
+      .card {
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        transition: transform 0.2s;
+        border: 1px solid var(--border);
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .card-img {
+        height: 200px;
+        background-color: #eee;
+        background-size: cover;
+        background-position: center;
+      }
+
+      .card-content {
+        padding: 1.5rem;
+      }
+
+      .card-category {
+        color: var(--primary);
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+
+      .card-title {
+        font-family: "Playfair Display", serif;
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+        color: var(--secondary);
+      }
+
+      .card-meta {
+        display: flex;
+        justify-content: space-between;
+        color: var(--text-light);
+        font-size: 0.85rem;
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid #f0f0f0;
+      }
+
+      /* Map Section */
+      .map-section {
+        background: white;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+        margin-bottom: 4rem;
+        border: 1px solid var(--border);
+      }
+
+      .map-wrapper {
+        height: 600px;
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid #eee;
+        position: relative;
+      }
+
+      #map {
+        width: 100%;
+        height: 100%;
+      }
+
+      /* Stats Overlay on Map */
+      .map-stats {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        background: white;
+        padding: 1rem 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        z-index: 500;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .map-stats-item {
+        text-align: center;
+      }
+
+      .stat-number {
+        font-family: "Playfair Display", serif;
+        font-size: 1.5rem;
+        color: var(--primary);
+        line-height: 1;
+        font-weight: 700;
+      }
+
+      .stat-label {
+        font-size: 0.7rem;
+        color: var(--text-light);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      /* Map Popup Styling */
+      .leaflet-popup-content-wrapper {
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .leaflet-popup-content {
+        font-family: "Inter", sans-serif;
+        margin: 15px;
+      }
+
+      .popup-country {
+        font-family: "Playfair Display", serif;
+        font-size: 1.2rem;
+        color: var(--secondary);
+        margin-bottom: 5px;
+        font-weight: 700;
+        border-bottom: 2px solid var(--primary);
+        padding-bottom: 5px;
+        display: inline-block;
+      }
+
+      .popup-region {
+        font-size: 0.85rem;
+        color: var(--text-light);
+        margin-bottom: 10px;
+        font-style: italic;
+      }
+
+      .popup-subregions h4 {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        color: var(--text-light);
+        margin-bottom: 5px;
+        letter-spacing: 0.5px;
+      }
+
+      .popup-subregions ul {
+        list-style: none;
+        padding: 0;
+        max-height: 100px;
+        overflow-y: auto;
+      }
+
+      .popup-subregions li {
+        font-size: 0.85rem;
+        padding: 2px 0;
+        border-bottom: 1px solid #eee;
+      }
+
+      .popup-action {
+        display: block;
+        margin-top: 10px;
+        text-align: center;
+        background: var(--primary);
+        color: white;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 0.85rem;
+        font-weight: 600;
+      }
+
+      .popup-action:hover {
+        background: var(--primary-dark);
+        color: white;
+      }
+
+      /* Label styling */
+      .country-label {
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        font-family: "Inter", sans-serif;
+        font-weight: 600;
+        font-size: 12px;
+        color: #333;
+        text-shadow: 0 0 2px white, 0 0 2px white;
+        pointer-events: none; /* Let clicks pass through to marker/polygon */
+      }
+
+      /* Hide labels when zoomed out */
+      .map-zoomed-out .leaflet-tooltip {
+        display: none;
+      }
+
+      /* Footer */
+      footer {
+        background: var(--secondary);
+        color: white;
+        padding: 4rem 1.5rem 1rem;
+      }
+
+      .footer-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 3rem;
+        margin-bottom: 3rem;
+      }
+
+      .footer-col h3 {
+        color: white;
+        margin-bottom: 1.5rem;
+      }
+
+      .footer-links {
+        list-style: none;
+      }
+
+      .footer-links li {
+        margin-bottom: 0.8rem;
+      }
+
+      .footer-links a {
+        color: #bdc3c7;
+      }
+
+      .footer-links a:hover {
+        color: var(--primary);
+      }
+
+      .copyright {
+        text-align: center;
+        padding-top: 2rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        color: #95a5a6;
+        font-size: 0.9rem;
+      }
+
+      @media (max-width: 768px) {
+        .hero h1 {
+          font-size: 2.5rem;
         }
-        .container {
-            background: #fff;
-            padding: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-            border: 1px solid #333;
+        .nav-links {
+          display: none;
         }
-        h1 { 
-            margin-bottom: 0.5rem; 
-            color: #000; 
-            font-size: 2rem;
-        }
-        .subtitle {
-            color: #666;
-            margin-bottom: 2rem;
-            font-size: 1rem;
-        }
-        .site-structure {
-            margin-bottom: 3rem;
-        }
-        .section-title {
-            font-size: 1.5rem;
-            color: #000;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid #666;
-        }
-        .breadcrumb-nav {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 2rem;
-            padding: 1rem;
-            background: #f5f5f5;
-            border-radius: 4px;
-        }
-        .breadcrumb-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .breadcrumb-item a {
-            color: #000;
-            text-decoration: none;
-            font-weight: 500;
-            padding: 0.25rem 0.5rem;
-            border-radius: 3px;
-            transition: background 0.2s;
-        }
-        .breadcrumb-item a:hover {
-            background: #ddd;
-        }
-        .breadcrumb-separator {
-            color: #666;
-        }
-        .breadcrumb-item.active a {
-            color: #666;
-            cursor: default;
-        }
-        .breadcrumb-item.active a:hover {
-            background: transparent;
-        }
-        .site-map {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        .site-map-section {
-            background: #f9f9f9;
-            padding: 1.5rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        .site-map-section h3 {
-            color: #000;
-            margin-bottom: 1rem;
-            font-size: 1.2rem;
-        }
-        .site-map-links {
-            list-style: none;
-        }
-        .site-map-links li {
-            margin-bottom: 0.75rem;
-        }
-        .site-map-links a {
-            color: #000;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem;
-            border-radius: 3px;
-            transition: background 0.2s;
-        }
-        .site-map-links a:hover {
-            background: #e8e8e8;
-        }
-        .site-map-links a::before {
-            content: "→";
-            color: #666;
-        }
-        .recipes-section {
-            margin-top: 2rem;
-        }
-        .recipes-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-        .recipe-card {
-            background: #f9f9f9;
-            padding: 1rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .recipe-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        .recipe-card a {
-            color: #000;
-            text-decoration: none;
-            display: block;
-        }
-        .recipe-card h4 {
-            margin-bottom: 0.5rem;
-            color: #000;
-        }
-        .recipe-meta {
-            font-size: 0.85rem;
-            color: #666;
-            margin-top: 0.5rem;
-        }
-        .user-info {
-            background: #f5f5f5;
-            padding: 1rem;
-            margin-bottom: 2rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .user-details {
-            display: flex;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-        }
-        .user-detail-item {
-            font-size: 0.9rem;
-        }
-        .user-detail-label {
-            color: #666;
-            font-weight: 500;
-        }
-        .user-detail-value {
-            color: #000;
-        }
-        .action-buttons {
-            display: flex;
-            gap: 0.5rem;
-        }
-        button, .btn {
-            padding: 0.5rem 1rem;
-            background: #000;
-            color: white;
-            border: 2px solid #000;
-            font-size: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.3s;
-            text-decoration: none;
-            display: inline-block;
-            border-radius: 3px;
-            font-family: inherit;
-        }
-        button:hover, .btn:hover { 
-            background: #333; 
-            border-color: #333; 
-        }
-        .btn-secondary {
-            background: #666;
-            border-color: #666;
-        }
-        .btn-secondary:hover { 
-            background: #555; 
-            border-color: #555; 
-        }
-        .empty-state {
-            text-align: center;
-            padding: 2rem;
-            color: #666;
-        }
-        .flash-messages {
-            margin-bottom: 1rem;
-        }
-        .flash {
-            padding: 0.75rem;
-            margin-bottom: 0.5rem;
-            border: 1px solid #666;
-        }
-        .flash.error { background: #f5f5f5; color: #000; }
-        .flash.success { background: #f5f5f5; color: #000; }
-        .flash.info { background: #f5f5f5; color: #000; }
+      }
     </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Snacklore</h1>
-        <p class="subtitle">Recipe Management System - Site Directory</p>
-        
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                <div class="flash-messages">
-                    {% for category, message in messages %}
-                        <div class="flash {{ category }}">{{ message }}</div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        {% endwith %}
-        
-        {% if current_user.is_authenticated %}
-        <div class="user-info">
-            <div class="user-details">
-                <div class="user-detail-item">
-                    <span class="user-detail-label">User:</span>
-                    <span class="user-detail-value">{{ current_user.username }}</span>
-                </div>
-                <div class="user-detail-item">
-                    <span class="user-detail-label">Email:</span>
-                    <span class="user-detail-value">{{ current_user.email }}</span>
-                </div>
-            </div>
-            <div class="action-buttons">
-                <a href="{{ url_for('logout') }}" class="btn">Logout</a>
-            </div>
-        </div>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <a href="{{ url_for('index') }}" class="logo">
+        <!-- Simple SVG Icon -->
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2" />
+          <path d="M7 2v20" />
+          <path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7" />
+        </svg>
+        Savor
+      </a>
+      <div class="nav-links">
+        <a href="#" class="nav-link">Recipes</a>
+        <a href="#" class="nav-link">Ingredients</a>
+        <a href="#" class="nav-link">Community</a>
+        <a href="#" class="nav-link">About</a>
+      </div>
+      <div class="auth-buttons">
+        {% if current_user and current_user.is_authenticated %}
+        <span
+          style="color: var(--primary); font-weight: 500; margin-right: 10px"
+          >Hello, {{ current_user.username }}</span
+        >
+        <a href="{{ url_for('logout') }}" class="btn btn-ghost">Log Out</a>
         {% else %}
-        <div class="user-info">
-            <div class="user-details">
-                <span class="user-detail-value">Not logged in</span>
-            </div>
-            <div class="action-buttons">
-                <a href="{{ url_for('login') }}" class="btn">Login</a>
-                <a href="{{ url_for('register') }}" class="btn btn-secondary">Register</a>
-            </div>
-        </div>
+        <a href="{{ url_for('login') }}" class="btn btn-ghost">Log In</a>
+        <a href="{{ url_for('register') }}" class="btn btn-primary">Sign Up</a>
         {% endif %}
-        
-        <div class="breadcrumb-nav">
-            <div class="breadcrumb-item active">
-                <a href="{{ url_for('index') }}">Home</a>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+      <h1>Taste the World</h1>
+      <p>Discover authentic recipes from over 200 countries and regions.</p>
+      <div class="search-bar">
+        <input type="text" placeholder="What are you craving today?" />
+        <button>Search</button>
+      </div>
+    </header>
+
+    <div class="container">
+      {% with messages = get_flashed_messages(with_categories=true) %} {% if
+      messages %}
+      <div class="flash-messages">
+        {% for category, message in messages %}
+        <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+      {% endif %} {% endwith %}
+
+      <!-- Trending Recipes -->
+      <div class="section-header">
+        <h2>Trending This Week</h2>
+        <p>Popular dishes our community is cooking right now</p>
+      </div>
+
+      <div class="grid">
+        <!-- Recipe Card 1 -->
+        <div class="card">
+          <div
+            class="card-img"
+            style="
+              background-image: url('https://images.unsplash.com/photo-1590947132387-155cc02f3212?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60');
+            "
+          ></div>
+          <div class="card-content">
+            <div class="card-category">Italy</div>
+            <h3 class="card-title">Classic Pizza Margherita</h3>
+            <div class="card-meta">
+              <span>30 mins</span>
+              <span>Easy</span>
             </div>
-            {% if current_user.is_authenticated %}
-            <span class="breadcrumb-separator">/</span>
-            <div class="breadcrumb-item">
-                <a href="{{ url_for('index') }}">Site Directory</a>
-            </div>
-            {% else %}
-            <span class="breadcrumb-separator">/</span>
-            <div class="breadcrumb-item">
-                <a href="{{ url_for('login') }}">Login Required</a>
-            </div>
-            {% endif %}
+          </div>
         </div>
-        
-        <div class="site-flow">
-            <h2 class="section-title">Site Flow & Structure</h2>
-            <div class="breadcrumb-nav" style="background: #fff; border: 2px solid #666; padding: 1.5rem; margin-bottom: 2rem;">
-                <div class="breadcrumb-item">
-                    <a href="{{ url_for('index') }}">Home</a>
-                </div>
-                <span class="breadcrumb-separator">→</span>
-                {% if not current_user.is_authenticated %}
-                <div class="breadcrumb-item">
-                    <a href="{{ url_for('login') }}">Login</a>
-                </div>
-                <span class="breadcrumb-separator">→</span>
-                <div class="breadcrumb-item">
-                    <a href="{{ url_for('register') }}">Register</a>
-                </div>
-                <span class="breadcrumb-separator">→</span>
-                {% endif %}
-                <div class="breadcrumb-item">
-                    <span style="color: #666;">Browse Recipes</span>
-                </div>
-                {% if recipes %}
-                <span class="breadcrumb-separator">→</span>
-                <div class="breadcrumb-item">
-                    <a href="{{ url_for('view_recipe', recipe_id=recipes[0].id) }}">View Recipe</a>
-                </div>
-                <span class="breadcrumb-separator">→</span>
-                <div class="breadcrumb-item">
-                    <span style="color: #666;">Edit Steps & Ingredients</span>
-                </div>
-                {% endif %}
+        <!-- Recipe Card 2 -->
+        <div class="card">
+          <div
+            class="card-img"
+            style="
+              background-image: url('https://images.unsplash.com/photo-1565557623262-b51c2513a641?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60');
+            "
+          ></div>
+          <div class="card-content">
+            <div class="card-category">India</div>
+            <h3 class="card-title">Authentic Butter Chicken</h3>
+            <div class="card-meta">
+              <span>50 mins</span>
+              <span>Medium</span>
             </div>
+          </div>
         </div>
-        
-        <div class="site-structure">
-            <h2 class="section-title">Site Navigation</h2>
-            <div class="site-map">
-                <div class="site-map-section">
-                    <h3>Authentication</h3>
-                    <ul class="site-map-links">
-                        {% if not current_user.is_authenticated %}
-                        <li><a href="{{ url_for('login') }}">Login</a></li>
-                        <li><a href="{{ url_for('register') }}">Register</a></li>
-                        {% else %}
-                        <li><a href="{{ url_for('logout') }}">Logout</a></li>
-                        {% endif %}
-                    </ul>
-                </div>
-                
-                <div class="site-map-section">
-                    <h3>Recipes</h3>
-                    <ul class="site-map-links">
-                        {% if recipes %}
-                            {% for recipe in recipes %}
-                            <li><a href="{{ url_for('view_recipe', recipe_id=recipe.id) }}">{{ recipe.name }}</a></li>
-                            {% endfor %}
-                        {% else %}
-                            <li class="empty-state">No recipes available</li>
-                        {% endif %}
-                    </ul>
-                </div>
-                
-                <div class="site-map-section">
-                    <h3>API Endpoints</h3>
-                    <ul class="site-map-links">
-                        <li><a href="/api/states/1">Get States by Country</a></li>
-                    </ul>
-                </div>
+        <!-- Recipe Card 3 -->
+        <div class="card">
+          <div
+            class="card-img"
+            style="
+              background-image: url('https://images.unsplash.com/photo-1504544750208-dc0358e63f7f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60');
+            "
+          ></div>
+          <div class="card-content">
+            <div class="card-category">Mexico</div>
+            <h3 class="card-title">Street Style Tacos</h3>
+            <div class="card-meta">
+              <span>40 mins</span>
+              <span>Easy</span>
             </div>
+          </div>
         </div>
-        
-        {% if recipes %}
-        <div class="recipes-section">
-            <h2 class="section-title">All Recipes</h2>
-            <div class="recipes-grid">
-                {% for recipe in recipes %}
-                <div class="recipe-card">
-                    <a href="{{ url_for('view_recipe', recipe_id=recipe.id) }}">
-                        <h4>{{ recipe.name }}</h4>
-                        <div class="recipe-meta">
-                            {% if recipe.primary_country %}
-                                <div>📍 {{ recipe.primary_country.name }}</div>
-                            {% endif %}
-                            {% if recipe.primary_state %}
-                                <div>📍 {{ recipe.primary_state.name }}</div>
-                            {% endif %}
-                            {% if recipe.owner %}
-                                <div>👤 {{ recipe.owner.username }}</div>
-                            {% endif %}
-                            {% if recipe.created_at %}
-                                <div>📅 {{ recipe.created_at.strftime('%Y-%m-%d') }}</div>
-                            {% endif %}
-                            {% if recipe.steps %}
-                                <div>📝 {{ recipe.steps|length }} step{{ 's' if recipe.steps|length != 1 else '' }}</div>
-                            {% endif %}
-                        </div>
-                    </a>
-                </div>
-                {% endfor %}
+      </div>
+
+      <!-- Map Explorer -->
+      <div class="section-header">
+        <h2>Explore by Region</h2>
+        <p>Click on a country to discover its culinary traditions</p>
+      </div>
+
+      <div class="map-section">
+        <div class="map-wrapper">
+          <div id="map"></div>
+          <div class="map-stats">
+            <div class="map-stats-item">
+              <div class="stat-number" id="country-count">0</div>
+              <div class="stat-label">Countries</div>
             </div>
+            <div style="width: 1px; height: 30px; background: #eee"></div>
+            <div class="map-stats-item">
+              <div class="stat-number" id="region-count">0</div>
+              <div class="stat-label">Regions</div>
+            </div>
+          </div>
         </div>
-        {% endif %}
+      </div>
+
+      <!-- Latest Additions -->
+      <div class="section-header">
+        <h2>Fresh from the Kitchen</h2>
+        <p>New recipes added today</p>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <div
+            class="card-img"
+            style="
+              background-image: url('https://images.unsplash.com/photo-1512058564366-18510be2db19?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60');
+            "
+          ></div>
+          <div class="card-content">
+            <div class="card-category">Mediterranean</div>
+            <h3 class="card-title">Greek Salad Bowl</h3>
+            <div class="card-meta">
+              <span>15 mins</span>
+              <span>Easy</span>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div
+            class="card-img"
+            style="
+              background-image: url('https://images.unsplash.com/photo-1547592180-85f173990554?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60');
+            "
+          ></div>
+          <div class="card-content">
+            <div class="card-category">Japan</div>
+            <h3 class="card-title">Miso Ramen</h3>
+            <div class="card-meta">
+              <span>60 mins</span>
+              <span>Hard</span>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div
+            class="card-img"
+            style="
+              background-image: url('https://images.unsplash.com/photo-1550989460-0adf9ea622e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60');
+            "
+          ></div>
+          <div class="card-content">
+            <div class="card-category">France</div>
+            <h3 class="card-title">Ratatouille</h3>
+            <div class="card-meta">
+              <span>45 mins</span>
+              <span>Medium</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-</body>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-content">
+        <div class="footer-col">
+          <div class="logo" style="color: white; margin-bottom: 1rem">
+            Savor
+          </div>
+          <p style="color: #bdc3c7">
+            Bringing the world's kitchen to your home. Discover, cook, and share
+            recipes from every corner of the globe.
+          </p>
+        </div>
+        <div class="footer-col">
+          <h3>Explore</h3>
+          <ul class="footer-links">
+            <li><a href="#">Browse by Region</a></li>
+            <li><a href="#">Ingredients</a></li>
+            <li><a href="#">Collections</a></li>
+            <li><a href="#">Featured Chefs</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3>Company</h3>
+          <ul class="footer-links">
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3>Connect</h3>
+          <ul class="footer-links">
+            <li><a href="#">Instagram</a></li>
+            <li><a href="#">Twitter</a></li>
+            <li><a href="#">Pinterest</a></li>
+            <li><a href="#">Newsletter</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="copyright">
+        <p>&copy; 2024 Savor Recipes. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <!-- Leaflet JavaScript -->
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+
+    <script>
+      // Initialize the map centered on the world
+      const map = L.map("map", {
+        scrollWheelZoom: false,
+        minZoom: 2,
+        maxZoom: 8,
+      }).setView([20, 0], 2);
+
+      // Add class for zoom-based styling
+      map.on("zoomend", function () {
+        if (map.getZoom() < 4) {
+          document.getElementById("map").classList.add("map-zoomed-out");
+        } else {
+          document.getElementById("map").classList.remove("map-zoomed-out");
+        }
+      });
+
+      // Initialize zoom state
+      document.getElementById("map").classList.add("map-zoomed-out");
+
+      // Add a clean, light map layer (CartoDB Positron) for better aesthetics
+      L.tileLayer(
+        "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+        {
+          attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+          subdomains: "abcd",
+          maxZoom: 19,
+        }
+      ).addTo(map);
+
+      // Styling for the country polygons
+      function getCountryStyle(feature) {
+        return {
+          fillColor: "#d35400",
+          weight: 1,
+          opacity: 1,
+          color: "white",
+          dashArray: "3",
+          fillOpacity: 0.1,
+        };
+      }
+
+      function highlightFeature(e) {
+        var layer = e.target;
+        layer.setStyle({
+          weight: 2,
+          color: "#d35400",
+          dashArray: "",
+          fillOpacity: 0.3,
+        });
+        layer.bringToFront();
+      }
+
+      function resetHighlight(e) {
+        geojsonLayer.resetStyle(e.target);
+      }
+
+      // Global variables
+      let geojsonLayer;
+      let culinaryData = {}; // Stores our countries.json data indexed by country name
+
+      // Load data in parallel
+      Promise.all([
+        fetch(
+          "https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json"
+        ).then((res) => res.json()),
+        fetch("{{ url_for('static', filename='countries.json') }}").then(
+          (res) => res.json()
+        ),
+      ])
+        .then(([geoData, recipesData]) => {
+          // Process recipe data for easy lookup
+          let totalRegions = 0;
+          recipesData.forEach((item) => {
+            // Normalize name for better matching
+            culinaryData[item.country] = item;
+            if (item.regions) totalRegions += item.regions.length;
+          });
+
+          // Update stats
+          document.getElementById("country-count").textContent =
+            recipesData.length;
+          document.getElementById("region-count").textContent = totalRegions;
+
+          // Create a Marker Cluster Group for better performance/visuals
+          // (Optional, but good if we have many markers)
+          // For now, standard markers
+
+          recipesData.forEach((country) => {
+            if (country.lat && country.lng) {
+              const marker = L.marker([country.lat, country.lng]).addTo(map);
+
+              // Create popup content
+              const popupDiv = document.createElement("div");
+
+              const title = document.createElement("div");
+              title.className = "popup-country";
+              title.textContent = country.country;
+              popupDiv.appendChild(title);
+
+              const region = document.createElement("div");
+              region.className = "popup-region";
+              region.textContent = country.region;
+              popupDiv.appendChild(region);
+
+              if (country.regions && country.regions.length > 0) {
+                const subregionsDiv = document.createElement("div");
+                subregionsDiv.className = "popup-subregions";
+
+                const h4 = document.createElement("h4");
+                h4.textContent = `Culinary Regions (${country.regions.length})`;
+                subregionsDiv.appendChild(h4);
+
+                const ul = document.createElement("ul");
+                country.regions.forEach((r) => {
+                  const li = document.createElement("li");
+                  li.textContent = r;
+                  ul.appendChild(li);
+                });
+                subregionsDiv.appendChild(ul);
+                popupDiv.appendChild(subregionsDiv);
+              } else {
+                const p = document.createElement("p");
+                p.textContent = "Explore recipes from this location.";
+                p.style.fontSize = "0.9rem";
+                p.style.color = "#666";
+                popupDiv.appendChild(p);
+              }
+
+              const btn = document.createElement("a");
+              btn.className = "popup-action";
+              const slug = country.country.toLowerCase().replace(/ /g, "-");
+              btn.href = "/countries/" + slug;
+              btn.textContent = "View Recipes";
+              popupDiv.appendChild(btn);
+
+              marker.bindPopup(popupDiv);
+
+              // Add a text label (tooltip) that appears on zoom
+              marker.bindTooltip(country.country, {
+                permanent: true,
+                direction: "top",
+                className: "country-label",
+                offset: [0, -10],
+              });
+            }
+          });
+
+          // Add GeoJSON to map (Polygons)
+          geojsonLayer = L.geoJson(geoData, {
+            style: getCountryStyle,
+            onEachFeature: function (feature, layer) {
+              const countryName = feature.properties.name;
+              // ... (rest of the polygon logic if needed, or we can disable click on polygons if we have markers)
+              // Let's keep polygons for visual context but maybe disable their popups to avoid duplication
+              // OR make polygons highlight only
+
+              layer.on({
+                mouseover: highlightFeature,
+                mouseout: resetHighlight,
+                // Removed click event to rely on markers for interaction, or we can keep both.
+                // Let's keep click on polygon as well for better UX
+              });
+            },
+          }).addTo(map);
+        })
+        .catch((err) => console.error("Error loading map data:", err));
+    </script>
+  </body>
 </html>

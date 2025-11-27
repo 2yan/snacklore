@@ -152,6 +152,49 @@ def view_recipe(recipe_id):
     states = State.query.all()
     return render_template('recipe.html', recipe=recipe, is_owner=is_owner, countries=countries, states=states)
 
+@app.route('/recipes/<string:recipe_slug>')
+def view_recipe_slug(recipe_slug):
+    # Convert slug to name (e.g., "miso-ramen" -> "Miso Ramen")
+    # This is a simple approximation
+    name = recipe_slug.replace('-', ' ').title()
+    
+    # Try to find case-insensitive match
+    recipe = Recipe.query.filter(Recipe.name.ilike(name)).first()
+    
+    if not recipe:
+        # Fallback: try exact match or other variations if needed
+        # For now, just 404 if not found
+        # Or, specifically for "Miso Ramen" if capitalization differs in DB
+        if recipe_slug == 'miso-ramen':
+             recipe = Recipe.query.filter(Recipe.name.ilike('Miso Ramen')).first()
+        
+        if not recipe:
+             return "Recipe not found", 404
+
+    # Aggregate ingredients from all steps
+    ingredients = []
+    if recipe.steps:
+        for step in recipe.steps:
+            ingredients.extend(step.ingredients)
+            
+    return render_template('recipe_detail.html', recipe=recipe, ingredients=ingredients, steps=recipe.steps)
+
+@app.route('/countries/<string:country_slug>')
+def view_country(country_slug):
+    # Convert slug to name (e.g. "japan" -> "Japan", "united-states" -> "United States")
+    name = country_slug.replace('-', ' ').title()
+    # Handle specific cases if needed, but title() works for most
+    if name.lower() == 'usa':
+        name = 'United States'
+        
+    country = Country.query.filter(Country.name.ilike(name)).first()
+    
+    if not country:
+        return "Country not found", 404
+        
+    recipes = Recipe.query.filter_by(primary_country_id=country.id).all()
+    return render_template('country_detail.html', country=country, recipes=recipes)
+
 @app.route('/recipe/<int:recipe_id>/edit', methods=['POST'])
 @login_required
 def edit_recipe(recipe_id):
@@ -441,6 +484,99 @@ def init_db():
         db.session.add(ingredient4)
         db.session.add(ingredient5)
         
+        db.session.commit()
+
+    # Create Miso Ramen recipe if it doesn't exist
+    miso_ramen = Recipe.query.filter_by(name='Miso Ramen').first()
+    if not miso_ramen:
+        japan = Country.query.filter_by(name='Japan').first()
+        if not japan:
+            japan = Country(name='Japan')
+            db.session.add(japan)
+            db.session.flush()
+            
+        miso_ramen = Recipe(
+            name='Miso Ramen',
+            user_id=system_user.id,
+            primary_country_id=japan.id,
+            primary_state_id=None
+        )
+        db.session.add(miso_ramen)
+        db.session.flush()
+        
+        # Step 1: Broth
+        step1 = Step(
+            recipe_id=miso_ramen.id,
+            step_number=1,
+            step_text='Prepare the broth base. In a pot, combine chicken stock and dashi. Bring to a simmer.'
+        )
+        db.session.add(step1)
+        db.session.flush()
+        
+        ing1 = Ingredient(step_id=step1.id, user_id=system_user.id, name='Chicken Stock', amount='4 cups')
+        ing2 = Ingredient(step_id=step1.id, user_id=system_user.id, name='Dashi', amount='1 cup')
+        db.session.add(ing1)
+        db.session.add(ing2)
+        
+        # Step 2: Miso Taré
+        step2 = Step(
+            recipe_id=miso_ramen.id,
+            step_number=2,
+            step_text='Make the Miso Taré. Mix miso paste, sake, mirin, and soy sauce in a small bowl until smooth. Add to the simmering broth.'
+        )
+        db.session.add(step2)
+        db.session.flush()
+        
+        ing3 = Ingredient(step_id=step2.id, user_id=system_user.id, name='Red Miso', amount='3 tbsp')
+        ing4 = Ingredient(step_id=step2.id, user_id=system_user.id, name='Sake', amount='1 tbsp')
+        ing5 = Ingredient(step_id=step2.id, user_id=system_user.id, name='Mirin', amount='1 tbsp')
+        db.session.add(ing3)
+        db.session.add(ing4)
+        db.session.add(ing5)
+        
+        # Step 3: Noodles
+        step3 = Step(
+            recipe_id=miso_ramen.id,
+            step_number=3,
+            step_text='Cook the ramen noodles according to package instructions. Drain well.'
+        )
+        db.session.add(step3)
+        db.session.flush()
+        
+        ing6 = Ingredient(step_id=step3.id, user_id=system_user.id, name='Fresh Ramen Noodles', amount='2 portions')
+        db.session.add(ing6)
+        
+        # Step 4: Assemble
+        step4 = Step(
+            recipe_id=miso_ramen.id,
+            step_number=4,
+            step_text='Assemble the bowl. Place noodles in bowl, pour over hot broth. Top with chashu pork, soft boiled egg, corn, and green onions.'
+        )
+        db.session.add(step4)
+        db.session.flush()
+        
+        ing7 = Ingredient(step_id=step4.id, user_id=system_user.id, name='Chashu Pork', amount='4 slices')
+        ing8 = Ingredient(step_id=step4.id, user_id=system_user.id, name='Soft Boiled Egg', amount='2 halves')
+        ing9 = Ingredient(step_id=step4.id, user_id=system_user.id, name='Corn', amount='1/4 cup')
+        ing10 = Ingredient(step_id=step4.id, user_id=system_user.id, name='Green Onions', amount='2 tbsp, chopped')
+        db.session.add(ing7)
+        db.session.add(ing8)
+        db.session.add(ing9)
+        db.session.add(ing10)
+        
+        db.session.commit()
+    
+    # Add more Japanese recipes for the country hub
+    japan = Country.query.filter_by(name='Japan').first()
+    if japan:
+        jp_recipes = [
+            'Sushi Rolls', 'Tempura', 'Udon Noodle Soup', 
+            'Okonomiyaki', 'Yakitori', 'Matcha Green Tea Cake', 'Teriyaki Chicken'
+        ]
+        for r_name in jp_recipes:
+            if not Recipe.query.filter_by(name=r_name).first():
+                r = Recipe(name=r_name, user_id=system_user.id, primary_country_id=japan.id)
+                db.session.add(r)
         db.session.commit()
 
 if __name__ == '__main__':

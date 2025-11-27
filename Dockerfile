@@ -18,6 +18,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY app.py .
 COPY templates/ templates/
+COPY static/ static/
 COPY start.sh .
 RUN chmod +x start.sh
 
@@ -25,4 +26,3 @@ EXPOSE 5000
 
 # Start PostgreSQL and run Flask app
 CMD ["./start.sh"]
-
