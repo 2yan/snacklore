@@ -70,9 +70,8 @@ def load_user(user_id):
 
 @app.route('/')
 def index():
-    if current_user.is_authenticated:
-        return render_template('home.html', user=current_user)
-    return redirect(url_for('login'))
+    recipes = Recipe.query.order_by(Recipe.created_at.desc()).all()
+    return render_template('home.html', recipes=recipes)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
