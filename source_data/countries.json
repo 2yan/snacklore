@@ -1,0 +1,4411 @@
+[
+  {
+    "country": "Afghanistan",
+    "region": "Asia",
+    "regions": [
+      "Badakhshan",
+      "Badghis",
+      "Baghlan",
+      "Balkh",
+      "Bamyan",
+      "Daykundi",
+      "Farah",
+      "Faryab",
+      "Ghazni",
+      "Ghor",
+      "Helmand",
+      "Herat",
+      "Jowzjan",
+      "Kabul",
+      "Kandahar",
+      "Kapisa",
+      "Khost",
+      "Kunar",
+      "Kunduz",
+      "Laghman"
+    ],
+    "lat": 33,
+    "lng": 65
+  },
+  {
+    "country": "Albania",
+    "region": "Europe",
+    "regions": [
+      "Northern Albania",
+      "Southern Albania",
+      "Adriatic Sea",
+      "Albanian Adriatic Sea Coast",
+      "Albanian Ionian Sea Coast",
+      "Albanian Riviera",
+      "Shkumbin River",
+      "sq:Rajoni Juglindor",
+      "sq:Nenrajoni Verilindor",
+      "sq:Rajoni per\u00ebndimor i Shqip\u00ebris\u00eb",
+      "sq:/Ult\u00ebsira_Per\u00ebndimore_e_Shqip\u00ebris\u00eb"
+    ],
+    "lat": 41,
+    "lng": 20
+  },
+  {
+    "country": "Algeria",
+    "region": "Africa",
+    "regions": [
+      "Alg\u00e9rois",
+      "Aur\u00e8s Mountains",
+      "Constantinois",
+      "Gourara",
+      "Hautes Plaines",
+      "Hodna",
+      "Hoggar Mountains",
+      "Grande Kabylie",
+      "Petite Kabylie",
+      "Eastern Kabylie",
+      "The M'zab",
+      "Mitidja",
+      "Annaba region",
+      "The Saoura",
+      "Titteri",
+      "The Tell",
+      "Tidikelt",
+      "Trara Mountains",
+      "Touat",
+      "Oranie"
+    ],
+    "lat": 28,
+    "lng": 3
+  },
+  {
+    "country": "American Samoa",
+    "region": "Oceania",
+    "regions": [
+      "Pago Pago International Airport",
+      "Month",
+      "Record high \u00b0F",
+      "Mean maximum \u00b0F",
+      "Mean daily maximum \u00b0F",
+      "Daily mean \u00b0F",
+      "Mean daily minimum \u00b0F",
+      "Mean minimum \u00b0F",
+      "Record low \u00b0F",
+      "precipitation",
+      "Average precipitation days",
+      "relative humidity",
+      "sunshine hours",
+      "possible sunshine",
+      "Real GDPC",
+      "PopulationD",
+      "Real GDP per capita"
+    ],
+    "lat": -14.33333333,
+    "lng": -170
+  },
+  {
+    "country": "Andorra",
+    "region": "Europe",
+    "regions": [
+      "km2",
+      "Village",
+      "Co-Princes",
+      "list",
+      "Executive Council of Andorra"
+    ],
+    "lat": 42.5,
+    "lng": 1.5
+  },
+  {
+    "country": "Angola",
+    "region": "Africa",
+    "regions": [
+      "Human rights",
+      "President",
+      "Vice President",
+      "Cabinet",
+      "National Assembly",
+      "Constitutional Court",
+      "Political parties"
+    ],
+    "lat": -12.5,
+    "lng": 18.5
+  },
+  {
+    "country": "Anguilla",
+    "region": "Caribbean",
+    "regions": [
+      "District",
+      "Blowing Point",
+      "East End",
+      "George Hill",
+      "Island Harbour",
+      "North Hill",
+      "North Side",
+      "Sandy Ground",
+      "Sandy Hill",
+      "South Hill",
+      "Stoney Ground",
+      "The Farrington",
+      "The Quarter",
+      "The Valley",
+      "West End",
+      "Climate data for The Valley \u2013 capital of Anguilla",
+      "Month",
+      "Mean daily maximum \u00b0C",
+      "Daily mean \u00b0C",
+      "Mean daily minimum \u00b0C"
+    ],
+    "lat": 18.25,
+    "lng": -63.16666666
+  },
+  {
+    "country": "Antigua and Barbuda",
+    "region": "Caribbean",
+    "regions": [
+      "Parish/dependency",
+      "Saint John",
+      "Saint George",
+      "Saint Peter",
+      "Saint Philip",
+      "Saint Paul",
+      "Saint Mary",
+      "Barbuda",
+      "Redonda"
+    ],
+    "lat": 17.05,
+    "lng": -61.8
+  },
+  {
+    "country": "Argentina",
+    "region": "South America",
+    "regions": [
+      "Argentine Northwest",
+      "Gran Chaco",
+      "Mesopotamia",
+      "Cuyo",
+      "Pampas",
+      "Littoral",
+      "Patagonia",
+      "Ant\u00e1rtida Argentina",
+      "Pampas region",
+      "Cuyo region",
+      "Misiones",
+      "Eastern Patagonia",
+      "Argentine Antarctica",
+      "Argentine Littoral",
+      "Humid Pampa",
+      "Dry Pampa",
+      "Argentine Northeast",
+      "Comahue"
+    ],
+    "lat": -34,
+    "lng": -64
+  },
+  {
+    "country": "Armenia",
+    "region": "Asia",
+    "regions": [
+      "Aragatsotn",
+      "Ararat",
+      "Armavir",
+      "Gegharkunik",
+      "Kotayk",
+      "Lori",
+      "Shirak",
+      "Syunik",
+      "Tavush",
+      "Vayots Dzor",
+      "Yerevan",
+      "Armenian singular",
+      "marz",
+      "hamaynk",
+      "bnakavayr",
+      "t'aghayin hamaynk"
+    ],
+    "lat": 40,
+    "lng": 45
+  },
+  {
+    "country": "Aruba",
+    "region": "Caribbean",
+    "regions": [
+      "Noord",
+      "Oranjestad West",
+      "Oranjestad Oost",
+      "Paradera",
+      "San Nicolaas Noord",
+      "San Nicolaas Zuid",
+      "Santa Cruz",
+      "Savaneta",
+      "Total Aruba"
+    ],
+    "lat": 12.5,
+    "lng": -69.96666666
+  },
+  {
+    "country": "Australia",
+    "region": "Oceania",
+    "regions": [
+      "Bureau of Meteorology",
+      "catchment areas and drainage systems",
+      "geological regionalisation",
+      "Capital Country",
+      "Eastern Australia",
+      "East Coast of Australia",
+      "Lake Eyre basin",
+      "Murray\u2013Darling basin",
+      "Northern Australia",
+      "The Nullarbor",
+      "Outback",
+      "Southern Australia",
+      "Sunraysia",
+      "Blue Mountains",
+      "Central Coast",
+      "Central Tablelands",
+      "Central West",
+      "Greater Western Sydney",
+      "Far South Coast",
+      "Far West"
+    ],
+    "lat": -27,
+    "lng": 133
+  },
+  {
+    "country": "Austria",
+    "region": "Europe",
+    "regions": [
+      "Burgenland",
+      "Carinthia",
+      "Lower Austria",
+      "Salzburg",
+      "Styria",
+      "Tyrol",
+      "Upper Austria",
+      "Vienna",
+      "Vorarlberg"
+    ],
+    "lat": 47.33333333,
+    "lng": 13.33333333
+  },
+  {
+    "country": "Azerbaijan",
+    "region": "Asia",
+    "regions": [
+      "Baku",
+      "Absheron-Khizi",
+      "Ganja-Dashkasan",
+      "Shaki-Zagatala",
+      "Lankaran-Astara",
+      "Guba-Khachmaz",
+      "Central Aran",
+      "Karabakh",
+      "East Zangezur",
+      "Mountainous Shirvan",
+      "Nakhchivan",
+      "Gazakh-Tovuz",
+      "Mil-Mughan",
+      "Shirvan-Salyan",
+      "TOTALS"
+    ],
+    "lat": 40.5,
+    "lng": 47.5
+  },
+  {
+    "country": "The Bahamas",
+    "region": "Caribbean",
+    "regions": [
+      "edit"
+    ],
+    "lat": 24.25,
+    "lng": -76
+  },
+  {
+    "country": "Bahrain",
+    "region": "Asia",
+    "regions": [
+      "Map",
+      "Al Hidd",
+      "Manama",
+      "Western Region",
+      "Central Region",
+      "Northern Region",
+      "Muharraq",
+      "Rifa and Southern Region",
+      "Jidd Haffs",
+      "Hamad Town",
+      "Isa Town",
+      "Hawar Islands",
+      "Sitra"
+    ],
+    "lat": 26,
+    "lng": 50.55
+  },
+  {
+    "country": "Bangladesh",
+    "region": "Asia",
+    "regions": [
+      "Barishal",
+      "Chattogram",
+      "Dhaka",
+      "Khulna",
+      "Mymensingh",
+      "Rajshahi",
+      "Rangpur",
+      "Sylhet"
+    ],
+    "lat": 24,
+    "lng": 90
+  },
+  {
+    "country": "Barbados",
+    "region": "Caribbean",
+    "regions": [
+      "Christ Church",
+      "St. Andrew",
+      "St. George",
+      "St. James",
+      "St. John",
+      "St. Joseph",
+      "St. Lucy",
+      "St. Michael",
+      "St. Peter",
+      "St. Philip",
+      "St. Thomas"
+    ],
+    "lat": 13.16666666,
+    "lng": -59.53333333
+  },
+  {
+    "country": "Belarus",
+    "region": "Europe",
+    "regions": [
+      "Raion",
+      "Constitutional court",
+      "Human rights"
+    ],
+    "lat": 53,
+    "lng": 28
+  },
+  {
+    "country": "Belgium",
+    "region": "Europe",
+    "regions": [
+      "Language areas",
+      "Communities",
+      "Provinces",
+      "Municipalities",
+      "...in Dutch",
+      "Dutch language area",
+      "French language area",
+      "Bilingual area Brussels-Capital",
+      "German language area",
+      "Dutch",
+      "French",
+      "German",
+      "Location",
+      "Minister-President",
+      "Website",
+      "Seat",
+      "ISO 3166-2",
+      "Population density",
+      "Web site"
+    ],
+    "lat": 50.83333333,
+    "lng": 4
+  },
+  {
+    "country": "Belize",
+    "region": "Central America",
+    "regions": [
+      "District",
+      "Belize",
+      "Cayo",
+      "Corozal",
+      "Orange Walk",
+      "Stann Creek",
+      "Toledo"
+    ],
+    "lat": 17.25,
+    "lng": -88.75
+  },
+  {
+    "country": "Benin",
+    "region": "Africa",
+    "regions": [
+      "Commune",
+      "Human rights",
+      "President",
+      "Vice President",
+      "Cabinet of Benin",
+      "National Assembly"
+    ],
+    "lat": 9.5,
+    "lng": 2.25
+  },
+  {
+    "country": "Bermuda",
+    "region": "Caribbean",
+    "regions": [
+      "Parish",
+      "Devonshire",
+      "Hamilton",
+      "Paget",
+      "Pembroke",
+      "St George's",
+      "Sandys",
+      "Smith's",
+      "Southampton",
+      "Warwick"
+    ],
+    "lat": 32.33333333,
+    "lng": -64.75
+  },
+  {
+    "country": "Bhutan",
+    "region": "Asia",
+    "regions": [
+      "Penlop",
+      "Dzongpen",
+      "House of Wangchuck",
+      "Districts of Bhutan",
+      "History of Bhutan",
+      "Bumthang",
+      "Daga",
+      "Kurmaed",
+      "Kurtoed",
+      "Paro",
+      "Punakha",
+      "Thimphu",
+      "Trongsa",
+      "Wangdue Phodrang"
+    ],
+    "lat": 27.5,
+    "lng": 90.5
+  },
+  {
+    "country": "Bolivia",
+    "region": "South America",
+    "regions": [
+      "Departamento",
+      "Beni",
+      "San Javier",
+      "Baures",
+      "Huacaraje",
+      "San Borja",
+      "Santa Rosa",
+      "Rurrenabaque",
+      "San Ram\u00f3n",
+      "Puerto Siles",
+      "San Andr\u00e9s",
+      "Guayaramer\u00edn",
+      "Exaltaci\u00f3n",
+      "Chuquisaca",
+      "Tarvita",
+      "Huacareta",
+      "Icla",
+      "Presto",
+      "Mojocoya",
+      "Macharet\u00ed"
+    ],
+    "lat": -17,
+    "lng": -65
+  },
+  {
+    "country": "Bosnia and Herzegovina",
+    "region": "Europe",
+    "regions": [
+      "Bosanska Krajina",
+      "Bosanska Posavina",
+      "Semberija",
+      "Podrinje",
+      "Srednja Bosna",
+      "Tropolje",
+      "West Herzegovina",
+      "Herzegovina-Neretva Canton",
+      "East Herzegovina",
+      "Bosnia",
+      "Bira\u010d",
+      "Vrhbosna",
+      "Osat",
+      "Cazinska Krajina",
+      "Kne\u0161polje",
+      "Lijev\u010de",
+      "Donji Kraji",
+      "Herzegovina",
+      "Travunija"
+    ],
+    "lat": 44,
+    "lng": 18
+  },
+  {
+    "country": "Botswana",
+    "region": "Africa",
+    "regions": [
+      "Administrative District",
+      "Southern District",
+      "South-East District",
+      "Kweneng District",
+      "Kgatleng District",
+      "Central District",
+      "North-East District",
+      "Chobe District",
+      "North-West District",
+      "Ghanzi District",
+      "Kgalagadi District",
+      "Urban District",
+      "Gaborone",
+      "Francistown",
+      "Lobatse",
+      "Selebi-Phikwe",
+      "Orapa",
+      "Jwaneng",
+      "Sowa"
+    ],
+    "lat": -22,
+    "lng": 24
+  },
+  {
+    "country": "Brazil",
+    "region": "South America",
+    "regions": [
+      "Central-West",
+      "Southeast",
+      "South",
+      "Northeast",
+      "North",
+      "Southeast Brazil",
+      "Southern Brazil",
+      "Northeast Brazil",
+      "Northern Brazil",
+      "Central-West Brazil",
+      "South Brazil",
+      "North Brazil"
+    ],
+    "lat": -10,
+    "lng": -55
+  },
+  {
+    "country": "British Virgin Islands",
+    "region": "Caribbean",
+    "regions": [],
+    "lat": 18.431383,
+    "lng": -64.62305
+  },
+  {
+    "country": "Brunei",
+    "region": "Asia",
+    "regions": [
+      "Hassanal Bolkiah",
+      "Legislative",
+      "Privy",
+      "Ministry of Transport and Infocommunications",
+      "Ministry of Culture",
+      "Ministry of Defence",
+      "Ministry of Development",
+      "Ministry of Education",
+      "Ministry of Finance and Economy",
+      "Ministry of Foreign Affairs",
+      "Ministry of Health",
+      "Ministry of Home Affairs",
+      "Ministry of Primary Resources and Tourism",
+      "Ministry of Religious Affairs",
+      "Civil courts",
+      "Syariah Courts"
+    ],
+    "lat": 4.5,
+    "lng": 114.66666666
+  },
+  {
+    "country": "Bulgaria",
+    "region": "Europe",
+    "regions": [
+      "Blagoevgrad",
+      "Burgas",
+      "Dobrich",
+      "Gabrovo",
+      "Haskovo",
+      "Kardzhali",
+      "Kyustendil",
+      "Lovech",
+      "Montana",
+      "Pazardzhik",
+      "Pernik",
+      "Pleven",
+      "Plovdiv",
+      "Razgrad",
+      "Ruse",
+      "Shumen",
+      "Silistra",
+      "Sliven",
+      "Smolyan",
+      "Sofia City"
+    ],
+    "lat": 43,
+    "lng": 25
+  },
+  {
+    "country": "Burkina Faso",
+    "region": "Africa",
+    "regions": [
+      "Boucle du Mouhoun",
+      "Cascades",
+      "Centre",
+      "Centre-Est",
+      "Centre-Nord",
+      "Centre-Ouest",
+      "Centre-Sud",
+      "Est",
+      "Hauts-Bassins",
+      "Nord",
+      "Plateau-Central",
+      "Sahel",
+      "Sud-Ouest",
+      "Bankui",
+      "Dj\u00f4r\u00f4",
+      "Goulmou",
+      "Guiriko",
+      "Kadiogo",
+      "Kuils\u00e9",
+      "Liptako"
+    ],
+    "lat": 13,
+    "lng": -2
+  },
+  {
+    "country": "Burundi",
+    "region": "Africa",
+    "regions": [
+      "Buhumuza",
+      "Bujumbura",
+      "Burunga",
+      "Butanyerera",
+      "Gitega",
+      "Bubanza",
+      "Bujumbura Mairie",
+      "Bujumbura Rural",
+      "Bururi",
+      "Cankuzo",
+      "Cibitoke",
+      "Karuzi",
+      "Kayanza",
+      "Kirundo",
+      "Makamba",
+      "Muramvya",
+      "Muyinga",
+      "Mwaro",
+      "Ngozi",
+      "Rumonge"
+    ],
+    "lat": -3.5,
+    "lng": 30
+  },
+  {
+    "country": "Cabo Verde(Cape Verde)",
+    "region": "Africa",
+    "regions": [],
+    "lat": 16,
+    "lng": -24
+  },
+  {
+    "country": "Cambodia",
+    "region": "Asia",
+    "regions": [
+      "District",
+      "Province",
+      "Autonomous municipality",
+      "Municipality",
+      "Section",
+      "Commune",
+      "Quarter"
+    ],
+    "lat": 13,
+    "lng": 105
+  },
+  {
+    "country": "Cameroon",
+    "region": "Africa",
+    "regions": [
+      "Department",
+      "Human rights",
+      "President",
+      "Prime Minister",
+      "Senate",
+      "National Assembly"
+    ],
+    "lat": 6,
+    "lng": 12
+  },
+  {
+    "country": "Canada",
+    "region": "North America",
+    "regions": [
+      "British Columbia",
+      "Alberta",
+      "Saskatchewan",
+      "Manitoba",
+      "Ontario",
+      "Quebec",
+      "New Brunswick",
+      "Prince Edward Island",
+      "Nova Scotia",
+      "Newfoundland and Labrador",
+      "Yukon",
+      "Northwest Territories",
+      "Nunavut"
+    ],
+    "lat": 60,
+    "lng": -95
+  },
+  {
+    "country": "Cayman Islands",
+    "region": "Caribbean",
+    "regions": [],
+    "lat": 19.5,
+    "lng": -80.5
+  },
+  {
+    "country": "Central African Republic",
+    "region": "Africa",
+    "regions": [
+      "edit"
+    ],
+    "lat": 7,
+    "lng": 21
+  },
+  {
+    "country": "Chad",
+    "region": "Africa",
+    "regions": [
+      "Borkou-Ennedi-Tibesti Region",
+      "Borkou Region",
+      "Ennedi Region",
+      "Tibesti Region",
+      "Kanem Region",
+      "Barh El Gazel",
+      "Ouadda\u00ef Region",
+      "Sila",
+      "ISO 3166-2:TD"
+    ],
+    "lat": 15,
+    "lng": 19
+  },
+  {
+    "country": "Chile",
+    "region": "South America",
+    "regions": [
+      "Province",
+      "President",
+      "Ministries",
+      "Senate",
+      "Chamber of Deputies",
+      "Supreme Court",
+      "Election Certification Tribunal",
+      "Environmental courts"
+    ],
+    "lat": -30,
+    "lng": -71
+  },
+  {
+    "country": "China",
+    "region": "Asia",
+    "regions": [
+      "North China",
+      "Tianjin",
+      "Hebei",
+      "Shanxi",
+      "Inner Mongolia",
+      "East China",
+      "Jiangsu",
+      "Zhejiang",
+      "Anhui",
+      "Fujian",
+      "Taiwan",
+      "Jiangxi",
+      "Shandong",
+      "Southwestern China",
+      "Sichuan",
+      "Guizhou",
+      "Yunnan",
+      "Tibet",
+      "South Central China",
+      "Hubei"
+    ],
+    "lat": 35,
+    "lng": 105
+  },
+  {
+    "country": "Cocos (Keeling) Islands",
+    "region": "Oceania",
+    "regions": [],
+    "lat": -12.5,
+    "lng": 96.83333333
+  },
+  {
+    "country": "Colombia",
+    "region": "South America",
+    "regions": [
+      "Andean",
+      "Caribbean",
+      "Pacific/Choc\u00f3",
+      "Orinoqu\u00eda",
+      "Amazon",
+      "Insular",
+      "Biodiversity",
+      "Natural hazards",
+      "Protected areas"
+    ],
+    "lat": 4,
+    "lng": -72
+  },
+  {
+    "country": "Comoros",
+    "region": "Africa",
+    "regions": [
+      "President",
+      "Human rights",
+      "Assembly of the Union",
+      "Supreme Court",
+      "Political parties"
+    ],
+    "lat": -12.16666666,
+    "lng": 44.25
+  },
+  {
+    "country": "Democratic Republic of the Congo",
+    "region": "Africa",
+    "regions": [
+      "edit"
+    ],
+    "lat": -1,
+    "lng": 15
+  },
+  {
+    "country": "Republic of the Congo",
+    "region": "Africa",
+    "regions": [
+      "edit"
+    ],
+    "lat": -1,
+    "lng": 15
+  },
+  {
+    "country": "Cook Islands",
+    "region": "Oceania",
+    "regions": [],
+    "lat": -21.23333333,
+    "lng": -159.76666666
+  },
+  {
+    "country": "Costa Rica",
+    "region": "Central America",
+    "regions": [
+      "Abortion law",
+      "LGBT rights",
+      "President",
+      "Vice Presidents",
+      "Legislative Assembly",
+      "Supreme Court of Justice",
+      "Provinces and comarcas",
+      "Cantons",
+      "Districts",
+      "Indigenous territories"
+    ],
+    "lat": 10,
+    "lng": -84
+  },
+  {
+    "country": "C\u00f4te d\u2019Ivoire",
+    "region": "Africa",
+    "regions": [
+      "edit"
+    ]
+  },
+  {
+    "country": "Croatia",
+    "region": "Europe",
+    "regions": [
+      "Banovina",
+      "Baranja",
+      "Croatian Littoral",
+      "Gorski kotar",
+      "Konavle",
+      "Kordun",
+      "Lika",
+      "Me\u0111imurje",
+      "Moslavina",
+      "Podravina",
+      "Podunavlje",
+      "Posavina",
+      "Prigorje",
+      "Syrmia",
+      "Turopolje",
+      "Hrvatsko Zagorje",
+      "Dalmatinska Zagora",
+      "Albania",
+      "Andorra",
+      "Armenia"
+    ],
+    "lat": 45.16666666,
+    "lng": 15.5
+  },
+  {
+    "country": "Cuba",
+    "region": "Caribbean",
+    "regions": [
+      "km2",
+      "Camag\u00fcey",
+      "Ciego de \u00c1vila",
+      "Cienfuegos",
+      "La Habana",
+      "Granma",
+      "Guant\u00e1namo",
+      "Holgu\u00edn",
+      "Isla de la Juventud",
+      "Artemisa",
+      "Las Tunas",
+      "Matanzas",
+      "Mayabeque",
+      "Pinar del R\u00edo",
+      "Sancti Sp\u00edritus",
+      "Santiago de Cuba",
+      "Villa Clara",
+      "Cuba"
+    ],
+    "lat": 21.5,
+    "lng": -80
+  },
+  {
+    "country": "Cura\u00e7ao",
+    "region": "Caribbean",
+    "regions": [
+      "Month",
+      "Record high \u00b0C",
+      "Mean daily maximum \u00b0C",
+      "Daily mean \u00b0C",
+      "Mean daily minimum \u00b0C",
+      "Record low \u00b0C",
+      "Average rainfall mm",
+      "Average rainy days",
+      "relative humidity",
+      "sunshine hours",
+      "possible sunshine",
+      "Age Group"
+    ],
+    "lat": 12.116667,
+    "lng": -68.933333
+  },
+  {
+    "country": "Cyprus",
+    "region": "Asia",
+    "regions": [
+      "District",
+      "Nicosia",
+      "Limassol",
+      "Larnaca",
+      "Paphos",
+      "Famagusta",
+      "Kyrenia"
+    ],
+    "lat": 35,
+    "lng": 33
+  },
+  {
+    "country": "Czech Republic",
+    "region": "Europe",
+    "regions": []
+  },
+  {
+    "country": "Denmark",
+    "region": "Europe",
+    "regions": [
+      "Region\u00a0Hovedstaden",
+      "Region\u00a0Midtjylland",
+      "Region\u00a0Nordjylland",
+      "Region\u00a0Sj\u00e6lland",
+      "Region\u00a0Syddanmark",
+      "Danmarkb"
+    ],
+    "lat": 56,
+    "lng": 10
+  },
+  {
+    "country": "Djibouti",
+    "region": "Africa",
+    "regions": [
+      "Djibouti Region",
+      "Ali Sabieh Region",
+      "Arta Region",
+      "Dikhil Region",
+      "Tadjourah Region",
+      "Obock Region"
+    ],
+    "lat": 11.5,
+    "lng": 43
+  },
+  {
+    "country": "Dominica",
+    "region": "Caribbean",
+    "regions": [
+      "Saint Andrew",
+      "Saint David",
+      "Saint George",
+      "Saint John",
+      "Saint Joseph",
+      "Saint Luke",
+      "Saint Mark",
+      "Saint Patrick",
+      "Saint Paul",
+      "Saint Peter"
+    ],
+    "lat": 15.41666666,
+    "lng": -61.33333333
+  },
+  {
+    "country": "Dominican Republic",
+    "region": "Caribbean",
+    "regions": [
+      "Geography of the Dominican Republic",
+      "Demographics of Dominican Republic",
+      "ISO 3166-2:DO",
+      "Oficina Nacional de Estad\u00edstica",
+      "Blog of the Dominican Republic"
+    ],
+    "lat": 19,
+    "lng": -70.66666666
+  },
+  {
+    "country": "East Timor(Timor-Leste)",
+    "region": "Asia",
+    "regions": [],
+    "lat": -8.83333333,
+    "lng": 125.91666666
+  },
+  {
+    "country": "Ecuador",
+    "region": "South America",
+    "regions": [
+      "Mestizo",
+      "Montubio",
+      "Indigenous",
+      "Black",
+      "White",
+      "Christianity",
+      "Catholic",
+      "no religion",
+      "Ecuadorian sucre"
+    ],
+    "lat": -2,
+    "lng": -77.5
+  },
+  {
+    "country": "Egypt",
+    "region": "Africa",
+    "regions": [
+      "Greater Cairo",
+      "Alexandria",
+      "Suez Canal",
+      "Delta",
+      "South Upper Egypt",
+      "North Upper Egypt",
+      "Central Upper Egypt",
+      "Egypt"
+    ],
+    "lat": 27,
+    "lng": 30
+  },
+  {
+    "country": "El Salvador",
+    "region": "Central America",
+    "regions": [
+      "Mestizo",
+      "White",
+      "Indigenous",
+      "Black",
+      "Christianity",
+      "Catholicism",
+      "Protestantism",
+      "Christian",
+      "no religion",
+      "other",
+      "United States dollar",
+      "Salvadoran col\u00f3n"
+    ],
+    "lat": 13.83333333,
+    "lng": -88.91666666
+  },
+  {
+    "country": "Equatorial Guinea",
+    "region": "Africa",
+    "regions": [
+      "Annob\u00f3n",
+      "Bioko Norte",
+      "Bioko Sur",
+      "Centro Sur",
+      "Ki\u00e9-Ntem",
+      "Litoral",
+      "Wele-Nzas",
+      "Djibloho"
+    ],
+    "lat": 2,
+    "lng": 10
+  },
+  {
+    "country": "Eritrea",
+    "region": "Africa",
+    "regions": [
+      "Maekel Region",
+      "Anseba Region",
+      "Gash-Barka Region",
+      "Debub Region",
+      "Northern Red Sea Region",
+      "Southern Red Sea Region"
+    ],
+    "lat": 15,
+    "lng": 39
+  },
+  {
+    "country": "Estonia",
+    "region": "Europe",
+    "regions": [
+      "Constitution",
+      "Declaration of Independence",
+      "Human rights",
+      "President",
+      "Prime Minister",
+      "Incumbent cabinet",
+      "Riigikogu"
+    ],
+    "lat": 59,
+    "lng": 26
+  },
+  {
+    "country": "Eswatini(Swaziland)",
+    "region": "Africa",
+    "regions": [],
+    "lat": -26.5,
+    "lng": 31.5
+  },
+  {
+    "country": "Ethiopia",
+    "region": "Africa",
+    "regions": [
+      "DeepL",
+      "copyright attribution",
+      "talk page",
+      "Wikipedia:Translation",
+      "Zones"
+    ],
+    "lat": 8,
+    "lng": 38
+  },
+  {
+    "country": "Falkland Islands",
+    "region": "South America",
+    "regions": [],
+    "lat": -51.75,
+    "lng": -59
+  },
+  {
+    "country": "Faroe Islands",
+    "region": "Europe",
+    "regions": [
+      "edit"
+    ],
+    "lat": 62,
+    "lng": -7
+  },
+  {
+    "country": "Fiji",
+    "region": "Oceania",
+    "regions": [
+      "High human development",
+      "Medium human development",
+      "Central",
+      "Eastern",
+      "Northern",
+      "Western",
+      "Bua",
+      "Cakaudrove",
+      "Kadavu",
+      "Lau",
+      "Lomaiviti",
+      "Macuata",
+      "Nadroga Navosa",
+      "Naitasiri",
+      "Namosi",
+      "Rewa",
+      "Serua",
+      "Tailevu",
+      "Rotuma"
+    ],
+    "lat": -18,
+    "lng": 175
+  },
+  {
+    "country": "Finland",
+    "region": "Europe",
+    "regions": [
+      "Regional council",
+      "Municipality",
+      "Constitution",
+      "Declaration of Independence",
+      "Human rights",
+      "Law enforcement",
+      "Military",
+      "President",
+      "Prime Minister",
+      "list",
+      "Parliament"
+    ],
+    "lat": 64,
+    "lng": 26
+  },
+  {
+    "country": "France",
+    "region": "Europe",
+    "regions": [
+      "Alsace",
+      "Aquitaine",
+      "Auvergne",
+      "Brittany",
+      "Burgundy",
+      "Centre-Val de Loire",
+      "Champagne-Ardenne",
+      "Corsica",
+      "Franche-Comt\u00e9",
+      "\u00cele-de-France",
+      "Languedoc-Roussillon",
+      "Limousin",
+      "Lorraine",
+      "Lower Normandy",
+      "Midi-Pyr\u00e9n\u00e9es",
+      "Nord-Pas-de-Calais",
+      "Pays de la Loire",
+      "Picardy",
+      "Poitou-Charentes",
+      "Provence-Alpes-C\u00f4te d'Azur"
+    ],
+    "lat": 46,
+    "lng": 2
+  },
+  {
+    "country": "French Guiana",
+    "region": "South America",
+    "regions": [
+      "Cayenne",
+      "Month",
+      "Record high \u00b0C",
+      "Mean daily maximum \u00b0C",
+      "Daily mean \u00b0C",
+      "Mean daily minimum \u00b0C",
+      "Record low \u00b0C",
+      "Average rainfall mm",
+      "Average rainy days",
+      "relative humidity",
+      "sunshine hours",
+      "Meteo France",
+      "Nominal GDP",
+      "GDP per capita",
+      "Metropolitan France",
+      "INSEE",
+      "Metropolitan area",
+      "Saint-Laurent-du-Maroni",
+      "Kourou",
+      "Commune"
+    ],
+    "lat": 4,
+    "lng": -53
+  },
+  {
+    "country": "French Polynesia",
+    "region": "Oceania",
+    "regions": [
+      "Windward Islands",
+      "Leeward Islands",
+      "Marquesas Islands",
+      "Austral Islands",
+      "Tuamotu-Gambier",
+      "French Polynesia",
+      "Fatu-Hiva",
+      "Hiva-Oa",
+      "Nuku-Hiva",
+      "Tahuata",
+      "Ua-Huka",
+      "Ua-Pou",
+      "Anaa",
+      "Arutua",
+      "Fakarava",
+      "Fangatau",
+      "Gambier",
+      "Hao",
+      "Hikueru",
+      "Makemo"
+    ],
+    "lat": -15,
+    "lng": -140
+  },
+  {
+    "country": "Gabon",
+    "region": "Africa",
+    "regions": [
+      "Human rights",
+      "President",
+      "Vice President of the Republic",
+      "Alexandre Barro Chambrier",
+      "Senate",
+      "National Assembly",
+      "Provinces",
+      "Departments",
+      "Cantons and communes",
+      "Political parties"
+    ],
+    "lat": -1,
+    "lng": 11.75
+  },
+  {
+    "country": "The Gambia",
+    "region": "Africa",
+    "regions": [
+      "Banjul",
+      "Central River",
+      "Lower River",
+      "North Bank",
+      "Upper River",
+      "West Coast"
+    ],
+    "lat": 13.46666666,
+    "lng": -16.56666666
+  },
+  {
+    "country": "Gaza Strip",
+    "region": "Asia",
+    "regions": []
+  },
+  {
+    "country": "Georgia",
+    "region": "Asia",
+    "regions": [],
+    "lat": 42,
+    "lng": 43.5
+  },
+  {
+    "country": "Germany",
+    "region": "Europe",
+    "regions": [
+      "Baden-W\u00fcrttemberg",
+      "Bavaria",
+      "Berlin",
+      "Brandenburg",
+      "Bremen",
+      "Hamburg",
+      "Hesse",
+      "Lower Saxony",
+      "Mecklenburg-Vorpommern",
+      "North Rhine-Westphalia",
+      "Rhineland-Palatinate",
+      "Saarland",
+      "Saxony",
+      "Saxony-Anhalt",
+      "Schleswig-Holstein",
+      "Thuringia"
+    ],
+    "lat": 51,
+    "lng": 9
+  },
+  {
+    "country": "Ghana",
+    "region": "Africa",
+    "regions": [
+      "Ahafo",
+      "Ashanti",
+      "Bono",
+      "Bono East",
+      "Central",
+      "Eastern",
+      "Greater Accra",
+      "North East Region",
+      "Northern",
+      "Oti",
+      "Savannah",
+      "Upper East",
+      "Upper West",
+      "Volta",
+      "Western",
+      "Western North",
+      "Brong-Ahafo",
+      "North East",
+      "Eastern Province",
+      "Trans-Volta Togoland"
+    ],
+    "lat": 8,
+    "lng": -2
+  },
+  {
+    "country": "Gibraltar",
+    "region": "Europe",
+    "regions": [],
+    "lat": 36.13333333,
+    "lng": -5.35
+  },
+  {
+    "country": "Greece",
+    "region": "Europe",
+    "regions": [
+      "Greece",
+      "Regional units",
+      "Constitutional history",
+      "Human rights",
+      "Head of state",
+      "President of the Republic"
+    ],
+    "lat": 39,
+    "lng": 22
+  },
+  {
+    "country": "Greenland",
+    "region": "North America",
+    "regions": [
+      "Avannaata",
+      "Kujalleq",
+      "Qeqertalik",
+      "Qeqqata",
+      "Sermersooq"
+    ],
+    "lat": 72,
+    "lng": -40
+  },
+  {
+    "country": "Grenada",
+    "region": "Caribbean",
+    "regions": [
+      "Parish",
+      "Saint Andrew",
+      "Saint David",
+      "Saint George",
+      "Saint John",
+      "Saint Mark",
+      "Saint Patrick",
+      "Carriacou and Petite Martinique",
+      "Carriacou",
+      "Petite Martinique",
+      "Grenada"
+    ],
+    "lat": 12.11666666,
+    "lng": -61.66666666
+  },
+  {
+    "country": "Guadeloupe",
+    "region": "Caribbean",
+    "regions": [
+      "Climate data for Guadeloupe",
+      "Month",
+      "Mean daily maximum \u00b0C",
+      "Daily mean \u00b0C",
+      "Mean daily minimum \u00b0C",
+      "precipitation",
+      "Average precipitation days",
+      "sunshine hours",
+      "Hong Kong Observatory",
+      "Urban unit",
+      "Pointe-\u00e0-Pitre",
+      "Basse-Terre",
+      "Capesterre-Belle-Eau",
+      "Les Abymes",
+      "Anse-Bertrand",
+      "Baie-Mahault",
+      "Baillif",
+      "Bouillante",
+      "Capesterre-de-Marie-Galante",
+      "Deshaies"
+    ],
+    "lat": 16.25,
+    "lng": -61.583333
+  },
+  {
+    "country": "Guam",
+    "region": "Oceania",
+    "regions": [
+      "sq mi",
+      "Agana Heights",
+      "Asan-Maina",
+      "Barrigada",
+      "Chalan Pago-Ordot",
+      "Dededo",
+      "H\u00e5gat",
+      "Hag\u00e5t\u00f1a",
+      "Hum\u00e5tak",
+      "Inal\u00e5han",
+      "Malesso'",
+      "Mangilao",
+      "Mongmong-Toto-Maite",
+      "Piti",
+      "S\u00e5nta Rita-Sumai",
+      "Sinajana",
+      "Talo'fo'fo",
+      "Tamuning",
+      "Yigo",
+      "Yona"
+    ],
+    "lat": 13.46666666,
+    "lng": 144.78333333
+  },
+  {
+    "country": "Guatemala",
+    "region": "Central America",
+    "regions": [
+      "Guatemala",
+      "Alta Verapaz",
+      "Baja Verapaz",
+      "Chiquimula",
+      "El Progreso",
+      "Izabal",
+      "Zacapa",
+      "Jutiapa",
+      "Jalapa",
+      "Santa Rosa",
+      "Chimaltenango",
+      "Sacatep\u00e9quez",
+      "Escuintla"
+    ],
+    "lat": 15.5,
+    "lng": -90.25
+  },
+  {
+    "country": "Guernsey",
+    "region": "Europe",
+    "regions": [
+      "Economic Development",
+      "Education, Sport & Culture",
+      "Employment & Social Security",
+      "Environment & Infrastructure",
+      "Health & Social Care",
+      "Home Affairs",
+      "Housing"
+    ],
+    "lat": 49.46666666,
+    "lng": -2.58333333
+  },
+  {
+    "country": "Guinea",
+    "region": "Africa",
+    "regions": [
+      "Bok\u00e9",
+      "Conakry",
+      "Faranah",
+      "Kankan",
+      "Kindia",
+      "Lab\u00e9",
+      "Mamou",
+      "Nz\u00e9r\u00e9kor\u00e9"
+    ],
+    "lat": 11,
+    "lng": -10
+  },
+  {
+    "country": "Guinea-Bissau",
+    "region": "Africa",
+    "regions": [
+      "km2",
+      "Bafat\u00e1",
+      "Biombo",
+      "Bissau",
+      "Bolama",
+      "Cacheu",
+      "Gab\u00fa",
+      "Oio",
+      "Quinara",
+      "Tombali"
+    ],
+    "lat": 12,
+    "lng": -15
+  },
+  {
+    "country": "Guyana",
+    "region": "South America",
+    "regions": [
+      "East Berbice-Corentyne",
+      "East Demerara-West Coast Berbice",
+      "Mazaruni Potaro",
+      "North West",
+      "Rupununi",
+      "West Demerara-Essequibo Coast",
+      "East Berbice",
+      "Essequibo",
+      "Essequibo Islands",
+      "Mazaruni-Potaro",
+      "Demerara",
+      "Berbice",
+      "Epira Amerindian District",
+      "Epira Amerindian Reservation",
+      "Kanuku Amerindian District",
+      "Karasabai Amerindian District",
+      "Orealla Amerindian District",
+      "Orealla Amerindian Reservation",
+      "Pomeroon-Ituribisi Amerindian District",
+      "Pomeroon-Ituribisi Indian Reservation"
+    ],
+    "lat": 5,
+    "lng": -59
+  },
+  {
+    "country": "Haiti",
+    "region": "Caribbean",
+    "regions": [
+      "departments",
+      "arrondissements",
+      "communes",
+      "quarters",
+      "communal sections",
+      "Desdunes",
+      "Dessalines",
+      "Grande Saline",
+      "Petite-Rivi\u00e8re-de-l'Artibonite",
+      "Ennery",
+      "L'Est\u00e8re",
+      "Gona\u00efves"
+    ],
+    "lat": 19,
+    "lng": -72.41666666
+  },
+  {
+    "country": "Honduras",
+    "region": "Central America",
+    "regions": [
+      "Mestizo",
+      "White",
+      "Indigenous",
+      "Black",
+      "Honduran",
+      "Catracho",
+      "European",
+      "Federal Republic of Central America",
+      "Atl\u00e1ntida",
+      "Choluteca",
+      "Col\u00f3n",
+      "Comayagua",
+      "Cop\u00e1n",
+      "Cort\u00e9s",
+      "El Para\u00edso",
+      "Francisco Moraz\u00e1n",
+      "Gracias a Dios",
+      "Intibuc\u00e1",
+      "Bay Islands",
+      "La Paz"
+    ],
+    "lat": 15,
+    "lng": -86.5
+  },
+  {
+    "country": "Hong Kong",
+    "region": "Asia",
+    "regions": [
+      "No.",
+      "New Territories",
+      "Kowloon",
+      "Hong Kong Island",
+      "Land total",
+      "Marine",
+      "Districts",
+      "Kwai Tsing",
+      "North",
+      "Tuen Mun",
+      "Yuen Long",
+      "Sham Shui Po",
+      "Kwun Tong",
+      "Wong Tai Sin",
+      "Tai Po",
+      "Sha Tin",
+      "Islands",
+      "Sai Kung",
+      "Yau Tsim Mong",
+      "Tsuen Wan"
+    ],
+    "lat": 22.267,
+    "lng": 114.188
+  },
+  {
+    "country": "Hungary",
+    "region": "Europe",
+    "regions": [
+      "Name of the region",
+      "Northern Hungary",
+      "Northern Great Plain",
+      "Southern Great Plain",
+      "Budapest",
+      "Central Hungary",
+      "Central Transdanubia",
+      "Western Transdanubia",
+      "Southern Transdanubia"
+    ],
+    "lat": 47,
+    "lng": 20
+  },
+  {
+    "country": "Iceland",
+    "region": "Europe",
+    "regions": [
+      "Constitution of Iceland",
+      "Law",
+      "Taxation",
+      "Constitutional reform",
+      "Althing",
+      "Speaker"
+    ],
+    "lat": 65,
+    "lng": -18
+  },
+  {
+    "country": "India",
+    "region": "Asia",
+    "regions": [
+      "South Culture Zone",
+      "South Central Culture Zone",
+      "North Culture Zone",
+      "North Central Culture Zone",
+      "East Culture Zone",
+      "North East Culture Zone",
+      "West Culture Zone",
+      "Andhra Pradesh",
+      "Arunachal Pradesh",
+      "Assam",
+      "Bihar",
+      "Chhattisgarh",
+      "Goa",
+      "Gujarat",
+      "Haryana",
+      "Himachal Pradesh",
+      "Jharkhand",
+      "Karnataka",
+      "Kerala",
+      "Madhya Pradesh"
+    ],
+    "lat": 20,
+    "lng": 77
+  },
+  {
+    "country": "Indonesia",
+    "region": "Asia",
+    "regions": [
+      "ID-SM",
+      "ID-JW",
+      "ID-KA",
+      "ID-NU",
+      "ID-SL",
+      "ID-ML",
+      "ID-PP",
+      "Main Development Region A",
+      "Development Region II",
+      "Main Development Region B",
+      "Development Region IV",
+      "Development Region V",
+      "Main Development Region C",
+      "Development Region VII",
+      "Main Development Region D",
+      "Development Region IX",
+      "Development Region X"
+    ],
+    "lat": -5,
+    "lng": 120
+  },
+  {
+    "country": "Iran",
+    "region": "Asia",
+    "regions": [
+      "Alamut",
+      "Central Iran",
+      "Baluchistan",
+      "Caspian Iran",
+      "Eastern Iran",
+      "Iranian Azerbaijan",
+      "Iranian Kurdistan",
+      "Khorasan",
+      "Quhistan",
+      "Southern Iran",
+      "Carmania",
+      "Western Iran",
+      "Geographic history of Iran"
+    ],
+    "lat": 32,
+    "lng": 53
+  },
+  {
+    "country": "Iraq",
+    "region": "Asia",
+    "regions": [
+      "Governorate",
+      "Al-Anbar",
+      "Babil",
+      "Baghdad",
+      "Basra",
+      "Dhi Qar",
+      "Al-Qadisiyyah",
+      "Diyala",
+      "Duhok",
+      "Erbil",
+      "Karbala",
+      "Kirkuk",
+      "Maysan",
+      "Muthanna",
+      "Najaf",
+      "Nineveh",
+      "Salah Al-Din",
+      "Sulaymaniyah",
+      "Wasit",
+      "Halabja"
+    ],
+    "lat": 33,
+    "lng": 44
+  },
+  {
+    "country": "Ireland",
+    "region": "Europe",
+    "regions": [
+      "Provinces of Ireland",
+      "Counties of Ireland",
+      "NUTS statistical regions of Ireland",
+      "Counties of Northern Ireland",
+      "Geography of Ireland"
+    ],
+    "lat": 53,
+    "lng": -8
+  },
+  {
+    "country": "Isle of Man",
+    "region": "Europe",
+    "regions": [],
+    "lat": 54.25,
+    "lng": -4.5
+  },
+  {
+    "country": "Israel",
+    "region": "Asia",
+    "regions": [
+      "City council",
+      "Judean Mountains",
+      "Judean Foothills",
+      "Safed",
+      "Hula Valley",
+      "Eastern Upper Galilee",
+      "Hazor Region",
+      "Central Lower Galilee",
+      "Kinneret Subdistrict",
+      "Kinerot",
+      "Eastern Lower Galilee",
+      "Yizre'el Subdistrict",
+      "Bet She\u2019an Valley",
+      "Harod Valley",
+      "Kokhav Plateau",
+      "Yizre\u2019el Valley",
+      "Yoqne'am Region",
+      "Menashe Plateau",
+      "Nazareth-Tir'an Mountains",
+      "Akko Subdistrict"
+    ],
+    "lat": 31.47,
+    "lng": 35.13
+  },
+  {
+    "country": "Italy",
+    "region": "Europe",
+    "regions": [
+      "South Tyrol",
+      "Abruzzo",
+      "Aosta Valley",
+      "Apulia",
+      "Basilicata",
+      "Calabria",
+      "Campania",
+      "Emilia-Romagna"
+    ],
+    "lat": 42.83333333,
+    "lng": 12.83333333
+  },
+  {
+    "country": "Jamaica",
+    "region": "Caribbean",
+    "regions": [
+      "Parish",
+      "Cornwall County",
+      "Middlesex County",
+      "Surrey County",
+      "District",
+      "Jamaica"
+    ],
+    "lat": 18.25,
+    "lng": -77.5
+  },
+  {
+    "country": "Japan",
+    "region": "Asia",
+    "regions": [
+      "Hokkaid\u014d",
+      "T\u014dhoku",
+      "Kant\u014d",
+      "Ch\u016bbu",
+      "Kansai",
+      "Ch\u016bgoku",
+      "Shikoku",
+      "Ky\u016bsh\u016b",
+      "Kant\u014d-K\u014dshin'etsu",
+      "T\u014dkai-Hokuriku",
+      "Kinki",
+      "Hokuriku",
+      "Kant\u014d-K\u014dshin",
+      "T\u014dkai",
+      "Northern Ky\u016bsh\u016b",
+      "Southern Ky\u016bsh\u016b-Amami",
+      "Okinawa",
+      "Constituency",
+      "Northern Kant\u014d",
+      "Tokyo"
+    ],
+    "lat": 36,
+    "lng": 138
+  },
+  {
+    "country": "Jersey",
+    "region": "Europe",
+    "regions": [
+      "St Ouen",
+      "St Peter",
+      "Trinity",
+      "St Martin"
+    ],
+    "lat": 49.25,
+    "lng": -2.16666666
+  },
+  {
+    "country": "Jordan",
+    "region": "Asia",
+    "regions": [
+      "Governorates of Jordan",
+      "Nahias of Jordan",
+      "Kazas of Jordan",
+      "amanah",
+      "Afghanistan",
+      "Armenia",
+      "Azerbaijan",
+      "Bahrain",
+      "Bangladesh",
+      "Bhutan",
+      "Brunei",
+      "Cambodia",
+      "China",
+      "Cyprus",
+      "Egypt",
+      "Georgia",
+      "India",
+      "Indonesia",
+      "Iran",
+      "Iraq"
+    ],
+    "lat": 31,
+    "lng": 36
+  },
+  {
+    "country": "Kazakhstan",
+    "region": "Asia",
+    "regions": [
+      "Entity",
+      "Abai Region",
+      "Aqmola Region",
+      "Aqtobe Region",
+      "Almaty",
+      "Almaty Region",
+      "Astana",
+      "Atyrau Region",
+      "Baikonur",
+      "East Kazakhstan Region",
+      "Jambyl Region",
+      "Jetisu Region",
+      "Karaganda Region",
+      "Kostanay Region",
+      "Kyzylorda Region",
+      "Mangystau Region",
+      "North Kazakhstan Region",
+      "Pavlodar Region",
+      "Shymkent",
+      "Turkistan Region"
+    ],
+    "lat": 48,
+    "lng": 68
+  },
+  {
+    "country": "Kenya",
+    "region": "Africa",
+    "regions": [
+      "Coast",
+      "North-Eastern",
+      "Eastern",
+      "Central",
+      "Rift Valley",
+      "Western",
+      "Nyanza",
+      "Nairobi"
+    ],
+    "lat": 1,
+    "lng": 38
+  },
+  {
+    "country": "Kiribati",
+    "region": "Oceania",
+    "regions": [
+      "Human rights",
+      "President",
+      "Vice-President",
+      "Cabinet",
+      "House of Assembly",
+      "Court of Appeal",
+      "Bill Hastings",
+      "elections",
+      "Political parties"
+    ],
+    "lat": 1.41666666,
+    "lng": 173
+  },
+  {
+    "country": "North Korea",
+    "region": "Asia",
+    "regions": [
+      "Haeso",
+      "Kwanso",
+      "Kwanbuk",
+      "Gwandong",
+      "Gyeonggi",
+      "Hoseo",
+      "Honam",
+      "Yeongnam",
+      "Kwannam",
+      "Yeongseo",
+      "Yeongdong",
+      "Giho",
+      "Jeju"
+    ],
+    "lat": 40,
+    "lng": 127
+  },
+  {
+    "country": "South Korea",
+    "region": "Asia",
+    "regions": [
+      "Haeso",
+      "Kwanso",
+      "Kwanbuk",
+      "Gwandong",
+      "Gyeonggi",
+      "Hoseo",
+      "Honam",
+      "Yeongnam",
+      "Kwannam",
+      "Yeongseo",
+      "Yeongdong",
+      "Giho",
+      "Jeju"
+    ],
+    "lat": 37,
+    "lng": 127.5
+  },
+  {
+    "country": "Kosovo",
+    "region": "Europe",
+    "regions": [
+      "Type",
+      "Districts of Kosovo",
+      "Municipalities of Kosovo"
+    ],
+    "lat": 42.666667,
+    "lng": 21.166667
+  },
+  {
+    "country": "Kuwait",
+    "region": "Asia",
+    "regions": [
+      "Arab",
+      "South Asian",
+      "African",
+      "other",
+      "Islam",
+      "Christianity",
+      "elective succession",
+      "Emirate",
+      "Al Asimah Governorate",
+      "Hawalli Governorate",
+      "Farwaniya Governorate",
+      "Mubarak Al-Kabeer Governorate",
+      "Ahmadi Governorate",
+      "Jahra Governorate",
+      "Kuwait portal"
+    ],
+    "lat": 29.5,
+    "lng": 45.75
+  },
+  {
+    "country": "Kyrgyzstan",
+    "region": "Asia",
+    "regions": [
+      "District",
+      "President",
+      "Chairman of the Cabinet of Ministers",
+      "Supreme Council",
+      "Political parties",
+      "Politicians"
+    ],
+    "lat": 41,
+    "lng": 75
+  },
+  {
+    "country": "Laos",
+    "region": "Asia",
+    "regions": [
+      "District",
+      "Province",
+      "Prefecture",
+      "Village"
+    ],
+    "lat": 18,
+    "lng": 105
+  },
+  {
+    "country": "Latvia",
+    "region": "Europe",
+    "regions": [
+      "Courland",
+      "Semigallia",
+      "Selonia",
+      "Vidzeme",
+      "Latgallia",
+      "Planning regions of Latvia",
+      "Statistical regions of Latvia"
+    ],
+    "lat": 57,
+    "lng": 25
+  },
+  {
+    "country": "Lebanon",
+    "region": "Asia",
+    "regions": [
+      "Akkar",
+      "Baalbek-Hermel",
+      "Beirut",
+      "Beqaa",
+      "Keserwan-Jbeil",
+      "Mount Lebanon",
+      "Nabatieh",
+      "North",
+      "South"
+    ],
+    "lat": 33.83333333,
+    "lng": 35.83333333
+  },
+  {
+    "country": "Lesotho",
+    "region": "Africa",
+    "regions": [
+      "Sesotho",
+      "English",
+      "IsiXhosa",
+      "SiPhuthi",
+      "Basotho",
+      "Christianity",
+      "traditional faiths",
+      "no religion",
+      "Mosotho",
+      "Berea",
+      "Butha-Buthe",
+      "Leribe",
+      "Mafeteng",
+      "Maseru",
+      "Mohale's Hoek",
+      "Mokhotlong",
+      "Qacha's Nek",
+      "Quthing",
+      "Thaba-Tseka"
+    ],
+    "lat": -29.5,
+    "lng": 28.5
+  },
+  {
+    "country": "Liberia",
+    "region": "Africa",
+    "regions": [
+      "Map #",
+      "President",
+      "Vice President",
+      "Cabinet",
+      "Senate",
+      "House of Representatives",
+      "Supreme Court",
+      "Human rights"
+    ],
+    "lat": 6.5,
+    "lng": -9.5
+  },
+  {
+    "country": "Libya",
+    "region": "Africa",
+    "regions": [
+      "History of Libya as Italian colony",
+      "Districts of Libya",
+      "Governorates of Libya",
+      "Cyrenaica",
+      "Fezzan",
+      "Tripolitania",
+      "Provinces",
+      "Governorates",
+      "Districts",
+      "Baladiyat"
+    ],
+    "lat": 25,
+    "lng": 17
+  },
+  {
+    "country": "Liechtenstein",
+    "region": "Europe",
+    "regions": [
+      "Electoral District of Unterland",
+      "Electoral District of Oberland",
+      "Liechtenstein",
+      "Village",
+      "list",
+      "Regent",
+      "Princely family",
+      "Succession",
+      "Prime Minister"
+    ],
+    "lat": 47.26666666,
+    "lng": 9.53333333
+  },
+  {
+    "country": "Lithuania",
+    "region": "Europe",
+    "regions": [
+      "Auk\u0161taitija",
+      "Samogitia",
+      "Dz\u016bkija",
+      "Sudovia",
+      "Lithuania Minor"
+    ],
+    "lat": 56,
+    "lng": 24
+  },
+  {
+    "country": "Luxembourg",
+    "region": "Europe",
+    "regions": [
+      "Law",
+      "list",
+      "Heir apparent",
+      "Prime Minister",
+      "Deputy Prime Minister",
+      "Chamber of Deputies",
+      "Council of State",
+      "Chamber circonscriptions",
+      "next",
+      "Political parties"
+    ],
+    "lat": 49.75,
+    "lng": 6.16666666
+  },
+  {
+    "country": "Macau",
+    "region": "Asia",
+    "regions": [
+      "Parish / Area",
+      "Parish",
+      "Nossa Senhora de F\u00e1tima",
+      "Santo Ant\u00f3nio",
+      "S\u00e3o L\u00e1zaro",
+      "S\u00e3o Louren\u00e7o",
+      "Nossa Senhora do Carmo",
+      "S\u00e3o Francisco Xavier",
+      "Other area",
+      "Cotai",
+      "Novos Aterros Urbanos de Macau Zone A",
+      "Hong Kong\u2013Zhuhai\u2013Macau Bridge",
+      "Novos Aterros Urbanos de Macau Zone C",
+      "Universidade de Macau",
+      "Total land area",
+      "Total Macau SAR"
+    ],
+    "lat": 22.16666666,
+    "lng": 113.55
+  },
+  {
+    "country": "Madagascar",
+    "region": "Africa",
+    "regions": [
+      "President",
+      "Prime Minister",
+      "Senate",
+      "National Assembly",
+      "Provinces",
+      "Regions",
+      "Districts",
+      "Communes",
+      "Villages",
+      "Sub-Villages",
+      "Political parties"
+    ],
+    "lat": -20,
+    "lng": 47
+  },
+  {
+    "country": "Malawi",
+    "region": "Africa",
+    "regions": [
+      "District",
+      "Human rights",
+      "President",
+      "Vice-President",
+      "Cabinet",
+      "National Assembly"
+    ],
+    "lat": -13.5,
+    "lng": 34
+  },
+  {
+    "country": "Malaysia",
+    "region": "Asia",
+    "regions": [
+      "Johor",
+      "Kedah",
+      "Kelantan",
+      "Malacca",
+      "Negeri Sembilan",
+      "Pahang",
+      "Penang",
+      "Perak",
+      "Perlis",
+      "Sabah",
+      "Sarawak",
+      "Selangor",
+      "Terengganu"
+    ],
+    "lat": 2.5,
+    "lng": 112.5
+  },
+  {
+    "country": "Maldives",
+    "region": "Asia",
+    "regions": [
+      "MV-07",
+      "MV-24",
+      "MV-25",
+      "MV-13",
+      "MV-20",
+      "MV-03",
+      "MV-26",
+      "MV-02",
+      "MV-00",
+      "MV-04",
+      "MV-12",
+      "MV-14",
+      "MV-17",
+      "MV-08",
+      "MV-05",
+      "MV-27",
+      "MV-MLE",
+      "MV-29",
+      "MV-01",
+      "MV-23"
+    ],
+    "lat": 3.25,
+    "lng": 73
+  },
+  {
+    "country": "Mali",
+    "region": "Africa",
+    "regions": [
+      "Bamako",
+      "Kayes",
+      "Koulikoro",
+      "Sikasso",
+      "S\u00e9gou",
+      "Mopti",
+      "Tombouctou",
+      "Gao",
+      "Kidal",
+      "Taoud\u00e9nit",
+      "M\u00e9naka",
+      "Bougouni",
+      "Dioila",
+      "Nioro",
+      "Koutiala",
+      "Kita",
+      "Nara",
+      "Bandiagara",
+      "San",
+      "Douentza"
+    ],
+    "lat": 17,
+    "lng": -4
+  },
+  {
+    "country": "Malta",
+    "region": "Europe",
+    "regions": [
+      "Malta Majjistral",
+      "Malta Xlokk",
+      "NUTS \u2013 Statistical Regions",
+      "NUTS 1",
+      "NUTS 2",
+      "NUTS 3",
+      "MT002",
+      "LAU \u2013 Local Administrative Units",
+      "LAU 1",
+      "Southern Harbour District",
+      "South Eastern District",
+      "Western District",
+      "Northern District",
+      "Gozo and Comino District",
+      "LAU 2"
+    ],
+    "lat": 35.83333333,
+    "lng": 14.58333333
+  },
+  {
+    "country": "Marshall Islands",
+    "region": "Oceania",
+    "regions": [],
+    "lat": 9,
+    "lng": 168
+  },
+  {
+    "country": "Martinique",
+    "region": "Caribbean",
+    "regions": [
+      "L'Ajoupa-Bouillon",
+      "Les Anses-d'Arlet",
+      "Basse-Pointe",
+      "Bellefontaine",
+      "Le Carbet",
+      "Case-Pilote",
+      "Le Diamant",
+      "Ducos",
+      "Fonds-Saint-Denis",
+      "Fort-de-France",
+      "Le Fran\u00e7ois",
+      "Grand'Rivi\u00e8re",
+      "Gros-Morne",
+      "Le Lamentin",
+      "Le Lorrain",
+      "Macouba",
+      "Le Marigot",
+      "Le Marin",
+      "Le Morne-Rouge",
+      "Le Morne-Vert"
+    ],
+    "lat": 14.666667,
+    "lng": -61
+  },
+  {
+    "country": "Mauritania",
+    "region": "Africa",
+    "regions": [
+      "Nouakchott-Ouest",
+      "Nouakchott-Sud",
+      "Human rights",
+      "President",
+      "Prime Minister",
+      "National Assembly",
+      "Regions",
+      "Departments",
+      "Communes",
+      "Next",
+      "Political parties",
+      "Electoral districts"
+    ],
+    "lat": 20,
+    "lng": -12
+  },
+  {
+    "country": "Mauritius",
+    "region": "Africa",
+    "regions": [
+      "Districts",
+      "Flacq",
+      "Grand Port",
+      "Moka",
+      "Pamplemousses",
+      "Plaines Wilhems",
+      "Port Louis",
+      "Rivi\u00e8re du Rempart",
+      "Rivi\u00e8re Noire",
+      "Savanne",
+      "Rodrigues"
+    ],
+    "lat": -20.28333333,
+    "lng": 57.55
+  },
+  {
+    "country": "Mayotte",
+    "region": "Africa",
+    "regions": [
+      "Nominal GDP",
+      "GDP per capita",
+      "Metropolitan France",
+      "R\u00e9union",
+      "Eurostat"
+    ],
+    "lat": -12.83333333,
+    "lng": 45.16666666
+  },
+  {
+    "country": "Mexico",
+    "region": "North America",
+    "regions": [
+      "Aguascalientes",
+      "Baja California",
+      "Baja California Sur",
+      "Campeche",
+      "Chiapas",
+      "Chihuahua",
+      "Coahuila",
+      "Colima",
+      "Mexico City",
+      "Durango",
+      "Guanajuato",
+      "Guerrero",
+      "Hidalgo",
+      "Jalisco",
+      "M\u00e9xico",
+      "Michoac\u00e1n",
+      "Morelos",
+      "Nayarit",
+      "Nuevo Le\u00f3n",
+      "Oaxaca"
+    ],
+    "lat": 23,
+    "lng": -102
+  },
+  {
+    "country": "Micronesia",
+    "region": "Oceania",
+    "regions": [
+      "Ettal",
+      "Fananu",
+      "Fanapanges",
+      "Fefen",
+      "Fono",
+      "Houk",
+      "Kutu",
+      "Losap",
+      "Lukunoch",
+      "Makur",
+      "Moch",
+      "Murilo",
+      "Namoluk",
+      "Nema",
+      "Nomwin",
+      "Oneop",
+      "Onou",
+      "Onoun",
+      "Paata",
+      "Parem"
+    ],
+    "lat": 6.91666666,
+    "lng": 158.25
+  },
+  {
+    "country": "Moldova",
+    "region": "Europe",
+    "regions": [
+      "Anenii Noi",
+      "Basarabeasca",
+      "Briceni",
+      "Cahul",
+      "Cantemir",
+      "C\u0103l\u0103ra\u0219i",
+      "C\u0103u\u0219eni",
+      "Cimi\u0219lia",
+      "Criuleni",
+      "Dondu\u0219eni",
+      "Drochia",
+      "Dub\u0103sari",
+      "Edine\u021b",
+      "F\u0103le\u0219ti",
+      "Flore\u0219ti",
+      "Glodeni",
+      "H\u00eence\u0219ti",
+      "Ialoveni",
+      "Leova",
+      "Nisporeni"
+    ],
+    "lat": 47,
+    "lng": 29
+  },
+  {
+    "country": "Monaco",
+    "region": "Europe",
+    "regions": [
+      "Wards",
+      "Reserved Sectors",
+      "Monaco-Ville",
+      "Ravin de Sainte-D\u00e9vote",
+      "Monte-Carlo",
+      "Fontvieille",
+      "La Condamine",
+      "Larvotto",
+      "Jardin Exotique",
+      "La Rousse",
+      "Les Moneghetti",
+      "\"Chapitre\u00a01\u00a0\u2013 Territoire et Environnement\"",
+      "Climate data for Monaco",
+      "Month",
+      "Record high \u00b0C",
+      "Mean daily maximum \u00b0C",
+      "Daily mean \u00b0C",
+      "Mean daily minimum \u00b0C",
+      "Record low \u00b0C",
+      "precipitation"
+    ],
+    "lat": 43.73333333,
+    "lng": 7.4
+  },
+  {
+    "country": "Mongolia",
+    "region": "Asia",
+    "regions": [
+      "Arkhangai",
+      "Bayankhongor",
+      "Bayan-\u00d6lgii",
+      "Bulgan",
+      "Darkhan-Uul",
+      "Dornod",
+      "Dornogovi",
+      "Dundgobi",
+      "Govi-Altai",
+      "Govis\u00fcmber",
+      "Khentii",
+      "Khovd",
+      "Kh\u00f6vsg\u00f6l",
+      "Orkhon",
+      "\u00d6mn\u00f6govi",
+      "\u00d6v\u00f6rkhangai",
+      "Selenge",
+      "S\u00fckhbaatar",
+      "T\u00f6v",
+      "Uvs"
+    ],
+    "lat": 46,
+    "lng": 105
+  },
+  {
+    "country": "Montenegro",
+    "region": "Europe",
+    "regions": [
+      "Central region",
+      "Coastal Region",
+      "Northern Region",
+      "Municipality",
+      "km2",
+      "Cetinje",
+      "Danilovgrad",
+      "Nik\u0161i\u0107",
+      "Podgorica",
+      "Tuzi",
+      "Zeta",
+      "Bar",
+      "Budva",
+      "Herceg Novi",
+      "Kotor",
+      "Tivat",
+      "Ulcinj",
+      "Andrijevica",
+      "Berane",
+      "Bijelo Polje"
+    ],
+    "lat": 42.5,
+    "lng": 19.3
+  },
+  {
+    "country": "Montserrat",
+    "region": "Caribbean",
+    "regions": [
+      "Climate data for Plymouth",
+      "Month",
+      "Record high \u00b0C",
+      "Mean daily maximum \u00b0C",
+      "Mean daily minimum \u00b0C",
+      "Record low \u00b0C",
+      "precipitation"
+    ],
+    "lat": 16.75,
+    "lng": -62.2
+  },
+  {
+    "country": "Morocco",
+    "region": "Africa",
+    "regions": [
+      "Arabic",
+      "Regional council",
+      "Provinces and prefectures",
+      "ISO 3166-2:EH",
+      "ISO 3166-2:MA"
+    ],
+    "lat": 32,
+    "lng": -5
+  },
+  {
+    "country": "Mozambique",
+    "region": "Africa",
+    "regions": [
+      "District",
+      "Human rights",
+      "President",
+      "Prime Minister",
+      "Assembly of the Republic"
+    ],
+    "lat": -18.25,
+    "lng": 35
+  },
+  {
+    "country": "Myanmar(Burma)",
+    "region": "Asia",
+    "regions": [],
+    "lat": 22,
+    "lng": 98
+  },
+  {
+    "country": "Namibia",
+    "region": "Africa",
+    "regions": [
+      "Erongo",
+      "Hardap",
+      "Kavango East",
+      "Kavango West",
+      "Khomas",
+      "Kunene",
+      "Ohangwena",
+      "Omaheke",
+      "Omusati",
+      "Oshana",
+      "Oshikoto",
+      "Otjozondjupa",
+      "Zambezi",
+      "\u01c1Karas"
+    ],
+    "lat": -22,
+    "lng": 17
+  },
+  {
+    "country": "Nauru",
+    "region": "Oceania",
+    "regions": [
+      "Nauruan",
+      "English",
+      "Index of Nauru-related articles",
+      "Outline of Nauru"
+    ],
+    "lat": -0.53333333,
+    "lng": 166.91666666
+  },
+  {
+    "country": "Nepal",
+    "region": "Asia",
+    "regions": [
+      "Zones",
+      "Fundamental Rights and Duties",
+      "Human rights",
+      "LGBT rights",
+      "President",
+      "Vice President",
+      "Prime Minister",
+      "Council of Ministers",
+      "Civil Services",
+      "Cabinet Secretary"
+    ],
+    "lat": 28,
+    "lng": 84
+  },
+  {
+    "country": "Netherlands",
+    "region": "Europe",
+    "regions": [
+      "km2",
+      "Special Municipality",
+      "Bonaire",
+      "Sint Eustatius",
+      "Saba",
+      "Ems",
+      "IJssel",
+      "Rhine",
+      "Amstel",
+      "Texel",
+      "Delft",
+      "Dommel",
+      "Scheldt",
+      "Zuiderzee",
+      "Department of the Mouths of the Meuse",
+      "Department of the Mouths of the Scheldt",
+      "Department of the Two Nethes",
+      "Department of the Mouths of the Rhine",
+      "Department of the Upper IJssel",
+      "Department of the Mouths of the IJssel"
+    ],
+    "lat": 52.5,
+    "lng": 5.75
+  },
+  {
+    "country": "New Caledonia",
+    "region": "Oceania",
+    "regions": [
+      "North Province",
+      "Loyalty Islands Province",
+      "part of both provinces",
+      "provincial capital",
+      "capital of New Caledonia",
+      "No. on Map"
+    ],
+    "lat": -21.5,
+    "lng": 165.5
+  },
+  {
+    "country": "New Zealand",
+    "region": "Oceania",
+    "regions": [
+      "km2",
+      "Northland",
+      "Waikato",
+      "Bay of Plenty",
+      "Hawke's Bay",
+      "Taranaki",
+      "Manawat\u016b-Whanganui",
+      "Greater Wellington",
+      "West Coast",
+      "Canterbury",
+      "Otago",
+      "Southland",
+      "Thames Valley",
+      "Tongariro",
+      "East Cape",
+      "Wanganui",
+      "Wairarapa",
+      "Manawatu",
+      "Horowhenua",
+      "Nelson Bays"
+    ],
+    "lat": -41,
+    "lng": 174
+  },
+  {
+    "country": "Nicaragua",
+    "region": "Central America",
+    "regions": [
+      "NI-BO",
+      "NI-CA",
+      "NI-CI",
+      "NI-CO",
+      "NI-ES",
+      "NI-GR",
+      "NI-JI",
+      "NI-LE",
+      "NI-MD",
+      "NI-MN",
+      "NI-MS",
+      "NI-MT",
+      "NI-NS",
+      "NI-RI",
+      "NI-SJ",
+      "NI-AN",
+      "NI-AS"
+    ],
+    "lat": 13,
+    "lng": -85
+  },
+  {
+    "country": "Niger",
+    "region": "Africa",
+    "regions": [
+      "Agadez",
+      "Diffa",
+      "Dosso",
+      "Maradi",
+      "Niamey",
+      "Tahoua",
+      "Tillab\u00e9ri",
+      "Zinder"
+    ],
+    "lat": 16,
+    "lng": 8
+  },
+  {
+    "country": "Nigeria",
+    "region": "Africa",
+    "regions": [
+      "Abeokuta",
+      "Adamawa",
+      "Bauchi",
+      "Benin",
+      "Benue",
+      "Bornu",
+      "Calabar"
+    ],
+    "lat": 10,
+    "lng": 8
+  },
+  {
+    "country": "Niue",
+    "region": "Oceania",
+    "regions": [
+      "No.",
+      "Motu",
+      "Tafiti"
+    ],
+    "lat": -19.03333333,
+    "lng": -169.86666666
+  },
+  {
+    "country": "North Macedonia",
+    "region": "Europe",
+    "regions": [
+      "ISO 3166-2:MK",
+      "List of FIPS region codes",
+      "NUTS statistical regions of North Macedonia",
+      "Albania",
+      "Andorra",
+      "Armenia",
+      "Austria",
+      "Azerbaijan",
+      "Belarus",
+      "Belgium",
+      "Bosnia and Herzegovina",
+      "Bulgaria",
+      "Croatia",
+      "Cyprus",
+      "Czech Republic",
+      "Denmark",
+      "Estonia",
+      "Finland",
+      "France",
+      "Georgia"
+    ],
+    "lat": 41.83333333,
+    "lng": 22
+  },
+  {
+    "country": "Northern Mariana Islands",
+    "region": "Oceania",
+    "regions": [
+      "edit"
+    ],
+    "lat": 15.2,
+    "lng": 145.75
+  },
+  {
+    "country": "Norway",
+    "region": "Europe",
+    "regions": [
+      "Northern Norway",
+      "Troms",
+      "Finnmark",
+      "Nordland",
+      "Tr\u00f8ndelag",
+      "Western Norway",
+      "M\u00f8re og Romsdal",
+      "Vestland",
+      "Rogaland",
+      "Southern Norway",
+      "Agder",
+      "Eastern Norway",
+      "Vestfold",
+      "Telemark",
+      "Buskerud",
+      "Akershus",
+      "\u00d8stfold",
+      "Innlandet",
+      "Oslo"
+    ],
+    "lat": 62,
+    "lng": 10
+  },
+  {
+    "country": "Oman",
+    "region": "Asia",
+    "regions": [
+      "Ad Dakhiliyah",
+      "Ad Dhahirah",
+      "Al Batinah North",
+      "Al Batinah South",
+      "Al Buraimi",
+      "Al Wusta",
+      "Ash Sharqiyah North",
+      "Ash Sharqiyah South",
+      "Dhofar",
+      "Muscat",
+      "Musandam"
+    ],
+    "lat": 21,
+    "lng": 57
+  },
+  {
+    "country": "Pakistan",
+    "region": "Asia",
+    "regions": [
+      "East Bengal",
+      "West Punjab",
+      "Sind",
+      "North-West Frontier",
+      "Baluchistan",
+      "Federal Capital Territory",
+      "Bahawalpur",
+      "Khairpur",
+      "Kalat",
+      "Las Bela",
+      "Kharan",
+      "Makran",
+      "Phulra",
+      "Amb",
+      "Swat",
+      "Dir",
+      "Chitral",
+      "Hunza",
+      "Nagar",
+      "Gilgit"
+    ],
+    "lat": 30,
+    "lng": 70
+  },
+  {
+    "country": "Palau",
+    "region": "Oceania",
+    "regions": [
+      "Japanese",
+      "[a]",
+      "Sonsorolese",
+      "Tobian",
+      "edit"
+    ],
+    "lat": 7.5,
+    "lng": 134.5
+  },
+  {
+    "country": "Panama",
+    "region": "Central America",
+    "regions": [
+      "Bocas del Toro",
+      "Chiriqu\u00ed",
+      "Cocl\u00e9",
+      "Col\u00f3n",
+      "Dari\u00e9n",
+      "Herrera",
+      "Los Santos",
+      "Panam\u00e1",
+      "Panam\u00e1 Oeste",
+      "Veraguas",
+      "Comarca",
+      "Ember\u00e1-Wounaan",
+      "Guna Yala",
+      "Ng\u00e4be-Bugl\u00e9",
+      "Naso Tj\u00ebr Di",
+      "Guna de Madungand\u00ed",
+      "Guna de Wargand\u00ed"
+    ],
+    "lat": 9,
+    "lng": -80
+  },
+  {
+    "country": "Papua New Guinea",
+    "region": "Oceania",
+    "regions": [
+      "Highlands Region",
+      "Islands Region",
+      "Momase Region",
+      "Southern Region"
+    ],
+    "lat": -6,
+    "lng": 147
+  },
+  {
+    "country": "Paraguay",
+    "region": "South America",
+    "regions": [
+      "ISO 3166-2",
+      "Districts",
+      "Abortion law",
+      "LGBT rights",
+      "President",
+      "Vice President",
+      "Cabinet",
+      "National Congress",
+      "Chamber of Senators",
+      "Chamber of Deputies"
+    ],
+    "lat": -23,
+    "lng": -58
+  },
+  {
+    "country": "Peru",
+    "region": "South America",
+    "regions": [
+      "Amazonas",
+      "Andr\u00e9s Avelino C\u00e1ceres",
+      "Arequipa",
+      "Chav\u00edn",
+      "Grau",
+      "Inca/Inka",
+      "La Libertad",
+      "Los Libertadores-Huari",
+      "Jos\u00e9 Carlos Mari\u00e1tegui",
+      "Nororiental del Mara\u00f1\u00f3n",
+      "San Mart\u00edn",
+      "Ucayali",
+      "Ancash",
+      "Apur\u00edmac",
+      "Ayacucho",
+      "Cajamarca",
+      "Callao",
+      "Cusco",
+      "Huancavelica",
+      "Hu\u00e1nuco"
+    ],
+    "lat": -10,
+    "lng": -76
+  },
+  {
+    "country": "Philippines",
+    "region": "Asia",
+    "regions": [
+      "Autonomous region",
+      "Regional development council",
+      "Provinces",
+      "Constitution of the Philippines",
+      "Charter change"
+    ],
+    "lat": 13,
+    "lng": 122
+  },
+  {
+    "country": "Pitcairn Island",
+    "region": "Oceania",
+    "regions": [],
+    "lat": -25.06666666,
+    "lng": -130.1
+  },
+  {
+    "country": "Poland",
+    "region": "Europe",
+    "regions": [
+      "Central European Plain",
+      "Silesia",
+      "Pomerania",
+      "Bohemian Massif",
+      "Polish Highlands",
+      "Sandomierz Basin",
+      "Subcarpathia",
+      "Western Subcarpathia",
+      "Northern Subcarpathia",
+      "Eastern Subcarpathia",
+      "Carpathian Mountains",
+      "Western Carpathians",
+      "Eastern Carpathians",
+      "Ukrainian Highlands",
+      "East Baltic-Belarusian Lowlands"
+    ],
+    "lat": 52,
+    "lng": 20
+  },
+  {
+    "country": "Portugal",
+    "region": "Europe",
+    "regions": [
+      "District",
+      "Azores",
+      "Aveiro",
+      "Beja",
+      "Braga",
+      "Bragan\u00e7a",
+      "Castelo Branco",
+      "Coimbra",
+      "\u00c9vora",
+      "Faro",
+      "Guarda",
+      "Leiria",
+      "Lisbon",
+      "Madeira",
+      "Portalegre",
+      "Porto",
+      "Santar\u00e9m",
+      "Set\u00fabal",
+      "Viana do Castelo",
+      "Vila Real"
+    ],
+    "lat": 39.5,
+    "lng": -8
+  },
+  {
+    "country": "Puerto Rico",
+    "region": "Caribbean",
+    "regions": [
+      "Municipalities of Puerto Rico",
+      "Adjuntas",
+      "Aguada",
+      "Aguadilla",
+      "Aguas Buenas",
+      "Aibonito",
+      "A\u00f1asco",
+      "Arecibo",
+      "Arroyo",
+      "Barceloneta",
+      "Barranquitas",
+      "Bayam\u00f3n",
+      "Cabo Rojo",
+      "Caguas",
+      "Camuy",
+      "Can\u00f3vanas",
+      "Carolina",
+      "Cata\u00f1o",
+      "Cayey",
+      "Ceiba"
+    ],
+    "lat": 18.25,
+    "lng": -66.5
+  },
+  {
+    "country": "Qatar",
+    "region": "Asia",
+    "regions": [
+      "Key",
+      "Zones",
+      "Al Jemailiya",
+      "Al Ghuwariyah",
+      "Jariyan al Batnah",
+      "Mesaieed",
+      "ISO 3166-2:QA",
+      "Qatar National Day",
+      "List of cities in Qatar"
+    ],
+    "lat": 25.5,
+    "lng": 51.25
+  },
+  {
+    "country": "R\u00e9union",
+    "region": "Africa",
+    "regions": [
+      "Les Avirons",
+      "Bras-Panon",
+      "Cilaos",
+      "Entre-Deux",
+      "L'\u00c9tang-Sal\u00e9",
+      "Petite-\u00cele",
+      "La Plaine-des-Palmistes",
+      "Le Port",
+      "La Possession",
+      "Saint-Andr\u00e9",
+      "Saint-Beno\u00eet",
+      "Saint-Denis",
+      "Saint-Joseph",
+      "Saint-Leu",
+      "Saint-Louis",
+      "Saint-Paul",
+      "Saint-Philippe",
+      "Saint-Pierre",
+      "Sainte-Marie",
+      "Sainte-Rose"
+    ],
+    "lat": -21.15,
+    "lng": 55.5
+  },
+  {
+    "country": "Romania",
+    "region": "Europe",
+    "regions": [
+      "Constitutional Court",
+      "President",
+      "Prime Minister",
+      "Cabinet",
+      "Senate",
+      "Chamber of Deputies"
+    ],
+    "lat": 46,
+    "lng": 25
+  },
+  {
+    "country": "Russia",
+    "region": "Europe",
+    "regions": [
+      "Rank",
+      "\u0433\u043e\u0440\u043e\u0434 \u0444\u0435\u0434\u0435\u0440\u0430\u043b\u044c\u043d\u043e\u0433\u043e \u0437\u043d\u0430\u0447\u0435\u043d\u0438\u044f",
+      "republics",
+      "krais",
+      "oblasts",
+      "federal cities",
+      "autonomous oblast",
+      "autonomous okrugs",
+      "Date of referendum"
+    ],
+    "lat": 60,
+    "lng": 100
+  },
+  {
+    "country": "Rwanda",
+    "region": "Africa",
+    "regions": [
+      "Kinyarwanda",
+      "English",
+      "French",
+      "Swahili",
+      "Banyarwanda",
+      "Hutu",
+      "Tutsi",
+      "Twa",
+      "Christianity",
+      "no religion",
+      "Islam"
+    ],
+    "lat": -2,
+    "lng": 30
+  },
+  {
+    "country": "Saint Helena",
+    "region": "Africa",
+    "regions": [
+      "edit"
+    ],
+    "lat": -15.95,
+    "lng": -5.72
+  },
+  {
+    "country": "Saint Kitts and Nevis",
+    "region": "Caribbean",
+    "regions": [
+      "Christ Church Nichola Town",
+      "Saint Anne Sandy Point",
+      "Saint George Basseterre",
+      "Saint John Capisterre",
+      "Saint Mary Cayon",
+      "Saint Paul Capisterre",
+      "Saint Peter Basseterre",
+      "Saint Thomas Middle Island",
+      "Trinity Palmetto Point",
+      "Saint Kitts",
+      "Saint George Gingerland",
+      "Saint James Windward",
+      "Saint John Figtree",
+      "Saint Paul Charlestown",
+      "Saint Thomas Lowland",
+      "Nevis",
+      "Saint Kitts and Nevis total",
+      "Climate data for Saint Kitts and Nevis",
+      "Month",
+      "Daily mean \u00b0C"
+    ],
+    "lat": 17.33333333,
+    "lng": -62.75
+  },
+  {
+    "country": "Saint Lucia",
+    "region": "Caribbean",
+    "regions": [
+      "Gros Islet",
+      "Castries",
+      "Anse la Raye and Canaries",
+      "Soufri\u00e8re",
+      "Laborie",
+      "Vieux Fort",
+      "Micoud",
+      "Dennery",
+      "Choiseul"
+    ],
+    "lat": 13.88333333,
+    "lng": -60.96666666
+  },
+  {
+    "country": "Saint-Pierre and Miquelon",
+    "region": "North America",
+    "regions": []
+  },
+  {
+    "country": "Saint Vincent and the Grenadines",
+    "region": "Caribbean",
+    "regions": [
+      "Parish",
+      "Charlotte Parish",
+      "Grenadines Parish",
+      "Saint Andrew Parish",
+      "Saint David Parish",
+      "Saint George Parish",
+      "Saint Patrick Parish"
+    ],
+    "lat": 13.25,
+    "lng": -61.2
+  },
+  {
+    "country": "Samoa",
+    "region": "Oceania",
+    "regions": [
+      "Nr.",
+      "Upolu",
+      "Savai\u02bbi",
+      "Manono",
+      "Aleipata Islands",
+      "Exclaves"
+    ],
+    "lat": -13.58333333,
+    "lng": -172.33333333
+  },
+  {
+    "country": "San Marino",
+    "region": "Europe",
+    "regions": [
+      "Castello",
+      "Castelli",
+      "Acquaviva",
+      "Borgo  Maggiore",
+      "Chiesanuova",
+      "Citt\u00e0 di San Marino",
+      "Domagnano",
+      "Faetano",
+      "Fiorentino",
+      "Montegiardino",
+      "Serravalle"
+    ],
+    "lat": 43.76666666,
+    "lng": 12.41666666
+  },
+  {
+    "country": "Sao Tome and Principe",
+    "region": "Africa",
+    "regions": [
+      "Forro Creole",
+      "Angolar Creole",
+      "Principense Creole",
+      "Christianity",
+      "no religion",
+      "folk religions",
+      "Santomean",
+      "\u00c1gua Grande",
+      "Cantagalo",
+      "Cau\u00e9",
+      "Lemb\u00e1",
+      "Lobata",
+      "M\u00e9-Z\u00f3chi",
+      "Pagu\u00e9"
+    ]
+  },
+  {
+    "country": "Saudi Arabia",
+    "region": "Asia",
+    "regions": [
+      "SA-14",
+      "SA-11",
+      "SA-08",
+      "SA-12",
+      "SA-03",
+      "SA-05",
+      "SA-01",
+      "SA-04",
+      "SA-06",
+      "SA-09",
+      "SA-02",
+      "SA-10",
+      "SA-07"
+    ],
+    "lat": 25,
+    "lng": 45
+  },
+  {
+    "country": "Senegal",
+    "region": "Africa",
+    "regions": [
+      "Dakar",
+      "Diourbel",
+      "Fatick",
+      "Kaffrine",
+      "Kaolack",
+      "K\u00e9dougou",
+      "Kolda",
+      "Louga",
+      "Matam",
+      "Saint-Louis",
+      "S\u00e9dhiou",
+      "Tambacounda",
+      "Thi\u00e8s",
+      "Ziguinchor"
+    ],
+    "lat": 14,
+    "lng": -14
+  },
+  {
+    "country": "Serbia",
+    "region": "Europe",
+    "regions": [
+      "Ba\u010dka",
+      "Gornji Breg",
+      "Potisje",
+      "\u0160ajka\u0161ka",
+      "Tele\u010dka",
+      "Banat",
+      "Gornje Livade",
+      "Iland\u017eanski Rit",
+      "Pan\u010deva\u010dki Rit",
+      "Pomori\u0161je",
+      "Repi\u0161te",
+      "Veliki Rit",
+      "Srem",
+      "Crni Lug",
+      "Kupinovski Kut",
+      "Podlu\u017eje",
+      "Kolubara",
+      "Podgorina",
+      "Ma\u010dva",
+      "Pocerina"
+    ],
+    "lat": 44,
+    "lng": 21
+  },
+  {
+    "country": "Seychelles",
+    "region": "Africa",
+    "regions": [
+      "km2",
+      "Human rights",
+      "President",
+      "Vice-President",
+      "National Assembly",
+      "Constitutional Court of Seychelles",
+      "Supreme Court",
+      "Political parties"
+    ],
+    "lat": -4.58333333,
+    "lng": 55.66666666
+  },
+  {
+    "country": "Sierra Leone",
+    "region": "Africa",
+    "regions": [
+      "Eastern Province",
+      "Northern Province",
+      "Southern Province",
+      "North West Province",
+      "Western Area"
+    ],
+    "lat": 8.5,
+    "lng": -11.5
+  },
+  {
+    "country": "Singapore",
+    "region": "Asia",
+    "regions": [
+      "Central Region",
+      "East Region",
+      "North Region",
+      "North-East Region",
+      "West Region"
+    ],
+    "lat": 1.36666666,
+    "lng": 103.8
+  },
+  {
+    "country": "Sint Maarten",
+    "region": "Caribbean",
+    "regions": [],
+    "lat": 18.033333,
+    "lng": -63.05
+  },
+  {
+    "country": "Slovakia",
+    "region": "Europe",
+    "regions": [
+      "Kysuce",
+      "Z\u00e1horie",
+      "Bratislava",
+      "Podpo\u013eanie",
+      "Zamagurie"
+    ],
+    "lat": 48.66666666,
+    "lng": 19.5
+  },
+  {
+    "country": "Slovenia",
+    "region": "Europe",
+    "regions": [
+      "English name",
+      "Mura",
+      "Drava",
+      "Carinthia",
+      "Savinja",
+      "Central Sava",
+      "Lower Sava",
+      "Southeast Slovenia",
+      "Littoral\u2013Inner Carniola",
+      "Central Slovenia",
+      "Upper Carniola",
+      "Gorizia",
+      "Coastal\u2013Karst"
+    ],
+    "lat": 46.11666666,
+    "lng": 14.81666666
+  },
+  {
+    "country": "Solomon Islands",
+    "region": "Oceania",
+    "regions": [
+      "edit"
+    ],
+    "lat": -8,
+    "lng": 159
+  },
+  {
+    "country": "Somalia",
+    "region": "Africa",
+    "regions": [
+      "Awdal Region",
+      "Bakool Region",
+      "Banaadir Region",
+      "Bari Region",
+      "Bay Region",
+      "Galguduud Region",
+      "Gedo Region",
+      "Hiiraan Region",
+      "Jubbada Hoose Region",
+      "Shabeellaha Hoose Region",
+      "Jubbada Dhexe Region",
+      "Shabeellaha Dhexe Region",
+      "Mudug Region",
+      "Nugaal Region",
+      "Sanaag Region",
+      "Sool Region",
+      "Togdheer Region",
+      "Woqooyi Galbeed Region",
+      "Benadir",
+      "Burao"
+    ],
+    "lat": 10,
+    "lng": 49
+  },
+  {
+    "country": "South Africa",
+    "region": "Africa",
+    "regions": [
+      "Eastern Cape",
+      "Free State",
+      "Gauteng",
+      "KwaZulu-Natal",
+      "Limpopo",
+      "Mpumalanga",
+      "North West",
+      "Northern Cape",
+      "Western Cape",
+      "Republic of South Africa",
+      "North-West",
+      "Cape of Good Hope",
+      "Natal",
+      "Orange Free State",
+      "Transvaal",
+      "Homelands",
+      "Bophuthatswana",
+      "Ciskei",
+      "Gazankulu",
+      "KaNgwane"
+    ],
+    "lat": -29,
+    "lng": 24
+  },
+  {
+    "country": "Spain",
+    "region": "Europe",
+    "regions": [
+      "Language",
+      "Aragonese",
+      "Asturleonese",
+      "Basque",
+      "Catalan/Valencian",
+      "Galician",
+      "Occitan",
+      "Fala",
+      "Andalusia",
+      "Aragon",
+      "Asturias",
+      "Balearic Islands",
+      "Basque Country",
+      "Canary Islands",
+      "Cantabria",
+      "Castilla-La Mancha",
+      "Castile and Le\u00f3n",
+      "Catalonia",
+      "Extremadura",
+      "Galicia"
+    ],
+    "lat": 40,
+    "lng": -4
+  },
+  {
+    "country": "Sri Lanka",
+    "region": "Asia",
+    "regions": [
+      "Sabaragamuwa",
+      "Uva",
+      "Provincial council",
+      "District",
+      "Amendments",
+      "Law",
+      "Human rights",
+      "Taxation"
+    ],
+    "lat": 7,
+    "lng": 81
+  },
+  {
+    "country": "South Sudan",
+    "region": "Africa",
+    "regions": [
+      "Greater Upper Nile Region",
+      "Akobo State",
+      "Bieh State",
+      "Boma State",
+      "Fangak State",
+      "Jonglei State",
+      "Northern Liech State",
+      "Ruweng State",
+      "Southern Liech State",
+      "Central Upper Nile State",
+      "Fashoda State",
+      "Latjor State",
+      "Maiwut State",
+      "Northern Upper Nile State",
+      "Bahr El Ghazal Region",
+      "Eastern Lakes State",
+      "Gok State",
+      "Western Lakes State",
+      "Aweil East State",
+      "Aweil State"
+    ],
+    "lat": 7,
+    "lng": 30
+  },
+  {
+    "country": "Sudan",
+    "region": "Africa",
+    "regions": [
+      "English",
+      "Districts",
+      "Presidency",
+      "Prime Minister",
+      "Cabinet",
+      "Council of States",
+      "National assembly",
+      "Transitional Legislative Authority"
+    ],
+    "lat": 15,
+    "lng": 30
+  },
+  {
+    "country": "Suriname",
+    "region": "South America",
+    "regions": [
+      "President",
+      "Vice President",
+      "Cabinet",
+      "National Assembly",
+      "Constitutional Court",
+      "High Court of Justice",
+      "Districts",
+      "Resorts",
+      "Political parties"
+    ],
+    "lat": 4,
+    "lng": -56
+  },
+  {
+    "country": "Sweden",
+    "region": "Europe",
+    "regions": [
+      "Regional Assembly",
+      "Administrative boards",
+      "Regions",
+      "Lands",
+      "Statistical regions"
+    ],
+    "lat": 62,
+    "lng": 15
+  },
+  {
+    "country": "Switzerland",
+    "region": "Europe",
+    "regions": [
+      "Place",
+      "Jungfraujoch",
+      "S\u00e4ntis",
+      "Arosa",
+      "La Chaux-de-Fonds",
+      "Bern",
+      "Sion",
+      "Locarno",
+      "NorthwesternSwitzerland",
+      "Basel-Landschaft",
+      "Basel-Stadt",
+      "EspaceMittelland",
+      "Fribourg",
+      "Jura",
+      "Neuch\u00e2tel",
+      "Solothurn",
+      "Lake Geneva",
+      "Valais",
+      "Vaud",
+      "Z\u00fcrich"
+    ],
+    "lat": 47,
+    "lng": 8
+  },
+  {
+    "country": "Syria",
+    "region": "Asia",
+    "regions": [
+      "Aleppo Governorate",
+      "Raqqa Governorate",
+      "Suwayda Governorate",
+      "Damascus Governorate",
+      "Daraa Governorate",
+      "Deir ez-Zor Governorate",
+      "Hama Governorate",
+      "Al-Hasakah  Governorate",
+      "Homs Governorate",
+      "Idlib Governorate",
+      "Latakia Governorate",
+      "Quneitra Governorate",
+      "Rif Dimashq Governorate",
+      "Tartus Governorate"
+    ],
+    "lat": 35,
+    "lng": 38
+  },
+  {
+    "country": "Taiwan",
+    "region": "Asia",
+    "regions": [
+      "No.",
+      "\u5317\u81fa\u7063",
+      "Map",
+      "HistoricalPrefectures"
+    ],
+    "lat": 23.5,
+    "lng": 121
+  },
+  {
+    "country": "Tajikistan",
+    "region": "Asia",
+    "regions": [
+      "Districts",
+      "Cities",
+      "Jamoats",
+      "Towns"
+    ],
+    "lat": 39,
+    "lng": 71
+  },
+  {
+    "country": "Tanzania",
+    "region": "Africa",
+    "regions": [
+      "Districts",
+      "Kagera Region",
+      "Manyara Region",
+      "Songwe Region",
+      "Districts of Tanzania",
+      "List of regions of Tanzania by GDP",
+      "List of regions of Tanzania by poverty rate",
+      "ISO 3166-2:TZ"
+    ],
+    "lat": -6,
+    "lng": 35
+  },
+  {
+    "country": "Thailand",
+    "region": "Asia",
+    "regions": [
+      "Amnat Charoen",
+      "Chiang Mai",
+      "Tak",
+      "Kamphaeng Phet",
+      "Nakhon Sawan",
+      "Ang Thong",
+      "Nakhon Nayok",
+      "Chachoengsao",
+      "Kanchanaburi",
+      "Phetchaburi",
+      "Chumphon",
+      "Krabi",
+      "Very High Human Development",
+      "High Human Development"
+    ],
+    "lat": 15,
+    "lng": 100
+  },
+  {
+    "country": "Togo",
+    "region": "Africa",
+    "regions": [
+      "Centrale",
+      "Kara",
+      "Maritime",
+      "Plateaux",
+      "Savanes"
+    ],
+    "lat": 8,
+    "lng": 1.16666666
+  },
+  {
+    "country": "Tokelau",
+    "region": "Oceania",
+    "regions": [
+      "Atoll",
+      "Atafu",
+      "Nukunonu",
+      "Fakaofo",
+      "Age Group"
+    ],
+    "lat": -9,
+    "lng": -172
+  },
+  {
+    "country": "Tonga",
+    "region": "Oceania",
+    "regions": [
+      "Tongatapu",
+      "Vava\u02bbu",
+      "Ha\u02bbapai",
+      "\u02bbEua",
+      "Ongo Niua",
+      "Tonga",
+      "Kolofo\u02bbou",
+      "Kolomotu\u02bba",
+      "Vaini",
+      "Tatakamotonga",
+      "Lapaha",
+      "Nukunuku",
+      "Kolovai",
+      "Neiafu",
+      "Pangaimotu",
+      "Hahake",
+      "Leimatu\u02bba",
+      "Hihifo",
+      "Motu",
+      "Lifuka"
+    ],
+    "lat": -20,
+    "lng": -175
+  },
+  {
+    "country": "Trinidad and Tobago",
+    "region": "Caribbean",
+    "regions": [
+      "Trinidad",
+      "Municipality",
+      "km2",
+      "Port of Spain",
+      "San Fernando",
+      "Chaguanas",
+      "Arima",
+      "Point Fortin",
+      "Diego Martin",
+      "Siparia",
+      "Couva\u2013Tabaquite\u2013Talparo",
+      "Mayaro\u2013Rio Claro",
+      "Penal\u2013Debe",
+      "Princes Town",
+      "San Juan\u2013Laventille",
+      "Sangre Grande",
+      "Tunapuna\u2013Piarco",
+      "Couva",
+      "Tabaquite\u2013Talparo",
+      "Mayaro"
+    ],
+    "lat": 11,
+    "lng": -61
+  },
+  {
+    "country": "Tunisia",
+    "region": "Africa",
+    "regions": [
+      "Adnen Lassoued",
+      "Tunis",
+      "Nabuel",
+      "Ben Arous",
+      "Ariana",
+      "Bizerte",
+      "Menouba",
+      "Zaghouan",
+      "Siliana",
+      "Kef",
+      "B\u00e9ja",
+      "Jendouba",
+      "Sidi Bouzid",
+      "Kasserine",
+      "Kairouan",
+      "Sfax",
+      "Sousse",
+      "Monastir",
+      "Mahdia"
+    ],
+    "lat": 34,
+    "lng": 9
+  },
+  {
+    "country": "Turkey",
+    "region": "Asia",
+    "regions": [
+      "km2",
+      "Aegean region",
+      "Black Sea region",
+      "Central Anatolia region",
+      "Eastern Anatolia region",
+      "Marmara region",
+      "Mediterranean region",
+      "Southeastern Anatolia region"
+    ]
+  },
+  {
+    "country": "Turkmenistan",
+    "region": "Asia",
+    "regions": [
+      "Ashgabat",
+      "Ahal Region",
+      "Balkan Region",
+      "Da\u015foguz Region",
+      "Lebap Region",
+      "Mary Region"
+    ],
+    "lat": 40,
+    "lng": 60
+  },
+  {
+    "country": "Tuvalu",
+    "region": "Oceania",
+    "regions": [
+      "TV-FUN",
+      "TV-NMG",
+      "TV-NMA",
+      "TV-NIT",
+      "TV-NUI",
+      "TV-NKF",
+      "TV-NKL",
+      "TV-VAI",
+      "Edition/Newsletter",
+      "Newsletter I-8",
+      "ISO 3166-2"
+    ],
+    "lat": -8,
+    "lng": 178
+  },
+  {
+    "country": "Turks and Caicos Islands",
+    "region": "Caribbean",
+    "regions": [
+      "edit"
+    ],
+    "lat": 21.75,
+    "lng": -71.58333333
+  },
+  {
+    "country": "Uganda",
+    "region": "Africa",
+    "regions": [
+      "Central",
+      "Western",
+      "Eastern",
+      "Northern"
+    ],
+    "lat": 1,
+    "lng": 32
+  },
+  {
+    "country": "Ukraine",
+    "region": "Europe",
+    "regions": [
+      "First",
+      "cities with special status",
+      "oblasts",
+      "Second",
+      "Third",
+      "Colour",
+      "autonomous republic"
+    ],
+    "lat": 49,
+    "lng": 32
+  },
+  {
+    "country": "United Arab Emirates",
+    "region": "Asia",
+    "regions": [],
+    "lat": 24,
+    "lng": 54
+  },
+  {
+    "country": "United Kingdom",
+    "region": "Europe",
+    "regions": [
+      "Scots",
+      "Ulster Scots",
+      "Welsh",
+      "Cornish",
+      "Scottish Gaelic",
+      "Irish",
+      "British Sign Language"
+    ],
+    "lat": 54,
+    "lng": -2
+  },
+  {
+    "country": "United States",
+    "region": "North America",
+    "regions": [
+      "Northeast",
+      "Mid-Atlantic",
+      "Midwest",
+      "West North Central",
+      "South",
+      "East South Central",
+      "West South Central",
+      "West",
+      "Pacific"
+    ],
+    "lat": 38,
+    "lng": -97
+  },
+  {
+    "country": "United States Virgin Islands",
+    "region": "Caribbean",
+    "regions": [
+      "edit"
+    ],
+    "lat": 18.35,
+    "lng": -64.933333
+  },
+  {
+    "country": "Uruguay",
+    "region": "South America",
+    "regions": [
+      "Municipalities",
+      "Current constitution",
+      "President",
+      "Cabinet",
+      "Vice President",
+      "General Assembly",
+      "Senate",
+      "Chamber of Representatives",
+      "Palacio Legislativo"
+    ],
+    "lat": -33,
+    "lng": -56
+  },
+  {
+    "country": "Uzbekistan",
+    "region": "Asia",
+    "regions": [
+      "Tuman",
+      "Karakalpakstan",
+      "President",
+      "Prime Minister",
+      "Cabinet",
+      "Senate",
+      "Legislative Chamber"
+    ],
+    "lat": 41,
+    "lng": 64
+  },
+  {
+    "country": "Vanuatu",
+    "region": "Oceania",
+    "regions": [
+      "Ambae &",
+      "Ambrym",
+      "Banks &",
+      "\u00c9fat\u00e9",
+      "Epi",
+      "Malakula",
+      "Paama",
+      "Pentecost",
+      "Santo &",
+      "Shepherd Islands",
+      "Taf\u00e9a",
+      "New Hebrides",
+      "Southern\u00a0District",
+      "Central\u00a0District\u00a01",
+      "Central\u00a0District\u00a02",
+      "Northern\u00a0District",
+      "Vanuatu"
+    ],
+    "lat": -16,
+    "lng": 167
+  },
+  {
+    "country": "Vatican City",
+    "region": "Europe",
+    "regions": [],
+    "lat": 41.9,
+    "lng": 12.45
+  },
+  {
+    "country": "Venezuela",
+    "region": "South America",
+    "regions": [
+      "Andean Region",
+      "Capital Region",
+      "Central Region",
+      "Central-Western Region",
+      "Northeastern Region",
+      "Guayana Region",
+      "Insular Region",
+      "Llanos Region",
+      "Zulian Region"
+    ],
+    "lat": 8,
+    "lng": -66
+  },
+  {
+    "country": "Vietnam",
+    "region": "Asia",
+    "regions": [
+      "Northern Vietnam",
+      "Northwest",
+      "Red River Delta",
+      "Central Vietnam",
+      "South Central Coast",
+      "Central Highlands",
+      "Southern Vietnam",
+      "Mekong River Delta",
+      "Northeast Vietnam",
+      "Cao B\u1eb1ng",
+      "L\u1ea1ng S\u01a1n",
+      "Ph\u00fa Th\u1ecd",
+      "Qu\u1ea3ng Ninh",
+      "Th\u00e1i Nguy\u00ean",
+      "Tuy\u00ean Quang",
+      "Northwest Vietnam",
+      "\u0110i\u1ec7n Bi\u00ean",
+      "Lai Ch\u00e2u",
+      "L\u00e0o Cai",
+      "S\u01a1n La"
+    ],
+    "lat": 16.16666666,
+    "lng": 107.83333333
+  },
+  {
+    "country": "Wallis and Futuna",
+    "region": "Oceania",
+    "regions": [
+      "KingdomDistrict",
+      "Wallis Island",
+      "Uvea",
+      "Hihifo",
+      "Hahake",
+      "Mu'a",
+      "Futuna",
+      "Sigave",
+      "Alo",
+      "Overall total",
+      "Mata Utu",
+      "Month",
+      "Mean daily maximum \u00b0C",
+      "Daily mean \u00b0C",
+      "Mean daily minimum \u00b0C",
+      "precipitation",
+      "Average rainy days",
+      "Hihifo District",
+      "Record high \u00b0C",
+      "Record low \u00b0C"
+    ],
+    "lat": -13.3,
+    "lng": -176.2
+  },
+  {
+    "country": "West Bank",
+    "region": "Asia",
+    "regions": []
+  },
+  {
+    "country": "Western Sahara",
+    "region": "Africa",
+    "regions": [
+      "Morocco",
+      "Sahrawi Republic",
+      "Amnesty International",
+      "Human Rights Watch",
+      "World Organization Against Torture",
+      "Freedom House",
+      "Reporters Without Borders",
+      "International Committee of the Red Cross",
+      "UN High Commissioner for Human Rights",
+      "Defend International",
+      "Front Line",
+      "International Federation for Human Rights",
+      "Society for Threatened Peoples",
+      "Norwegian Refugee Council",
+      "wilayat",
+      "Guelmim-Oued Noun Region",
+      "La\u00e2youne-Sakia El Hamra Region",
+      "Dakhla-Oued Ed-Dahab Region"
+    ],
+    "lat": 24.5,
+    "lng": -13
+  },
+  {
+    "country": "Yemen",
+    "region": "Asia",
+    "regions": [
+      "Abyan",
+      "Aden",
+      "Al Bayda",
+      "Al Hudaydah",
+      "Al Jawf",
+      "Al Mahrah",
+      "Al Mahwit",
+      "Amanat Al Asimah",
+      "'Amran",
+      "Dhale",
+      "Dhamar",
+      "Hadramaut",
+      "Hajjah",
+      "Ibb",
+      "Lahij",
+      "Ma'rib",
+      "Raymah",
+      "Sa'dah",
+      "Sana'a",
+      "Shabwah"
+    ],
+    "lat": 15,
+    "lng": 48
+  },
+  {
+    "country": "Zambia",
+    "region": "Africa",
+    "regions": [
+      "Central",
+      "Copperbelt",
+      "Eastern",
+      "Luapula",
+      "Lusaka",
+      "Muchinga",
+      "Northern",
+      "North-Western",
+      "Southern",
+      "Western",
+      "Zambia",
+      "Provincial Minister",
+      "Population, persons",
+      "Population density, people per km2",
+      "Sex Ratio",
+      "Basic Schools",
+      "High Schools",
+      "Unemployment rate",
+      "Unemployment rate, Youth",
+      "Doctors"
+    ],
+    "lat": -15,
+    "lng": 30
+  },
+  {
+    "country": "Zimbabwe",
+    "region": "Africa",
+    "regions": [
+      "District",
+      "Constitutional history",
+      "Human rights",
+      "President",
+      "Vice-President",
+      "Cabinet",
+      "Parliament"
+    ],
+    "lat": -20,
+    "lng": 30
+  }
+]

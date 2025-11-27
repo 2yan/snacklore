@@ -1061,54 +1061,15 @@
           recipesData.forEach((country) => {
             if (country.lat && country.lng) {
               const marker = L.marker([country.lat, country.lng]).addTo(map);
-
-              // Create popup content
-              const popupDiv = document.createElement("div");
-
-              const title = document.createElement("div");
-              title.className = "popup-country";
-              title.textContent = country.country;
-              popupDiv.appendChild(title);
-
-              const region = document.createElement("div");
-              region.className = "popup-region";
-              region.textContent = country.region;
-              popupDiv.appendChild(region);
-
-              if (country.regions && country.regions.length > 0) {
-                const subregionsDiv = document.createElement("div");
-                subregionsDiv.className = "popup-subregions";
-
-                const h4 = document.createElement("h4");
-                h4.textContent = `Culinary Regions (${country.regions.length})`;
-                subregionsDiv.appendChild(h4);
-
-                const ul = document.createElement("ul");
-                country.regions.forEach((r) => {
-                  const li = document.createElement("li");
-                  li.textContent = r;
-                  ul.appendChild(li);
-                });
-                subregionsDiv.appendChild(ul);
-                popupDiv.appendChild(subregionsDiv);
-              } else {
-                const p = document.createElement("p");
-                p.textContent = "Explore recipes from this location.";
-                p.style.fontSize = "0.9rem";
-                p.style.color = "#666";
-                popupDiv.appendChild(p);
-              }
-
-              const btn = document.createElement("a");
-              btn.className = "popup-action";
               const slug = country.country.toLowerCase().replace(/ /g, "-");
-              btn.href = "/countries/" + slug;
-              btn.textContent = "View Recipes";
-              popupDiv.appendChild(btn);
+              const url = "/countries/" + slug;
 
-              marker.bindPopup(popupDiv);
+              // Navigate to country page on click
+              marker.on("click", function () {
+                window.location.href = url;
+              });
 
-              // Add a text label (tooltip) that appears on zoom
+              // Add a text label (tooltip)
               marker.bindTooltip(country.country, {
                 permanent: true,
                 direction: "top",
