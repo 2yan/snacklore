@@ -817,6 +817,224 @@
       let geojsonLayer;
       let culinaryData = {}; // Stores our countries.json data indexed by country name
 
+      // Mapping of country names to ISO 2-letter codes for flags
+      const countryCodeMap = {
+        Afghanistan: "af",
+        Albania: "al",
+        Algeria: "dz",
+        Andorra: "ad",
+        Angola: "ao",
+        "Antigua and Barbuda": "ag",
+        Argentina: "ar",
+        Armenia: "am",
+        Australia: "au",
+        Austria: "at",
+        Azerbaijan: "az",
+        Bahamas: "bs",
+        Bahrain: "bh",
+        Bangladesh: "bd",
+        Barbados: "bb",
+        Belarus: "by",
+        Belgium: "be",
+        Belize: "bz",
+        Benin: "bj",
+        Bhutan: "bt",
+        Bolivia: "bo",
+        "Bosnia and Herzegovina": "ba",
+        Botswana: "bw",
+        Brazil: "br",
+        Brunei: "bn",
+        Bulgaria: "bg",
+        "Burkina Faso": "bf",
+        Burundi: "bi",
+        Cambodia: "kh",
+        Cameroon: "cm",
+        Canada: "ca",
+        "Cape Verde": "cv",
+        "Central African Republic": "cf",
+        Chad: "td",
+        Chile: "cl",
+        China: "cn",
+        Colombia: "co",
+        Comoros: "km",
+        Congo: "cg",
+        "Costa Rica": "cr",
+        Croatia: "hr",
+        Cuba: "cu",
+        Cyprus: "cy",
+        "Czech Republic": "cz",
+        "Democratic Republic of the Congo": "cd",
+        Denmark: "dk",
+        Djibouti: "dj",
+        Dominica: "dm",
+        "Dominican Republic": "do",
+        "East Timor": "tl",
+        Ecuador: "ec",
+        Egypt: "eg",
+        "El Salvador": "sv",
+        "Equatorial Guinea": "gq",
+        Eritrea: "er",
+        Estonia: "ee",
+        Eswatini: "sz",
+        Ethiopia: "et",
+        Fiji: "fj",
+        Finland: "fi",
+        France: "fr",
+        Gabon: "ga",
+        Gambia: "gm",
+        Georgia: "ge",
+        Germany: "de",
+        Ghana: "gh",
+        Greece: "gr",
+        Grenada: "gd",
+        Guatemala: "gt",
+        Guinea: "gn",
+        "Guinea-Bissau": "gw",
+        Guyana: "gy",
+        Haiti: "ht",
+        Honduras: "hn",
+        Hungary: "hu",
+        Iceland: "is",
+        India: "in",
+        Indonesia: "id",
+        Iran: "ir",
+        Iraq: "iq",
+        Ireland: "ie",
+        Israel: "il",
+        Italy: "it",
+        "Ivory Coast": "ci",
+        Jamaica: "jm",
+        Japan: "jp",
+        Jordan: "jo",
+        Kazakhstan: "kz",
+        Kenya: "ke",
+        Kiribati: "ki",
+        "North Korea": "kp",
+        "South Korea": "kr",
+        Kosovo: "xk",
+        Kuwait: "kw",
+        Kyrgyzstan: "kg",
+        Laos: "la",
+        Latvia: "lv",
+        Lebanon: "lb",
+        Lesotho: "ls",
+        Liberia: "lr",
+        Libya: "ly",
+        Liechtenstein: "li",
+        Lithuania: "lt",
+        Luxembourg: "lu",
+        Macedonia: "mk",
+        Madagascar: "mg",
+        Malawi: "mw",
+        Malaysia: "my",
+        Maldives: "mv",
+        Mali: "ml",
+        Malta: "mt",
+        "Marshall Islands": "mh",
+        Mauritania: "mr",
+        Mauritius: "mu",
+        Mexico: "mx",
+        Micronesia: "fm",
+        Moldova: "md",
+        Monaco: "mc",
+        Mongolia: "mn",
+        Montenegro: "me",
+        Morocco: "ma",
+        Mozambique: "mz",
+        Myanmar: "mm",
+        Namibia: "na",
+        Nauru: "nr",
+        Nepal: "np",
+        Netherlands: "nl",
+        "New Zealand": "nz",
+        Nicaragua: "ni",
+        Niger: "ne",
+        Nigeria: "ng",
+        Norway: "no",
+        Oman: "om",
+        Pakistan: "pk",
+        Palau: "pw",
+        Panama: "pa",
+        "Papua New Guinea": "pg",
+        Paraguay: "py",
+        Peru: "pe",
+        Philippines: "ph",
+        Poland: "pl",
+        Portugal: "pt",
+        Qatar: "qa",
+        Romania: "ro",
+        Russia: "ru",
+        Rwanda: "rw",
+        "Saint Kitts and Nevis": "kn",
+        "Saint Lucia": "lc",
+        "Saint Vincent and the Grenadines": "vc",
+        Samoa: "ws",
+        "San Marino": "sm",
+        "Sao Tome and Principe": "st",
+        "Saudi Arabia": "sa",
+        Senegal: "sn",
+        Serbia: "rs",
+        Seychelles: "sc",
+        "Sierra Leone": "sl",
+        Singapore: "sg",
+        Slovakia: "sk",
+        Slovenia: "si",
+        "Solomon Islands": "sb",
+        Somalia: "so",
+        "South Africa": "za",
+        "South Sudan": "ss",
+        Spain: "es",
+        "Sri Lanka": "lk",
+        Sudan: "sd",
+        Suriname: "sr",
+        Sweden: "se",
+        Switzerland: "ch",
+        Syria: "sy",
+        Taiwan: "tw",
+        Tajikistan: "tj",
+        Tanzania: "tz",
+        Thailand: "th",
+        Togo: "tg",
+        Tonga: "to",
+        "Trinidad and Tobago": "tt",
+        Tunisia: "tn",
+        Turkey: "tr",
+        Turkmenistan: "tm",
+        Tuvalu: "tv",
+        Uganda: "ug",
+        Ukraine: "ua",
+        "United Arab Emirates": "ae",
+        "United Kingdom": "gb",
+        "United States": "us",
+        Uruguay: "uy",
+        Uzbekistan: "uz",
+        Vanuatu: "vu",
+        "Vatican City": "va",
+        Venezuela: "ve",
+        Vietnam: "vn",
+        Yemen: "ye",
+        Zambia: "zm",
+        Zimbabwe: "zw",
+      };
+
+      // Ensure SVG has defs for patterns
+      const mapDiv = document.getElementById("map");
+
+      // We need to wait for Leaflet to create the SVG pane.
+      // Usually initialized after first layer add, but let's hook into the process.
+      // Simpler: Just access it when needed in onEachFeature or via a helper.
+
+      function getDefs() {
+        const svg = map.getPanes().overlayPane.querySelector("svg");
+        if (!svg) return null;
+        let defs = svg.querySelector("defs");
+        if (!defs) {
+          defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+          svg.prepend(defs);
+        }
+        return defs;
+      }
+
       // Load data in parallel
       Promise.all([
         fetch(
@@ -839,10 +1057,6 @@
           document.getElementById("country-count").textContent =
             recipesData.length;
           document.getElementById("region-count").textContent = totalRegions;
-
-          // Create a Marker Cluster Group for better performance/visuals
-          // (Optional, but good if we have many markers)
-          // For now, standard markers
 
           recipesData.forEach((country) => {
             if (country.lat && country.lng) {
@@ -906,18 +1120,71 @@
 
           // Add GeoJSON to map (Polygons)
           geojsonLayer = L.geoJson(geoData, {
-            style: getCountryStyle,
-            onEachFeature: function (feature, layer) {
-              const countryName = feature.properties.name;
-              // ... (rest of the polygon logic if needed, or we can disable click on polygons if we have markers)
-              // Let's keep polygons for visual context but maybe disable their popups to avoid duplication
-              // OR make polygons highlight only
+            style: function (feature) {
+              // Default style
+              let style = {
+                weight: 1,
+                opacity: 1,
+                color: "white",
+                dashArray: "3",
+                fillOpacity: 0.1,
+                fillColor: "#d35400",
+              };
 
+              // Try to add flag pattern
+              const name = feature.properties.name;
+              const code = countryCodeMap[name];
+
+              if (code) {
+                const defs = getDefs();
+                if (defs) {
+                  const patternId = "flag-" + code;
+                  if (!document.getElementById(patternId)) {
+                    const pattern = document.createElementNS(
+                      "http://www.w3.org/2000/svg",
+                      "pattern"
+                    );
+                    pattern.setAttribute("id", patternId);
+                    pattern.setAttribute("patternUnits", "objectBoundingBox");
+                    pattern.setAttribute(
+                      "patternContentUnits",
+                      "objectBoundingBox"
+                    );
+                    pattern.setAttribute("width", "1");
+                    pattern.setAttribute("height", "1");
+
+                    const image = document.createElementNS(
+                      "http://www.w3.org/2000/svg",
+                      "image"
+                    );
+                    // Use flagcdn or similar
+                    image.setAttributeNS(
+                      "http://www.w3.org/1999/xlink",
+                      "href",
+                      `https://flagcdn.com/w320/${code}.png`
+                    );
+                    image.setAttribute("width", "1");
+                    image.setAttribute("height", "1");
+                    // 'none' stretches the flag to fit the country shape, ensuring the full flag is visible
+                    image.setAttribute("preserveAspectRatio", "none");
+
+                    pattern.appendChild(image);
+                    defs.appendChild(pattern);
+                  }
+
+                  // Use the pattern
+                  style.fillColor = `url(#${patternId})`;
+                  style.fillOpacity = 0.3; // Make it semi-transparent as requested
+                  style.color = "#d35400"; // Border color
+                }
+              }
+
+              return style;
+            },
+            onEachFeature: function (feature, layer) {
               layer.on({
                 mouseover: highlightFeature,
                 mouseout: resetHighlight,
-                // Removed click event to rely on markers for interaction, or we can keep both.
-                // Let's keep click on polygon as well for better UX
               });
             },
           }).addTo(map);
