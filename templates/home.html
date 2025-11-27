@@ -288,12 +288,49 @@
                 </div>
                 
                 <div class="site-map-section">
+                    <h3>World & Location</h3>
+                    <ul class="site-map-links">
+                        <li><a href="{{ url_for('world_map') }}">World Map</a></li>
+                        {% if countries %}
+                            {% for country in countries[:10] %}
+                            <li><a href="{{ url_for('view_country', country_name=country.name) }}">{{ country.name }}</a></li>
+                            {% endfor %}
+                            {% if countries|length > 10 %}
+                            <li class="empty-state">... and {{ countries|length - 10 }} more</li>
+                            {% endif %}
+                        {% endif %}
+                    </ul>
+                </div>
+                
+                <div class="site-map-section">
+                    <h3>User Profiles</h3>
+                    <ul class="site-map-links">
+                        {% if current_user.is_authenticated %}
+                        <li><a href="{{ url_for('user_profile', username=current_user.username) }}">My Profile</a></li>
+                        {% endif %}
+                        {% if users %}
+                            {% for user in users[:10] %}
+                            <li><a href="{{ url_for('user_profile', username=user.username) }}">{{ user.username }}</a></li>
+                            {% endfor %}
+                            {% if users|length > 10 %}
+                            <li class="empty-state">... and {{ users|length - 10 }} more</li>
+                            {% endif %}
+                        {% else %}
+                            <li class="empty-state">No users yet</li>
+                        {% endif %}
+                    </ul>
+                </div>
+                
+                <div class="site-map-section">
                     <h3>Recipes</h3>
                     <ul class="site-map-links">
                         {% if recipes %}
-                            {% for recipe in recipes %}
+                            {% for recipe in recipes[:10] %}
                             <li><a href="{% if recipe.primary_country and recipe.primary_state %}{{ url_for('view_recipe', country_name=recipe.primary_country.name, state_name=recipe.primary_state.name, recipe_slug=recipe.slug) }}{% else %}{{ url_for('view_recipe_old', recipe_id=recipe.id) }}{% endif %}">{{ recipe.name }}</a></li>
                             {% endfor %}
+                            {% if recipes|length > 10 %}
+                            <li class="empty-state">... and {{ recipes|length - 10 }} more</li>
+                            {% endif %}
                         {% else %}
                             <li class="empty-state">No recipes available</li>
                         {% endif %}

@@ -108,8 +108,10 @@ def get_recipe_url(recipe):
 @app.route('/')
 def index():
     recipes = Recipe.query.order_by(Recipe.created_at.desc()).all()
+    countries = Country.query.order_by(Country.name).all()
+    users = User.query.order_by(User.username).all()
     breadcrumbs = []
-    return render_template('home.html', recipes=recipes, breadcrumbs=breadcrumbs)
+    return render_template('home.html', recipes=recipes, countries=countries, users=users, breadcrumbs=breadcrumbs)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
