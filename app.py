@@ -103,6 +103,8 @@ def get_recipe_url(recipe):
     ensure_recipe_slug(recipe)
     if recipe.primary_country and recipe.primary_state:
         return url_for('view_recipe', country_name=recipe.primary_country.name, state_name=recipe.primary_state.name, recipe_slug=recipe.slug)
+    elif recipe.primary_country:
+        return url_for('view_recipe_country_only', country_name=recipe.primary_country.name, recipe_slug=recipe.slug)
     # Fallback to old route if no location
     return url_for('view_recipe_old', recipe_id=recipe.id)
 
@@ -223,6 +225,34 @@ def view_country(country_name):
     breadcrumbs = [{'label': 'World', 'url': url_for('world_map')}, {'label': country_name, 'url': None}]
     return render_template('country.html', country=country, states=states, recipes=recipes, breadcrumbs=breadcrumbs)
 
+@app.route('/country/<country_name>/<recipe_slug>')
+def view_recipe_country_only(country_name, recipe_slug):
+    # Find recipe by slug
+    recipe = Recipe.query.filter_by(slug=recipe_slug).first_or_404()
+    
+    # Verify country matches and recipe has no state
+    if not recipe.primary_country:
+        flash('Recipe location not set', 'error')
+        return redirect(url_for('index'))
+    if recipe.primary_country.name != country_name:
+        flash('Recipe location mismatch', 'error')
+        return redirect(url_for('index'))
+    if recipe.primary_state:
+        # If recipe has a state, redirect to the state route
+        return redirect(url_for('view_recipe', country_name=recipe.primary_country.name, state_name=recipe.primary_state.name, recipe_slug=recipe.slug))
+    
+    is_owner = current_user.is_authenticated and recipe.user_id == current_user.id
+    is_favorited = current_user.is_authenticated and recipe in current_user.favorite_recipes
+    countries = Country.query.all()
+    states = State.query.all()
+    
+    breadcrumbs = []
+    if recipe.primary_country:
+        breadcrumbs.append({'label': recipe.primary_country.name, 'url': url_for('view_country', country_name=recipe.primary_country.name)})
+    breadcrumbs.append({'label': recipe.name, 'url': None})
+    
+    return render_template('recipe.html', recipe=recipe, is_owner=is_owner, is_favorited=is_favorited, countries=countries, states=states, breadcrumbs=breadcrumbs)
+
 @app.route('/country/<country_name>/<state_name>/<recipe_slug>')
 def view_recipe(country_name, state_name, recipe_slug):
     # Find recipe by slug
@@ -257,6 +287,9 @@ def view_recipe_old(recipe_id):
     ensure_recipe_slug(recipe)
     if recipe.primary_country and recipe.primary_state:
         return redirect(url_for('view_recipe', country_name=recipe.primary_country.name, state_name=recipe.primary_state.name, recipe_slug=recipe.slug))
+    elif recipe.primary_country:
+        # Recipe has country but no state
+        return redirect(url_for('view_recipe_country_only', country_name=recipe.primary_country.name, recipe_slug=recipe.slug))
     else:
         # If no location, redirect to home
         flash('Recipe location not set', 'error')
