@@ -285,7 +285,7 @@ def view_recipe_slug(recipe_slug):
     return render_template('recipe_detail.html', recipe=recipe, ingredients=ingredients, steps=recipe.steps)
 
 @app.route('/countries/<string:country_slug>')
-def view_country(country_slug):
+def view_country_slug(country_slug):
     # Convert slug to name (e.g. "japan" -> "Japan", "united-states" -> "United States")
     name = country_slug.replace('-', ' ').title()
     # Handle specific cases if needed, but title() works for most
