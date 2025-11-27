@@ -573,13 +573,31 @@ def init_db():
             state = State(name=state_name, country_id=us.id)
             db.session.add(state)
     
-    # Add a few more common countries
-    countries_to_add = ['Canada', 'Mexico', 'United Kingdom', 'France', 'Germany', 'Japan', 'China', 'Australia', 'Italy', 'Thailand']
-    for country_name in countries_to_add:
-        country = Country.query.filter_by(name=country_name).first()
-        if not country:
-            country = Country(name=country_name)
-            db.session.add(country)
+    # Load all countries from static/countries.json
+    json_path = os.path.join(os.path.dirname(__file__), 'static', 'countries.json')
+    try:
+        with open(json_path, 'r', encoding='utf-8') as f:
+            countries_data = json.load(f)
+        
+        if isinstance(countries_data, list):
+            for country_entry in countries_data:
+                if 'country' in country_entry:
+                    country_name = country_entry['country']
+                    # Check if country already exists
+                    existing_country = Country.query.filter_by(name=country_name).first()
+                    if not existing_country:
+                        country = Country(name=country_name)
+                        db.session.add(country)
+    except (FileNotFoundError, json.JSONDecodeError, IOError) as e:
+        print(f"Warning: Could not load countries from {json_path}: {e}")
+        print("Falling back to minimal country set")
+        # Fallback to a minimal set if JSON file is missing
+        fallback_countries = ['Canada', 'Mexico', 'United Kingdom', 'France', 'Germany', 'Japan', 'China', 'Australia', 'Italy', 'Thailand']
+        for country_name in fallback_countries:
+            country = Country.query.filter_by(name=country_name).first()
+            if not country:
+                country = Country(name=country_name)
+                db.session.add(country)
     
     db.session.commit()
     
