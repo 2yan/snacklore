@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ recipe.name }} - Snacklore</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #000;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        .container {
+            background: #fff;
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            border: 1px solid #333;
+        }
+        h1 { margin-bottom: 1.5rem; color: #000; }
+        .recipe-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #666;
+        }
+        .recipe-info {
+            color: #666;
+            margin-top: 0.5rem;
+        }
+        .steps-section {
+            margin-top: 2rem;
+        }
+        .steps-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
+        .step {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: #f9f9f9;
+            position: relative;
+            cursor: move;
+            transition: background 0.2s;
+        }
+        .step:hover {
+            background: #f0f0f0;
+        }
+        .step.dragging {
+            opacity: 0.5;
+            background: #e0e0e0;
+        }
+        .step-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        .drag-handle {
+            cursor: grab;
+            color: #666;
+            font-size: 1.2rem;
+            margin-right: 0.5rem;
+            user-select: none;
+        }
+        .drag-handle:active {
+            cursor: grabbing;
+        }
+        .step-number {
+            font-weight: 600;
+            color: #000;
+            font-size: 1.1rem;
+        }
+        .step-text {
+            color: #333;
+            margin-bottom: 0.75rem;
+            line-height: 1.6;
+            cursor: text;
+            padding: 0.5rem;
+            min-height: 1.5rem;
+        }
+        .step-text.editing {
+            border: 1px solid #666;
+            background: #fff;
+        }
+        .ingredients-list {
+            margin-top: 0.75rem;
+            padding-left: 1rem;
+        }
+        .ingredient {
+            margin-bottom: 0.4rem;
+            color: #333;
+            padding: 0.25rem 0;
+        }
+        .edit-mode {
+            display: none;
+        }
+        .edit-mode.active {
+            display: block;
+        }
+        .view-mode {
+            display: block;
+        }
+        .view-mode.hidden {
+            display: none;
+        }
+        input[type="text"], textarea, select {
+            width: 100%;
+            padding: 0.5rem;
+            border: 2px solid #666;
+            font-size: 1rem;
+            background: #fff;
+            color: #000;
+        }
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        button, .btn {
+            padding: 0.5rem 1rem;
+            background: #000;
+            color: white;
+            border: 2px solid #000;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        button:hover, .btn:hover { background: #333; border-color: #333; }
+        .btn-secondary {
+            background: #666;
+            border-color: #666;
+        }
+        .btn-secondary:hover { background: #555; border-color: #555; }
+        .btn-danger {
+            background: #000;
+            border-color: #000;
+        }
+        .btn-danger:hover { background: #333; border-color: #333; }
+        .action-buttons {
+            margin-top: 1rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+        .flash-messages {
+            margin-bottom: 1rem;
+        }
+        .flash {
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border: 1px solid #666;
+        }
+        .flash.error { background: #f5f5f5; color: #000; }
+        .flash.success { background: #f5f5f5; color: #000; }
+        .flash.info { background: #f5f5f5; color: #000; }
+        .back-link {
+            margin-bottom: 1rem;
+        }
+        .back-link a {
+            color: #000;
+            text-decoration: none;
+        }
+        .back-link a:hover { text-decoration: underline; }
+        .add-form {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: #f5f5f5;
+        }
+        .add-form h3 {
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+        }
+        .form-row {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .form-row input {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="back-link">
+            <a href="{{ url_for('index') }}">← Back to Home</a>
+        </div>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        
+        <div class="recipe-header">
+            <div class="view-mode" id="recipe-name-view">
+                <h1>{{ recipe.name }}</h1>
+                <div class="recipe-info">
+                    {% if recipe.primary_country %}Country: {{ recipe.primary_country.name }}{% endif %}
+                    {% if recipe.primary_state %} | State: {{ recipe.primary_state.name }}{% endif %}
+                    {% if is_owner %}
+                        <button onclick="enableEditMode()" style="margin-left: 1rem;">Edit Recipe</button>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="edit-mode" id="recipe-name-edit">
+                <form method="POST" action="{{ url_for('edit_recipe', recipe_id=recipe.id) }}">
+                    <input type="text" name="name" value="{{ recipe.name }}" required style="font-size: 1.5rem; font-weight: 600; margin-bottom: 0.5rem;">
+                    <div style="margin-top: 0.5rem;">
+                        <select name="country_id" id="recipe-country-select" onchange="loadRecipeStates()" style="margin-bottom: 0.5rem;">
+                            <option value="">No Country</option>
+                            {% for country in countries %}
+                            <option value="{{ country.id }}" {% if recipe.primary_country_id == country.id %}selected{% endif %}>{{ country.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <select name="state_id" id="recipe-state-select">
+                            <option value="">No State</option>
+                            {% if recipe.primary_country_id %}
+                                {% for state in states %}
+                                    {% if state.country_id == recipe.primary_country_id %}
+                                    <option value="{{ state.id }}" {% if recipe.primary_state_id == state.id %}selected{% endif %}>{{ state.name }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </select>
+                    </div>
+                    <div class="action-buttons">
+                        <button type="submit">Save</button>
+                        <button type="button" onclick="disableEditMode()" class="btn-secondary">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="steps-section">
+            <h2>Steps</h2>
+            <ul class="steps-list" id="steps-list">
+            {% for step in recipe.steps %}
+            <li class="step" draggable="{% if is_owner %}true{% else %}false{% endif %}" data-step-id="{{ step.id }}" data-step-number="{{ step.step_number }}">
+                <div class="step-header">
+                    <div style="display: flex; align-items: center;">
+                        {% if is_owner %}
+                        <span class="drag-handle">⋮⋮</span>
+                        {% endif %}
+                        <span class="step-number">Step {{ step.step_number }}</span>
+                    </div>
+                    {% if is_owner %}
+                        <form method="POST" action="{{ url_for('delete_step', recipe_id=recipe.id, step_id=step.id) }}" style="display: inline;" onsubmit="return confirm('Delete this step?');">
+                            <button type="submit" class="btn-danger" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;">Delete</button>
+                        </form>
+                    {% endif %}
+                </div>
+                <div class="step-text view-mode step-text-view-{{ step.id }}" onclick="{% if is_owner %}startEditStep({{ step.id }}){% endif %}">
+                    {{ step.step_text }}
+                </div>
+                <div class="edit-mode step-text-edit-{{ step.id }}" style="display: none;">
+                    <form method="POST" action="{{ url_for('edit_step', recipe_id=recipe.id, step_id=step.id) }}" onsubmit="saveStepEdit({{ step.id }}); return true;">
+                        <textarea name="step_text" required style="width: 100%; min-height: 80px;">{{ step.step_text }}</textarea>
+                        <div class="action-buttons" style="margin-top: 0.5rem;">
+                            <button type="submit">Save</button>
+                            <button type="button" onclick="cancelStepEdit({{ step.id }})" class="btn-secondary">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="ingredients-list">
+                    <strong style="display: block; margin-bottom: 0.5rem;">Ingredients:</strong>
+                    {% for ingredient in step.ingredients %}
+                    <div class="ingredient">
+                        <span class="view-mode ingredient-view-{{ ingredient.id }}" onclick="{% if is_owner %}startEditIngredient({{ ingredient.id }}){% endif %}" style="cursor: {% if is_owner %}text{% else %}default{% endif %};">
+                            {{ ingredient.name }} - {{ ingredient.amount }}
+                        </span>
+                        <div class="edit-mode ingredient-edit-{{ ingredient.id }}" style="display: none;">
+                            <form method="POST" action="{{ url_for('edit_ingredient', recipe_id=recipe.id, ingredient_id=ingredient.id) }}" style="display: flex; gap: 0.5rem; align-items: center;">
+                                <input type="text" name="name" value="{{ ingredient.name }}" required style="flex: 1; padding: 0.4rem;">
+                                <input type="text" name="amount" value="{{ ingredient.amount }}" required style="flex: 1; padding: 0.4rem;">
+                                <button type="submit" style="padding: 0.4rem 0.8rem;">Save</button>
+                                <button type="button" onclick="cancelIngredientEdit({{ ingredient.id }})" class="btn-secondary" style="padding: 0.4rem 0.8rem;">Cancel</button>
+                            </form>
+                        </div>
+                        {% if is_owner %}
+                            <form method="POST" action="{{ url_for('delete_ingredient', recipe_id=recipe.id, ingredient_id=ingredient.id) }}" style="display: inline; margin-left: 0.5rem;" onsubmit="return confirm('Delete this ingredient?');">
+                                <button type="submit" class="btn-danger" style="padding: 0.2rem 0.5rem; font-size: 0.75rem;">×</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                    {% if is_owner %}
+                    <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #ddd;">
+                        <form method="POST" action="{{ url_for('add_ingredient', recipe_id=recipe.id, step_id=step.id) }}" style="display: flex; gap: 0.5rem; align-items: center;">
+                            <input type="text" name="name" placeholder="Ingredient" required style="flex: 1; padding: 0.4rem;">
+                            <input type="text" name="amount" placeholder="Amount" required style="flex: 1; padding: 0.4rem;">
+                            <button type="submit" style="padding: 0.4rem 0.8rem;">+</button>
+                        </form>
+                    </div>
+                    {% endif %}
+                </div>
+            </li>
+            {% endfor %}
+            </ul>
+            
+            {% if is_owner %}
+            <div class="add-form">
+                <h3>Add New Step</h3>
+                <form method="POST" action="{{ url_for('add_step', recipe_id=recipe.id) }}">
+                    <div style="margin-bottom: 0.75rem;">
+                        <textarea name="step_text" placeholder="Enter step instructions..." required style="min-height: 80px;"></textarea>
+                    </div>
+                    <button type="submit">Add Step</button>
+                </form>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <script>
+        function enableEditMode() {
+            document.getElementById('recipe-name-view').classList.add('hidden');
+            document.getElementById('recipe-name-edit').classList.add('active');
+        }
+        
+        function disableEditMode() {
+            document.getElementById('recipe-name-view').classList.remove('hidden');
+            document.getElementById('recipe-name-edit').classList.remove('active');
+        }
+        
+        function startEditStep(stepId) {
+            const viewEl = document.querySelector('.step-text-view-' + stepId);
+            const editEl = document.querySelector('.step-text-edit-' + stepId);
+            viewEl.style.display = 'none';
+            editEl.style.display = 'block';
+            editEl.querySelector('textarea').focus();
+        }
+        
+        function saveStepEdit(stepId) {
+            // Form will submit, page will reload
+        }
+        
+        function cancelStepEdit(stepId) {
+            const viewEl = document.querySelector('.step-text-view-' + stepId);
+            const editEl = document.querySelector('.step-text-edit-' + stepId);
+            viewEl.style.display = 'block';
+            editEl.style.display = 'none';
+        }
+        
+        function startEditIngredient(ingredientId) {
+            const viewEl = document.querySelector('.ingredient-view-' + ingredientId);
+            const editEl = document.querySelector('.ingredient-edit-' + ingredientId);
+            viewEl.style.display = 'none';
+            editEl.style.display = 'block';
+            editEl.querySelector('input[name="name"]').focus();
+        }
+        
+        function cancelIngredientEdit(ingredientId) {
+            const viewEl = document.querySelector('.ingredient-view-' + ingredientId);
+            const editEl = document.querySelector('.ingredient-edit-' + ingredientId);
+            viewEl.style.display = 'inline';
+            editEl.style.display = 'none';
+        }
+        
+        function loadRecipeStates() {
+            const countryId = document.getElementById('recipe-country-select').value;
+            const stateSelect = document.getElementById('recipe-state-select');
+            stateSelect.innerHTML = '<option value="">No State</option>';
+            
+            if (countryId) {
+                fetch('/api/states/' + countryId)
+                    .then(response => response.json())
+                    .then(data => {
+                        data.states.forEach(state => {
+                            const option = document.createElement('option');
+                            option.value = state.id;
+                            option.textContent = state.name;
+                            stateSelect.appendChild(option);
+                        });
+                    });
+            }
+        }
+        
+        // Drag and drop functionality
+        {% if is_owner %}
+        let draggedElement = null;
+        const stepsList = document.getElementById('steps-list');
+        
+        stepsList.addEventListener('dragstart', function(e) {
+            if (e.target.classList.contains('step')) {
+                draggedElement = e.target;
+                e.target.classList.add('dragging');
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/html', e.target.outerHTML);
+            }
+        });
+        
+        stepsList.addEventListener('dragend', function(e) {
+            if (e.target.classList.contains('step')) {
+                e.target.classList.remove('dragging');
+            }
+        });
+        
+        stepsList.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            
+            const afterElement = getDragAfterElement(stepsList, e.clientY);
+            const dragging = document.querySelector('.dragging');
+            
+            if (afterElement == null) {
+                stepsList.appendChild(dragging);
+            } else {
+                stepsList.insertBefore(dragging, afterElement);
+            }
+        });
+        
+        stepsList.addEventListener('drop', function(e) {
+            e.preventDefault();
+            if (draggedElement) {
+                updateStepOrder();
+            }
+        });
+        
+        function getDragAfterElement(container, y) {
+            const draggableElements = [...container.querySelectorAll('.step:not(.dragging)')];
+            
+            return draggableElements.reduce((closest, child) => {
+                const box = child.getBoundingClientRect();
+                const offset = y - box.top - box.height / 2;
+                
+                if (offset < 0 && offset > closest.offset) {
+                    return { offset: offset, element: child };
+                } else {
+                    return closest;
+                }
+            }, { offset: Number.NEGATIVE_INFINITY }).element;
+        }
+        
+        function updateStepOrder() {
+            const steps = stepsList.querySelectorAll('.step');
+            const stepOrders = [];
+            
+            steps.forEach((step, index) => {
+                const stepId = step.getAttribute('data-step-id');
+                stepOrders.push({
+                    step_id: parseInt(stepId),
+                    step_number: index + 1
+                });
+                
+                // Update displayed step number
+                const stepNumberEl = step.querySelector('.step-number');
+                if (stepNumberEl) {
+                    stepNumberEl.textContent = 'Step ' + (index + 1);
+                }
+            });
+            
+            // Send update to server
+            fetch('{{ url_for("update_step_order", recipe_id=recipe.id) }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ step_orders: stepOrders })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update data attributes
+                    steps.forEach((step, index) => {
+                        step.setAttribute('data-step-number', index + 1);
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error updating step order:', error);
+            });
+        }
+        {% endif %}
+    </script>
+</body>
+</html>
+

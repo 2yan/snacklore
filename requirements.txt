@@ -1,2 +1,6 @@
 flask
+flask-sqlalchemy
+psycopg2-binary
+flask-login
+werkzeug
 
