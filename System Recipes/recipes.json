@@ -1,0 +1,276 @@
+[
+  {
+    "name": "Classic Chocolate Chip Cookies",
+    "username": "System",
+    "country": "United States",
+    "state": "California",
+    "steps": [
+      {
+        "step_number": 1,
+        "step_text": "Preheat oven to 375°F (190°C). Line baking sheets with parchment paper.",
+        "ingredients": []
+      },
+      {
+        "step_number": 2,
+        "step_text": "In a large bowl, cream together the butter, brown sugar, and white sugar until smooth.",
+        "ingredients": [
+          {
+            "name": "Butter",
+            "amount": "1 cup (2 sticks), softened",
+            "username": "System"
+          },
+          {
+            "name": "Brown Sugar",
+            "amount": "3/4 cup, packed",
+            "username": "System"
+          },
+          {
+            "name": "White Sugar",
+            "amount": "3/4 cup",
+            "username": "System"
+          }
+        ]
+      },
+      {
+        "step_number": 3,
+        "step_text": "Beat in eggs one at a time, then stir in vanilla.",
+        "ingredients": [
+          {
+            "name": "Eggs",
+            "amount": "2 large",
+            "username": "System"
+          },
+          {
+            "name": "Vanilla Extract",
+            "amount": "1 teaspoon",
+            "username": "System"
+          }
+        ]
+      },
+      {
+        "step_number": 4,
+        "step_text": "Combine flour, baking soda, and salt in a separate bowl. Gradually blend into the creamed mixture.",
+        "ingredients": [
+          {
+            "name": "All-Purpose Flour",
+            "amount": "2 1/4 cups",
+            "username": "System"
+          },
+          {
+            "name": "Baking Soda",
+            "amount": "1 teaspoon",
+            "username": "System"
+          },
+          {
+            "name": "Salt",
+            "amount": "1 teaspoon",
+            "username": "System"
+          }
+        ]
+      },
+      {
+        "step_number": 5,
+        "step_text": "Stir in chocolate chips. Drop rounded tablespoons of dough onto the prepared baking sheets.",
+        "ingredients": [
+          {
+            "name": "Chocolate Chips",
+            "amount": "2 cups",
+            "username": "System"
+          }
+        ]
+      },
+      {
+        "step_number": 6,
+        "step_text": "Bake for 9 to 11 minutes, or until golden brown. Cool on baking sheets for a few minutes before transferring to wire racks to cool completely.",
+        "ingredients": []
+      }
+    ]
+  },
+  {
+    "name": "Margherita Pizza",
+    "username": "System",
+    "country": "Italy",
+    "state": null,
+    "steps": [
+      {
+        "step_number": 1,
+        "step_text": "Preheat oven to 475°F (245°C). If using a pizza stone, place it in the oven while preheating.",
+        "ingredients": []
+      },
+      {
+        "step_number": 2,
+        "step_text": "Prepare the pizza dough. Roll out the dough on a floured surface to your desired thickness.",
+        "ingredients": [
+          {
+            "name": "Pizza Dough",
+            "amount": "1 lb (450g)",
+            "username": "System"
+          },
+          {
+            "name": "All-Purpose Flour",
+            "amount": "for dusting",
+            "username": "System"
+          }
+        ]
+      },
+      {
+        "step_number": 3,
+        "step_text": "Spread tomato sauce evenly over the dough, leaving a 1-inch border for the crust.",
+        "ingredients": [
+          {
+            "name": "Tomato Sauce",
+            "amount": "1/2 cup",
+            "username": "System"
+          }
+        ]
+      },
+      {
+        "step_number": 4,
+        "step_text": "Arrange fresh mozzarella slices over the sauce, then add fresh basil leaves.",
+        "ingredients": [
+          {
+            "name": "Fresh Mozzarella",
+            "amount": "8 oz, sliced",
+            "username": "System"
+          },
+          {
+            "name": "Fresh Basil Leaves",
+            "amount": "10-12 leaves",
+            "username": "System"
+          }
+        ]
+      },
+      {
+        "step_number": 5,
+        "step_text": "Drizzle with olive oil and sprinkle with salt. Bake for 10-12 minutes until crust is golden and cheese is bubbly.",
+        "ingredients": [
+          {
+            "name": "Extra Virgin Olive Oil",
+            "amount": "2 tablespoons",
+            "username": "System"
+          },
+          {
+            "name": "Sea Salt",
+            "amount": "to taste",
+            "username": "System"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Pad Thai",
+    "username": "System",
+    "country": "Thailand",
+    "state": null,
+    "steps": [
+      {
+        "step_number": 1,
+        "step_text": "Soak rice noodles in warm water for 30 minutes until pliable but not fully soft. Drain and set aside.",
+        "ingredients": [
+          {
+            "name": "Rice Noodles",
+            "amount": "8 oz (225g)",
+            "username": "System"
+          }
+        ]
+      },
+      {
+        "step_number": 2,
+        "step_text": "Heat oil in a large wok or skillet over medium-high heat. Add garlic and shallots, stir-fry for 30 seconds.",
+        "ingredients": [
+          {
+            "name": "Vegetable Oil",
+            "amount": "2 tablespoons",
+            "username": "System"
+          },
+          {
+            "name": "Garlic",
+            "amount": "3 cloves, minced",
+            "username": "System"
+          },
+          {
+            "name": "Shallots",
+            "amount": "2, thinly sliced",
+            "username": "System"
+          }
+        ]
+      },
+      {
+        "step_number": 3,
+        "step_text": "Push garlic and shallots to one side. Crack eggs into the pan and scramble until just set.",
+        "ingredients": [
+          {
+            "name": "Eggs",
+            "amount": "2 large",
+            "username": "System"
+          }
+        ]
+      },
+      {
+        "step_number": 4,
+        "step_text": "Add drained noodles, tamarind paste, fish sauce, and palm sugar. Toss everything together.",
+        "ingredients": [
+          {
+            "name": "Tamarind Paste",
+            "amount": "2 tablespoons",
+            "username": "System"
+          },
+          {
+            "name": "Fish Sauce",
+            "amount": "2 tablespoons",
+            "username": "System"
+          },
+          {
+            "name": "Palm Sugar",
+            "amount": "2 tablespoons",
+            "username": "System"
+          }
+        ]
+      },
+      {
+        "step_number": 5,
+        "step_text": "Add shrimp (or tofu), bean sprouts, and green onions. Toss for 1-2 minutes until everything is heated through.",
+        "ingredients": [
+          {
+            "name": "Shrimp",
+            "amount": "8 oz, peeled and deveined",
+            "username": "System"
+          },
+          {
+            "name": "Bean Sprouts",
+            "amount": "1 cup",
+            "username": "System"
+          },
+          {
+            "name": "Green Onions",
+            "amount": "3, chopped",
+            "username": "System"
+          }
+        ]
+      },
+      {
+        "step_number": 6,
+        "step_text": "Serve immediately, garnished with crushed peanuts, lime wedges, and fresh cilantro.",
+        "ingredients": [
+          {
+            "name": "Crushed Peanuts",
+            "amount": "1/4 cup",
+            "username": "System"
+          },
+          {
+            "name": "Lime",
+            "amount": "1, cut into wedges",
+            "username": "System"
+          },
+          {
+            "name": "Fresh Cilantro",
+            "amount": "2 tablespoons, chopped",
+            "username": "System"
+          }
+        ]
+      }
+    ]
+  }
+]
+

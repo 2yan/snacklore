@@ -5,6 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 import os
 import re
+import json
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-secret-key-change-in-production')
@@ -112,7 +113,11 @@ def index():
 
 @app.route('/directory')
 def directory():
-    recipes = Recipe.query.order_by(Recipe.created_at.desc()).all()
+    # Only show recipes that have at least one step (actual content, not phantom recipes)
+    from sqlalchemy import exists
+    recipes = Recipe.query.filter(
+        exists().where(Step.recipe_id == Recipe.id)
+    ).order_by(Recipe.created_at.desc()).all()
     countries = Country.query.order_by(Country.name).all()
     users = User.query.order_by(User.username).all()
     breadcrumbs = [{'label': 'Directory', 'url': None}]
@@ -536,7 +541,7 @@ def init_db():
             db.session.add(state)
     
     # Add a few more common countries
-    countries_to_add = ['Canada', 'Mexico', 'United Kingdom', 'France', 'Germany', 'Japan', 'China', 'Australia']
+    countries_to_add = ['Canada', 'Mexico', 'United Kingdom', 'France', 'Germany', 'Japan', 'China', 'Australia', 'Italy', 'Thailand']
     for country_name in countries_to_add:
         country = Country.query.filter_by(name=country_name).first()
         if not country:
@@ -720,10 +725,131 @@ def init_db():
                 db.session.add(r)
         db.session.commit()
 
+def load_system_recipes():
+    """Load recipes from System Recipes/recipes.json file"""
+    system_user = User.query.filter_by(username='System').first()
+    if not system_user:
+        print("System user not found. Cannot load system recipes.")
+        return
+    
+    json_path = os.path.join(os.path.dirname(__file__), 'System Recipes', 'recipes.json')
+    
+    if not os.path.exists(json_path):
+        print(f"System recipes file not found at {json_path}. Skipping recipe import.")
+        return
+    
+    try:
+        with open(json_path, 'r', encoding='utf-8') as f:
+            recipes_data = json.load(f)
+    except (json.JSONDecodeError, IOError) as e:
+        print(f"Error loading system recipes: {e}")
+        return
+    
+    if not isinstance(recipes_data, list):
+        print("System recipes file must contain an array of recipes.")
+        return
+    
+    loaded_count = 0
+    for recipe_data in recipes_data:
+        try:
+            # Validate required fields
+            if 'name' not in recipe_data or 'username' not in recipe_data:
+                continue
+            
+            # Check if recipe already exists
+            existing_recipe = Recipe.query.filter_by(
+                name=recipe_data['name'],
+                user_id=system_user.id
+            ).first()
+            
+            if existing_recipe:
+                continue  # Skip if already exists
+            
+            # Get or create country
+            country = None
+            if recipe_data.get('country'):
+                country = Country.query.filter(Country.name.ilike(recipe_data['country'])).first()
+                if not country:
+                    country = Country(name=recipe_data['country'])
+                    db.session.add(country)
+                    db.session.flush()
+            
+            # Get or create state
+            state = None
+            if recipe_data.get('state') and country:
+                state = State.query.filter_by(
+                    country_id=country.id,
+                    name=recipe_data['state']
+                ).first()
+                if not state:
+                    state = State(name=recipe_data['state'], country_id=country.id)
+                    db.session.add(state)
+                    db.session.flush()
+            
+            # Create recipe
+            recipe = Recipe(
+                name=recipe_data['name'],
+                user_id=system_user.id,
+                primary_country_id=country.id if country else None,
+                primary_state_id=state.id if state else None,
+                slug=generate_slug(system_user.username, recipe_data['name'])
+            )
+            db.session.add(recipe)
+            db.session.flush()
+            
+            # Add steps
+            if 'steps' in recipe_data and recipe_data['steps']:
+                # Sort steps by step_number
+                steps_data = sorted(recipe_data['steps'], key=lambda x: x.get('step_number', 0))
+                
+                for step_data in steps_data:
+                    if 'step_number' not in step_data or 'step_text' not in step_data:
+                        continue
+                    
+                    step = Step(
+                        recipe_id=recipe.id,
+                        step_number=step_data['step_number'],
+                        step_text=step_data['step_text']
+                    )
+                    db.session.add(step)
+                    db.session.flush()
+                    
+                    # Add ingredients for this step
+                    if 'ingredients' in step_data:
+                        for ingredient_data in step_data['ingredients']:
+                            if 'name' not in ingredient_data or 'amount' not in ingredient_data:
+                                continue
+                            
+                            # Use ingredient username or fall back to recipe username
+                            ingredient_username = ingredient_data.get('username', system_user.username)
+                            ingredient_user = User.query.filter_by(username=ingredient_username).first()
+                            if not ingredient_user:
+                                ingredient_user = system_user  # Fall back to system user
+                            
+                            ingredient = Ingredient(
+                                step_id=step.id,
+                                user_id=ingredient_user.id,
+                                name=ingredient_data['name'],
+                                amount=ingredient_data['amount']
+                            )
+                            db.session.add(ingredient)
+            
+            db.session.commit()
+            loaded_count += 1
+            
+        except Exception as e:
+            db.session.rollback()
+            print(f"Error loading recipe '{recipe_data.get('name', 'Unknown')}': {str(e)}")
+    
+    if loaded_count > 0:
+        print(f"Loaded {loaded_count} system recipe(s) from System Recipes/recipes.json")
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
         init_db()
+        # Load system recipes from JSON file
+        load_system_recipes()
         # Generate slugs for any existing recipes that don't have them
         recipes_without_slugs = Recipe.query.filter_by(slug=None).all()
         for recipe in recipes_without_slugs:
