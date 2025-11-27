@@ -726,13 +726,13 @@ def init_db():
         db.session.commit()
 
 def load_system_recipes():
-    """Load recipes from System Recipes/recipes.json file"""
+    """Load recipes from system_recipes/recipes.json file"""
     system_user = User.query.filter_by(username='System').first()
     if not system_user:
         print("System user not found. Cannot load system recipes.")
         return
     
-    json_path = os.path.join(os.path.dirname(__file__), 'System Recipes', 'recipes.json')
+    json_path = os.path.join(os.path.dirname(__file__), 'system_recipes', 'recipes.json')
     
     if not os.path.exists(json_path):
         print(f"System recipes file not found at {json_path}. Skipping recipe import.")
@@ -842,7 +842,7 @@ def load_system_recipes():
             print(f"Error loading recipe '{recipe_data.get('name', 'Unknown')}': {str(e)}")
     
     if loaded_count > 0:
-        print(f"Loaded {loaded_count} system recipe(s) from System Recipes/recipes.json")
+        print(f"Loaded {loaded_count} system recipe(s) from system_recipes/recipes.json")
 
 if __name__ == '__main__':
     with app.app_context():
