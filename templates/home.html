@@ -1062,7 +1062,7 @@
             if (country.lat && country.lng) {
               const marker = L.marker([country.lat, country.lng]).addTo(map);
               const slug = country.country.toLowerCase().replace(/ /g, "-");
-              const url = "/countries/" + slug;
+              const url = "/c/" + slug;
 
               // Navigate to country page on click
               marker.on("click", function () {
@@ -1143,9 +1143,16 @@
               return style;
             },
             onEachFeature: function (feature, layer) {
+              const countryName = feature.properties.name;
+              const slug = countryName.toLowerCase().replace(/ /g, "-");
+              const url = "/c/" + slug;
+              
               layer.on({
                 mouseover: highlightFeature,
                 mouseout: resetHighlight,
+                click: function () {
+                  window.location.href = url;
+                },
               });
             },
           }).addTo(map);
