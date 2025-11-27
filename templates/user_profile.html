@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ profile_user.username }} - Snacklore</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #000;
+            min-height: 100vh;
+            padding: 0;
+        }
+        .container {
+            background: #fff;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            border: 1px solid #333;
+            border-top: none;
+            margin-top: 0;
+        }
+        h1 { margin-bottom: 1rem; color: #000; }
+        .user-info {
+            background: #f5f5f5;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .user-detail {
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+        .user-detail-label {
+            font-weight: 600;
+            color: #000;
+        }
+        .recipes-section {
+            margin-top: 2rem;
+        }
+        .section-title {
+            font-size: 1.5rem;
+            color: #000;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #666;
+        }
+        .recipes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .recipe-card {
+            background: #f9f9f9;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .recipe-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .recipe-card a {
+            color: #000;
+            text-decoration: none;
+            display: block;
+        }
+        .recipe-card h4 {
+            margin-bottom: 0.5rem;
+            color: #000;
+        }
+        .recipe-meta {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    {% include 'includes/header.html' %}
+    <div class="container">
+        <h1>{{ profile_user.username }}</h1>
+        
+        <div class="user-info">
+            <div class="user-detail">
+                <span class="user-detail-label">Email:</span> {{ profile_user.email }}
+            </div>
+            {% if profile_user.primary_country %}
+            <div class="user-detail">
+                <span class="user-detail-label">Country:</span> {{ profile_user.primary_country.name }}
+            </div>
+            {% endif %}
+            {% if profile_user.primary_state %}
+            <div class="user-detail">
+                <span class="user-detail-label">State:</span> {{ profile_user.primary_state.name }}
+            </div>
+            {% endif %}
+            <div class="user-detail">
+                <span class="user-detail-label">Member since:</span> {{ profile_user.registered_on.strftime('%Y-%m-%d') if profile_user.registered_on else 'N/A' }}
+            </div>
+        </div>
+        
+        <div class="recipes-section">
+            <h2 class="section-title">Recipes by {{ profile_user.username }}</h2>
+            {% if user_recipes %}
+            <div class="recipes-grid">
+                {% for recipe in user_recipes %}
+                <div class="recipe-card">
+                    <a href="{% if recipe.primary_country and recipe.primary_state %}{{ url_for('view_recipe', country_name=recipe.primary_country.name, state_name=recipe.primary_state.name, recipe_slug=recipe.slug) }}{% else %}{{ url_for('view_recipe_old', recipe_id=recipe.id) }}{% endif %}">
+                        <h4>{{ recipe.name }}</h4>
+                        <div class="recipe-meta">
+                            {% if recipe.primary_country %}
+                                <div>📍 {{ recipe.primary_country.name }}</div>
+                            {% endif %}
+                            {% if recipe.primary_state %}
+                                <div>📍 {{ recipe.primary_state.name }}</div>
+                            {% endif %}
+                            {% if recipe.created_at %}
+                                <div>📅 {{ recipe.created_at.strftime('%Y-%m-%d') }}</div>
+                            {% endif %}
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="empty-state">No recipes yet.</div>
+            {% endif %}
+        </div>
+        
+        {% if current_user.is_authenticated and current_user.id == profile_user.id %}
+        <div class="recipes-section">
+            <h2 class="section-title">My Favorites</h2>
+            {% if favorite_recipes %}
+            <div class="recipes-grid">
+                {% for recipe in favorite_recipes %}
+                <div class="recipe-card">
+                    <a href="{% if recipe.primary_country and recipe.primary_state %}{{ url_for('view_recipe', country_name=recipe.primary_country.name, state_name=recipe.primary_state.name, recipe_slug=recipe.slug) }}{% else %}{{ url_for('view_recipe_old', recipe_id=recipe.id) }}{% endif %}">
+                        <h4>{{ recipe.name }}</h4>
+                        <div class="recipe-meta">
+                            <div>👤 {{ recipe.owner.username }}</div>
+                            {% if recipe.primary_country %}
+                                <div>📍 {{ recipe.primary_country.name }}</div>
+                            {% endif %}
+                            {% if recipe.primary_state %}
+                                <div>📍 {{ recipe.primary_state.name }}</div>
+                            {% endif %}
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="empty-state">No favorite recipes yet.</div>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
+

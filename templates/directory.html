@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site Directory - Snacklore</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #000;
+            min-height: 100vh;
+            padding: 0;
+        }
+        .container {
+            background: #fff;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            border: 1px solid #333;
+            border-top: none;
+            margin-top: 0;
+        }
+        h1 { 
+            margin-bottom: 0.5rem; 
+            color: #000; 
+            font-size: 2rem;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+        .site-structure {
+            margin-bottom: 3rem;
+        }
+        .section-title {
+            font-size: 1.5rem;
+            color: #000;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #666;
+        }
+        .breadcrumb-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: #f5f5f5;
+            border-radius: 4px;
+        }
+        .breadcrumb-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .breadcrumb-item a {
+            color: #000;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.25rem 0.5rem;
+            border-radius: 3px;
+            transition: background 0.2s;
+        }
+        .breadcrumb-item a:hover {
+            background: #ddd;
+        }
+        .breadcrumb-separator {
+            color: #666;
+        }
+        .breadcrumb-item.active a {
+            color: #666;
+            cursor: default;
+        }
+        .breadcrumb-item.active a:hover {
+            background: transparent;
+        }
+        .site-map {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .site-map-section {
+            background: #f9f9f9;
+            padding: 1.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .site-map-section h3 {
+            color: #000;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        .site-map-links {
+            list-style: none;
+        }
+        .site-map-links li {
+            margin-bottom: 0.75rem;
+        }
+        .site-map-links a {
+            color: #000;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 3px;
+            transition: background 0.2s;
+        }
+        .site-map-links a:hover {
+            background: #e8e8e8;
+        }
+        .site-map-links a::before {
+            content: "→";
+            color: #666;
+        }
+        .recipes-section {
+            margin-top: 2rem;
+        }
+        .recipes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .recipe-card {
+            background: #f9f9f9;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .recipe-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .recipe-card a {
+            color: #000;
+            text-decoration: none;
+            display: block;
+        }
+        .recipe-card h4 {
+            margin-bottom: 0.5rem;
+            color: #000;
+        }
+        .recipe-meta {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+        .user-info {
+            background: #f5f5f5;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .user-details {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .user-detail-item {
+            font-size: 0.9rem;
+        }
+        .user-detail-label {
+            color: #666;
+            font-weight: 500;
+        }
+        .user-detail-value {
+            color: #000;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        button, .btn {
+            padding: 0.5rem 1rem;
+            background: #000;
+            color: white;
+            border: 2px solid #000;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            border-radius: 3px;
+            font-family: inherit;
+        }
+        button:hover, .btn:hover { 
+            background: #333; 
+            border-color: #333; 
+        }
+        .btn-secondary {
+            background: #666;
+            border-color: #666;
+        }
+        .btn-secondary:hover { 
+            background: #555; 
+            border-color: #555; 
+        }
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+        }
+        .flash-messages {
+            margin-bottom: 1rem;
+        }
+        .flash {
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border: 1px solid #666;
+        }
+        .flash.error { background: #f5f5f5; color: #000; }
+        .flash.success { background: #f5f5f5; color: #000; }
+        .flash.info { background: #f5f5f5; color: #000; }
+    </style>
+</head>
+<body>
+    {% include 'includes/header.html' %}
+    <div class="container">
+        <h1>Site Directory</h1>
+        <p class="subtitle">Recipe Management System</p>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        
+        <div class="site-flow">
+            <h2 class="section-title">Site Flow & Structure</h2>
+            <div class="breadcrumb-nav" style="background: #fff; border: 2px solid #666; padding: 1.5rem; margin-bottom: 2rem;">
+                <div class="breadcrumb-item">
+                    <a href="{{ url_for('index') }}">Home</a>
+                </div>
+                <span class="breadcrumb-separator">→</span>
+                <div class="breadcrumb-item">
+                    <a href="{{ url_for('directory') }}">Directory</a>
+                </div>
+                <span class="breadcrumb-separator">→</span>
+                {% if not current_user.is_authenticated %}
+                <div class="breadcrumb-item">
+                    <a href="{{ url_for('login') }}">Login</a>
+                </div>
+                <span class="breadcrumb-separator">→</span>
+                <div class="breadcrumb-item">
+                    <a href="{{ url_for('register') }}">Register</a>
+                </div>
+                <span class="breadcrumb-separator">→</span>
+                {% endif %}
+                <div class="breadcrumb-item">
+                    <span style="color: #666;">Browse Recipes</span>
+                </div>
+                {% if recipes %}
+                <span class="breadcrumb-separator">→</span>
+                <div class="breadcrumb-item">
+                    <a href="{% if recipes[0].primary_country and recipes[0].primary_state %}{{ url_for('view_recipe', country_name=recipes[0].primary_country.name, state_name=recipes[0].primary_state.name, recipe_slug=recipes[0].slug) }}{% else %}{{ url_for('view_recipe_old', recipe_id=recipes[0].id) }}{% endif %}">View Recipe</a>
+                </div>
+                <span class="breadcrumb-separator">→</span>
+                <div class="breadcrumb-item">
+                    <span style="color: #666;">Edit Steps & Ingredients</span>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="site-structure">
+            <h2 class="section-title">Site Navigation</h2>
+            <div class="site-map">
+                <div class="site-map-section">
+                    <h3>Authentication</h3>
+                    <ul class="site-map-links">
+                        {% if not current_user.is_authenticated %}
+                        <li><a href="{{ url_for('login') }}">Login</a></li>
+                        <li><a href="{{ url_for('register') }}">Register</a></li>
+                        {% else %}
+                        <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+                
+                <div class="site-map-section">
+                    <h3>World & Location</h3>
+                    <ul class="site-map-links">
+                        <li><a href="{{ url_for('world_map') }}">World Map</a></li>
+                        {% if countries %}
+                            {% for country in countries[:10] %}
+                            <li><a href="{{ url_for('view_country', country_name=country.name) }}">{{ country.name }}</a></li>
+                            {% endfor %}
+                            {% if countries|length > 10 %}
+                            <li class="empty-state">... and {{ countries|length - 10 }} more</li>
+                            {% endif %}
+                        {% endif %}
+                    </ul>
+                </div>
+                
+                <div class="site-map-section">
+                    <h3>User Profiles</h3>
+                    <ul class="site-map-links">
+                        {% if current_user.is_authenticated %}
+                        <li><a href="{{ url_for('user_profile', username=current_user.username) }}">My Profile</a></li>
+                        {% endif %}
+                        {% if users %}
+                            {% for user in users[:10] %}
+                            <li><a href="{{ url_for('user_profile', username=user.username) }}">{{ user.username }}</a></li>
+                            {% endfor %}
+                            {% if users|length > 10 %}
+                            <li class="empty-state">... and {{ users|length - 10 }} more</li>
+                            {% endif %}
+                        {% else %}
+                            <li class="empty-state">No users yet</li>
+                        {% endif %}
+                    </ul>
+                </div>
+                
+                <div class="site-map-section">
+                    <h3>Recipes</h3>
+                    <ul class="site-map-links">
+                        {% if recipes %}
+                            {% for recipe in recipes[:10] %}
+                            <li><a href="{% if recipe.primary_country and recipe.primary_state %}{{ url_for('view_recipe', country_name=recipe.primary_country.name, state_name=recipe.primary_state.name, recipe_slug=recipe.slug) }}{% else %}{{ url_for('view_recipe_old', recipe_id=recipe.id) }}{% endif %}">{{ recipe.name }}</a></li>
+                            {% endfor %}
+                            {% if recipes|length > 10 %}
+                            <li class="empty-state">... and {{ recipes|length - 10 }} more</li>
+                            {% endif %}
+                        {% else %}
+                            <li class="empty-state">No recipes available</li>
+                        {% endif %}
+                    </ul>
+                </div>
+                
+                <div class="site-map-section">
+                    <h3>API Endpoints</h3>
+                    <ul class="site-map-links">
+                        <li><a href="/api/states/1">Get States by Country</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        {% if recipes %}
+        <div class="recipes-section">
+            <h2 class="section-title">All Recipes</h2>
+            <div class="recipes-grid">
+                {% for recipe in recipes %}
+                <div class="recipe-card">
+                    <a href="{% if recipe.primary_country and recipe.primary_state %}{{ url_for('view_recipe', country_name=recipe.primary_country.name, state_name=recipe.primary_state.name, recipe_slug=recipe.slug) }}{% else %}{{ url_for('view_recipe_old', recipe_id=recipe.id) }}{% endif %}">
+                        <h4>{{ recipe.name }}</h4>
+                        <div class="recipe-meta">
+                            {% if recipe.primary_country %}
+                                <div>📍 {{ recipe.primary_country.name }}</div>
+                            {% endif %}
+                            {% if recipe.primary_state %}
+                                <div>📍 {{ recipe.primary_state.name }}</div>
+                            {% endif %}
+                            {% if recipe.owner %}
+                                <div>👤 {{ recipe.owner.username }}</div>
+                            {% endif %}
+                            {% if recipe.created_at %}
+                                <div>📅 {{ recipe.created_at.strftime('%Y-%m-%d') }}</div>
+                            {% endif %}
+                            {% if recipe.steps %}
+                                <div>📝 {{ recipe.steps|length }} step{{ 's' if recipe.steps|length != 1 else '' }}</div>
+                            {% endif %}
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
