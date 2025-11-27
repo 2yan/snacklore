@@ -71,7 +71,8 @@ def load_user(user_id):
 @app.route('/')
 def index():
     recipes = Recipe.query.order_by(Recipe.created_at.desc()).all()
-    return render_template('home.html', recipes=recipes)
+    breadcrumbs = []
+    return render_template('home.html', recipes=recipes, breadcrumbs=breadcrumbs)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -112,7 +113,8 @@ def register():
         return redirect(url_for('login'))
     
     countries = Country.query.all()
-    return render_template('register.html', countries=countries)
+    breadcrumbs = [{'label': 'Register', 'url': None}]
+    return render_template('register.html', countries=countries, breadcrumbs=breadcrumbs)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -122,7 +124,8 @@ def login():
         
         if not username or not password:
             flash('Username and password are required', 'error')
-            return render_template('login.html')
+            breadcrumbs = [{'label': 'Login', 'url': None}]
+            return render_template('login.html', breadcrumbs=breadcrumbs)
         
         user = User.query.filter_by(username=username).first()
         
@@ -133,9 +136,11 @@ def login():
             return redirect(url_for('index'))
         else:
             flash('Invalid username or password', 'error')
-            return render_template('login.html')
+            breadcrumbs = [{'label': 'Login', 'url': None}]
+            return render_template('login.html', breadcrumbs=breadcrumbs)
     
-    return render_template('login.html')
+    breadcrumbs = [{'label': 'Login', 'url': None}]
+    return render_template('login.html', breadcrumbs=breadcrumbs)
 
 @app.route('/logout')
 @login_required
@@ -150,7 +155,8 @@ def view_recipe(recipe_id):
     is_owner = current_user.is_authenticated and recipe.user_id == current_user.id
     countries = Country.query.all()
     states = State.query.all()
-    return render_template('recipe.html', recipe=recipe, is_owner=is_owner, countries=countries, states=states)
+    breadcrumbs = [{'label': recipe.name, 'url': None}]
+    return render_template('recipe.html', recipe=recipe, is_owner=is_owner, countries=countries, states=states, breadcrumbs=breadcrumbs)
 
 @app.route('/recipe/<int:recipe_id>/edit', methods=['POST'])
 @login_required
