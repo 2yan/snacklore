@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
+from sqlalchemy import func
 import os
 import re
 import json
@@ -283,7 +284,22 @@ def view_recipe(country_slug, state_slug, recipe_slug):
         {'label': state.name, 'url': None},
         {'label': recipe.name, 'url': None}
     ]
-    return render_template('recipe_detail.html', recipe=recipe, ingredients=ingredients, steps=recipe.steps, breadcrumbs=breadcrumbs)
+    
+    # Check if current user is owner
+    is_owner = False
+    if current_user.is_authenticated:
+        is_owner = (recipe.user_id == current_user.id)
+    
+    # Check if current user has favorited this recipe
+    is_favorited = False
+    if current_user.is_authenticated and not is_owner:
+        is_favorited = recipe in current_user.favorite_recipes
+    
+    # Get countries and states for edit dropdowns
+    countries = Country.query.order_by(Country.name).all()
+    states_list = State.query.order_by(State.name).all()
+    
+    return render_template('recipe_detail.html', recipe=recipe, ingredients=ingredients, steps=recipe.steps, breadcrumbs=breadcrumbs, is_owner=is_owner, is_favorited=is_favorited, countries=countries, states=states_list)
 
 @app.route('/c/<country_slug>/<recipe_slug>')
 def view_recipe_country_only(country_slug, recipe_slug):
@@ -310,7 +326,22 @@ def view_recipe_country_only(country_slug, recipe_slug):
         {'label': country.name, 'url': url_for('view_country', country_slug=country_slug)},
         {'label': recipe.name, 'url': None}
     ]
-    return render_template('recipe_detail.html', recipe=recipe, ingredients=ingredients, steps=recipe.steps, breadcrumbs=breadcrumbs)
+    
+    # Check if current user is owner
+    is_owner = False
+    if current_user.is_authenticated:
+        is_owner = (recipe.user_id == current_user.id)
+    
+    # Check if current user has favorited this recipe
+    is_favorited = False
+    if current_user.is_authenticated and not is_owner:
+        is_favorited = recipe in current_user.favorite_recipes
+    
+    # Get countries and states for edit dropdowns
+    countries = Country.query.order_by(Country.name).all()
+    states_list = State.query.order_by(State.name).all()
+    
+    return render_template('recipe_detail.html', recipe=recipe, ingredients=ingredients, steps=recipe.steps, breadcrumbs=breadcrumbs, is_owner=is_owner, is_favorited=is_favorited, countries=countries, states=states_list)
 
 # Keep old route for backwards compatibility, redirect to new route
 @app.route('/recipe/<int:recipe_id>')
@@ -351,8 +382,65 @@ def view_recipe_slug(recipe_slug):
     if recipe.steps:
         for step in recipe.steps:
             ingredients.extend(step.ingredients)
-            
-    return render_template('recipe_detail.html', recipe=recipe, ingredients=ingredients, steps=recipe.steps)
+    
+    # Check if current user is owner
+    is_owner = False
+    if current_user.is_authenticated:
+        is_owner = (recipe.user_id == current_user.id)
+    
+    # Check if current user has favorited this recipe
+    is_favorited = False
+    if current_user.is_authenticated and not is_owner:
+        is_favorited = recipe in current_user.favorite_recipes
+    
+    # Get countries and states for edit dropdowns
+    countries = Country.query.order_by(Country.name).all()
+    states_list = State.query.order_by(State.name).all()
+    
+    return render_template('recipe_detail.html', recipe=recipe, ingredients=ingredients, steps=recipe.steps, is_owner=is_owner, is_favorited=is_favorited, countries=countries, states=states_list)
+
+
+@app.route('/test_template')
+def test_template():
+    """Test route to view the combined recipe template with a random recipe"""
+    # Get a random recipe that has at least one step
+    from sqlalchemy import exists
+    recipe = Recipe.query.filter(
+        exists().where(Step.recipe_id == Recipe.id)
+    ).order_by(func.random()).first()
+    
+    if not recipe:
+        flash('No recipes found in database', 'error')
+        return redirect(url_for('index'))
+    
+    # Check if current user is owner
+    is_owner = False
+    if current_user.is_authenticated:
+        is_owner = (recipe.user_id == current_user.id)
+    
+    # Check if current user has favorited this recipe
+    is_favorited = False
+    if current_user.is_authenticated and not is_owner:
+        is_favorited = recipe in current_user.favorite_recipes
+    
+    # Get countries and states for edit dropdowns
+    countries = Country.query.order_by(Country.name).all()
+    states = State.query.order_by(State.name).all()
+    
+    breadcrumbs = [
+        {'label': 'Test Template', 'url': None},
+        {'label': recipe.name, 'url': None}
+    ]
+    
+    return render_template(
+        'recipe_combined.html',
+        recipe=recipe,
+        is_owner=is_owner,
+        is_favorited=is_favorited,
+        countries=countries,
+        states=states,
+        breadcrumbs=breadcrumbs
+    )
 
 
 @app.route('/recipe/<int:recipe_id>/edit', methods=['POST'])
@@ -391,17 +479,17 @@ def edit_step(recipe_id, step_id):
     recipe = Recipe.query.get_or_404(recipe_id)
     if recipe.user_id != current_user.id:
         flash('You do not have permission to edit this recipe', 'error')
-        return redirect(url_for('view_recipe', recipe_id=recipe_id))
+        return redirect(get_recipe_url(recipe))
     
     step = Step.query.get_or_404(step_id)
     if step.recipe_id != recipe_id:
         flash('Step does not belong to this recipe', 'error')
-        return redirect(url_for('view_recipe', recipe_id=recipe_id))
+        return redirect(get_recipe_url(recipe))
     
     step.step_text = request.form.get('step_text', step.step_text)
     db.session.commit()
     flash('Step updated successfully', 'success')
-    return redirect(url_for('view_recipe', recipe_id=recipe_id))
+    return redirect(get_recipe_url(recipe))
 
 @app.route('/recipe/<int:recipe_id>/ingredient/<int:ingredient_id>/edit', methods=['POST'])
 @login_required
@@ -409,19 +497,19 @@ def edit_ingredient(recipe_id, ingredient_id):
     recipe = Recipe.query.get_or_404(recipe_id)
     if recipe.user_id != current_user.id:
         flash('You do not have permission to edit this recipe', 'error')
-        return redirect(url_for('view_recipe', recipe_id=recipe_id))
+        return redirect(get_recipe_url(recipe))
     
     ingredient = Ingredient.query.get_or_404(ingredient_id)
     step = Step.query.get_or_404(ingredient.step_id)
     if step.recipe_id != recipe_id:
         flash('Ingredient does not belong to this recipe', 'error')
-        return redirect(url_for('view_recipe', recipe_id=recipe_id))
+        return redirect(get_recipe_url(recipe))
     
     ingredient.name = request.form.get('name', ingredient.name)
     ingredient.amount = request.form.get('amount', ingredient.amount)
     db.session.commit()
     flash('Ingredient updated successfully', 'success')
-    return redirect(url_for('view_recipe', recipe_id=recipe_id))
+    return redirect(get_recipe_url(recipe))
 
 @app.route('/recipe/<int:recipe_id>/step/add', methods=['POST'])
 @login_required
@@ -429,12 +517,12 @@ def add_step(recipe_id):
     recipe = Recipe.query.get_or_404(recipe_id)
     if recipe.user_id != current_user.id:
         flash('You do not have permission to edit this recipe', 'error')
-        return redirect(url_for('view_recipe', recipe_id=recipe_id))
+        return redirect(get_recipe_url(recipe))
     
     step_text = request.form.get('step_text')
     if not step_text:
         flash('Step text is required', 'error')
-        return redirect(url_for('view_recipe', recipe_id=recipe_id))
+        return redirect(get_recipe_url(recipe))
     
     # Auto-calculate step number (next available number)
     max_step = db.session.query(db.func.max(Step.step_number)).filter_by(recipe_id=recipe_id).scalar()
@@ -444,7 +532,7 @@ def add_step(recipe_id):
     db.session.add(step)
     db.session.commit()
     flash('Step added successfully', 'success')
-    return redirect(url_for('view_recipe', recipe_id=recipe_id))
+    return redirect(get_recipe_url(recipe))
 
 @app.route('/recipe/<int:recipe_id>/step/<int:step_id>/delete', methods=['POST'])
 @login_required
@@ -452,17 +540,17 @@ def delete_step(recipe_id, step_id):
     recipe = Recipe.query.get_or_404(recipe_id)
     if recipe.user_id != current_user.id:
         flash('You do not have permission to edit this recipe', 'error')
-        return redirect(url_for('view_recipe', recipe_id=recipe_id))
+        return redirect(get_recipe_url(recipe))
     
     step = Step.query.get_or_404(step_id)
     if step.recipe_id != recipe_id:
         flash('Step does not belong to this recipe', 'error')
-        return redirect(url_for('view_recipe', recipe_id=recipe_id))
+        return redirect(get_recipe_url(recipe))
     
     db.session.delete(step)
     db.session.commit()
     flash('Step deleted successfully', 'success')
-    return redirect(url_for('view_recipe', recipe_id=recipe_id))
+    return redirect(get_recipe_url(recipe))
 
 @app.route('/recipe/<int:recipe_id>/step/<int:step_id>/ingredient/add', methods=['POST'])
 @login_required
@@ -470,24 +558,24 @@ def add_ingredient(recipe_id, step_id):
     recipe = Recipe.query.get_or_404(recipe_id)
     if recipe.user_id != current_user.id:
         flash('You do not have permission to edit this recipe', 'error')
-        return redirect(url_for('view_recipe', recipe_id=recipe_id))
+        return redirect(get_recipe_url(recipe))
     
     step = Step.query.get_or_404(step_id)
     if step.recipe_id != recipe_id:
         flash('Step does not belong to this recipe', 'error')
-        return redirect(url_for('view_recipe', recipe_id=recipe_id))
+        return redirect(get_recipe_url(recipe))
     
     name = request.form.get('name')
     amount = request.form.get('amount')
     if not name or not amount:
         flash('Ingredient name and amount are required', 'error')
-        return redirect(url_for('view_recipe', recipe_id=recipe_id))
+        return redirect(get_recipe_url(recipe))
     
     ingredient = Ingredient(step_id=step_id, user_id=current_user.id, name=name, amount=amount)
     db.session.add(ingredient)
     db.session.commit()
     flash('Ingredient added successfully', 'success')
-    return redirect(url_for('view_recipe', recipe_id=recipe_id))
+    return redirect(get_recipe_url(recipe))
 
 @app.route('/recipe/<int:recipe_id>/ingredient/<int:ingredient_id>/delete', methods=['POST'])
 @login_required
@@ -495,18 +583,18 @@ def delete_ingredient(recipe_id, ingredient_id):
     recipe = Recipe.query.get_or_404(recipe_id)
     if recipe.user_id != current_user.id:
         flash('You do not have permission to edit this recipe', 'error')
-        return redirect(url_for('view_recipe', recipe_id=recipe_id))
+        return redirect(get_recipe_url(recipe))
     
     ingredient = Ingredient.query.get_or_404(ingredient_id)
     step = Step.query.get_or_404(ingredient.step_id)
     if step.recipe_id != recipe_id:
         flash('Ingredient does not belong to this recipe', 'error')
-        return redirect(url_for('view_recipe', recipe_id=recipe_id))
+        return redirect(get_recipe_url(recipe))
     
     db.session.delete(ingredient)
     db.session.commit()
     flash('Ingredient deleted successfully', 'success')
-    return redirect(url_for('view_recipe', recipe_id=recipe_id))
+    return redirect(get_recipe_url(recipe))
 
 @app.route('/api/states/<int:country_id>')
 def get_states(country_id):

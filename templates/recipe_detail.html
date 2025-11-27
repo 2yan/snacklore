@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{{ recipe.name if recipe else 'Recipe' }} | Savor</title>
-
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ recipe.name }} - Snacklore</title>
+    
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -12,583 +12,1097 @@
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap"
       rel="stylesheet"
     />
-
+    
     <style>
-      :root {
-        --primary: #d35400; /* Burnt Orange */
-        --primary-dark: #a04000;
-        --secondary: #2c3e50; /* Dark Slate */
-        --accent: #27ae60; /* Sage Green */
-        --bg-warm: #fdfbf7; /* Warm White */
-        --bg-white: #ffffff;
-        --text-main: #2c3e50;
-        --text-light: #7f8c8d;
-        --border: #ebdccb;
-      }
-
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-
-      body {
-        font-family: "Inter", sans-serif;
-        background-color: var(--bg-warm);
-        color: var(--text-main);
-        line-height: 1.6;
-      }
-
-      h1,
-      h2,
-      h3,
-      h4 {
-        font-family: "Playfair Display", serif;
-        color: var(--secondary);
-      }
-
-      a {
-        text-decoration: none;
-        color: inherit;
-        transition: color 0.2s;
-      }
-
-      /* Navbar */
-      .navbar {
-        background: var(--bg-white);
-        padding: 1rem 5%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-      }
-
-      .logo {
-        font-family: "Playfair Display", serif;
-        font-size: 1.8rem;
-        font-weight: 700;
-        color: var(--primary);
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-
-      .nav-links {
-        display: flex;
-        gap: 2rem;
-        align-items: center;
-      }
-
-      .nav-link {
-        font-weight: 500;
-        color: var(--secondary);
-        font-size: 0.95rem;
-      }
-
-      .nav-link:hover {
-        color: var(--primary);
-      }
-
-      .auth-buttons {
-        display: flex;
-        gap: 1rem;
-        align-items: center;
-      }
-
-      .btn {
-        padding: 0.6rem 1.2rem;
-        border-radius: 4px;
-        font-weight: 600;
-        font-size: 0.9rem;
-        cursor: pointer;
-        transition: all 0.2s;
-        display: inline-block;
-        border: none;
-      }
-
-      .btn-ghost {
-        color: var(--secondary);
-        border: 1px solid transparent;
-        background: transparent;
-      }
-
-      .btn-ghost:hover {
-        background: rgba(0, 0, 0, 0.03);
-      }
-
-      .btn-primary {
-        background: var(--primary);
-        color: white;
-        border: 1px solid var(--primary);
-      }
-
-      .btn-primary:hover {
-        background: var(--primary-dark);
-        border-color: var(--primary-dark);
-        color: white;
-      }
-
-      /* Container */
-      .container {
-        max-width: 1000px;
-        margin: 0 auto;
-        padding: 4rem 1.5rem;
-      }
-
-      /* Flash Messages */
-      .flash-messages {
-        margin-bottom: 2rem;
-      }
-      .flash {
-        padding: 1rem;
-        margin-bottom: 1rem;
-        border-radius: 4px;
-        border: 1px solid transparent;
-      }
-      .flash.error {
-        background-color: #fce4e4;
-        color: #cc0000;
-        border-color: #fcc2c2;
-      }
-      .flash.success {
-        background-color: #d4edda;
-        color: #155724;
-        border-color: #c3e6cb;
-      }
-      .flash.info {
-        background-color: #d1ecf1;
-        color: #0c5460;
-        border-color: #bee5eb;
-      }
-
-      /* Recipe Header */
-      .recipe-header {
-        text-align: center;
-        margin-bottom: 3rem;
-      }
-
-      .recipe-title {
-        font-size: 3.5rem;
-        margin-bottom: 1rem;
-        color: var(--secondary);
-      }
-
-      .recipe-meta-top {
-        display: flex;
-        justify-content: center;
-        gap: 2rem;
-        color: var(--text-light);
-        font-size: 1rem;
-        margin-bottom: 2rem;
-        align-items: center;
-      }
-
-      .meta-item {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-
-      .recipe-image-container {
-        width: 100%;
-        height: 500px;
-        background-color: #eee;
-        border-radius: 12px;
-        overflow: hidden;
-        margin-bottom: 4rem;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-      }
-
-      .recipe-image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-
-      /* Recipe Content Grid */
-      .recipe-content {
-        display: grid;
-        grid-template-columns: 1fr 2fr;
-        gap: 4rem;
-      }
-
-      /* Ingredients Section */
-      .ingredients-section {
-        background: white;
-        padding: 2rem;
-        border-radius: 8px;
-        border: 1px solid var(--border);
-        height: fit-content;
-      }
-
-      .ingredients-title {
-        font-size: 1.5rem;
-        margin-bottom: 1.5rem;
-        padding-bottom: 1rem;
-        border-bottom: 2px solid var(--border);
-      }
-
-      .ingredients-list {
-        list-style: none;
-      }
-
-      .ingredient-item {
-        padding: 0.8rem 0;
-        border-bottom: 1px solid #f0f0f0;
-        display: flex;
-        justify-content: space-between;
-      }
-
-      .ingredient-item:last-child {
-        border-bottom: none;
-      }
-
-      .ingredient-amount {
-        font-weight: 600;
-        color: var(--primary);
-      }
-
-      /* Instructions Section */
-      .instructions-section {
-      }
-
-      .instructions-title {
-        font-size: 2rem;
-        margin-bottom: 2rem;
-      }
-
-      .step {
-        margin-bottom: 2.5rem;
-        display: flex;
-        gap: 1.5rem;
-      }
-
-      .step-number {
-        background: var(--secondary);
-        color: white;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-family: "Playfair Display", serif;
-        font-weight: 700;
-        font-size: 1.2rem;
-        flex-shrink: 0;
-      }
-
-      .step-content h4 {
-        font-size: 1.2rem;
-        margin-bottom: 0.5rem;
-      }
-
-      .step-content p {
-        color: var(--text-main);
-        font-size: 1.05rem;
-      }
-
-      /* Rating Section */
-      .rating-section {
-        margin-top: 4rem;
-        padding-top: 4rem;
-        border-top: 1px solid var(--border);
-        text-align: center;
-      }
-
-      .rating-title {
-        margin-bottom: 1.5rem;
-      }
-
-      .stars {
-        display: inline-flex;
-        gap: 0.5rem;
-        font-size: 2rem;
-        color: #ddd;
-        cursor: pointer;
-        margin-bottom: 1.5rem;
-      }
-
-      .star:hover,
-      .star.active {
-        color: #f1c40f;
-      }
-
-      /* Footer */
-      footer {
-        background: var(--secondary);
-        color: white;
-        padding: 4rem 1.5rem 1rem;
-        margin-top: 4rem;
-      }
-
-      .footer-content {
-        max-width: 1200px;
-        margin: 0 auto;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 3rem;
-        margin-bottom: 3rem;
-      }
-
-      .footer-col h3 {
-        color: white;
-        margin-bottom: 1.5rem;
-      }
-
-      .footer-links {
-        list-style: none;
-      }
-
-      .footer-links li {
-        margin-bottom: 0.8rem;
-      }
-
-      .footer-links a {
-        color: #bdc3c7;
-      }
-
-      .footer-links a:hover {
-        color: var(--primary);
-      }
-
-      .copyright {
-        text-align: center;
-        padding-top: 2rem;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-        color: #95a5a6;
-        font-size: 0.9rem;
-      }
-
-      @media (max-width: 768px) {
-        .recipe-content {
-          grid-template-columns: 1fr;
+        :root {
+            --primary: #d35400; /* Burnt Orange */
+            --primary-dark: #a04000;
+            --secondary: #2c3e50; /* Dark Slate */
+            --accent: #27ae60; /* Sage Green */
+            --bg-warm: #fdfbf7; /* Warm White */
+            --bg-white: #ffffff;
+            --text-main: #2c3e50;
+            --text-light: #7f8c8d;
+            --border: #ebdccb;
         }
-        .recipe-title {
-          font-size: 2.5rem;
+        
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
         }
+        
+        body {
+            font-family: "Inter", sans-serif;
+            background-color: var(--bg-warm);
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        h1, h2, h3, h4 {
+            font-family: "Playfair Display", serif;
+            color: var(--secondary);
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: color 0.2s;
+        }
+        
+        /* Navbar */
+        .navbar {
+            background: var(--bg-white);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .logo {
+            font-family: "Playfair Display", serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
         .nav-links {
-          display: none;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
         }
-      }
+        
+        .nav-link {
+            font-weight: 500;
+            color: var(--secondary);
+            font-size: 0.95rem;
+        }
+        
+        .nav-link:hover {
+            color: var(--primary);
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-block;
+            border: none;
+            font-family: inherit;
+        }
+        
+        .btn-ghost {
+            color: var(--secondary);
+            border: 1px solid transparent;
+            background: transparent;
+        }
+        
+        .btn-ghost:hover {
+            background: rgba(0, 0, 0, 0.03);
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border: 1px solid var(--primary);
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            border-color: var(--primary-dark);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: var(--text-light);
+            border-color: var(--text-light);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: var(--secondary);
+            border-color: var(--secondary);
+            color: white;
+        }
+        
+        .btn-danger {
+            background: #e74c3c;
+            border-color: #e74c3c;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #c0392b;
+            border-color: #c0392b;
+            color: white;
+        }
+        
+        .btn-small {
+            padding: 0.25rem 0.75rem;
+            font-size: 0.85rem;
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 4rem 1.5rem;
+        }
+        
+        /* Flash Messages */
+        .flash-messages {
+            margin-bottom: 2rem;
+        }
+        
+        .flash {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 4px;
+            border: 1px solid transparent;
+        }
+        
+        .flash.error {
+            background-color: #fce4e4;
+            color: #cc0000;
+            border-color: #fcc2c2;
+        }
+        
+        .flash.success {
+            background-color: #d4edda;
+            color: #155724;
+            border-color: #c3e6cb;
+        }
+        
+        .flash.info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border-color: #bee5eb;
+        }
+        
+        /* Recipe Header */
+        .recipe-header {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid var(--border);
+        }
+        
+        .recipe-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+        
+        .recipe-info {
+            color: var(--text-light);
+            margin-top: 0.5rem;
+            font-size: 1rem;
+        }
+        
+        .action-buttons {
+            margin-top: 1rem;
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        /* Steps Section */
+        .steps-section {
+            margin-top: 2rem;
+        }
+        
+        .steps-section h2 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: var(--secondary);
+        }
+        
+        .steps-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
+        
+        .step {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            background: var(--bg-white);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            position: relative;
+            cursor: move;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .step:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary);
+        }
+        
+        .step.dragging {
+            opacity: 0.5;
+            background: #f0f0f0;
+        }
+        
+        .drag-handle {
+            cursor: grab;
+            color: var(--text-light);
+            font-size: 1.2rem;
+            user-select: none;
+            flex-shrink: 0;
+            padding-top: 0.25rem;
+        }
+        
+        .drag-handle:active {
+            cursor: grabbing;
+        }
+        
+        .step-number {
+            font-family: "Playfair Display", serif;
+            font-weight: 700;
+            color: var(--bg-white);
+            background: var(--secondary);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            margin-top: 0.25rem;
+        }
+        
+        .step-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            flex: 1;
+            min-width: 0;
+            flex-wrap: wrap;
+        }
+        
+        .step-text {
+            flex: 1;
+            min-width: 200px;
+            color: var(--text-main);
+            cursor: text;
+            padding: 0.5rem;
+            min-height: 2rem;
+            line-height: 1.6;
+            font-size: 1.05rem;
+        }
+        
+        .step-text:hover {
+            background: rgba(211, 84, 0, 0.05);
+            border-radius: 4px;
+        }
+        
+        .step-text-input {
+            flex: 1;
+            min-width: 200px;
+            padding: 0.5rem;
+            border: 2px solid var(--primary);
+            font-size: 1rem;
+            background: var(--bg-white);
+            color: var(--text-main);
+            border-radius: 4px;
+            font-family: inherit;
+        }
+        
+        .ingredients-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            flex-shrink: 0;
+            width: 100%;
+            margin-top: 0.75rem;
+            position: relative;
+        }
+        
+        .ingredient-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 0.75rem;
+            background: rgba(211, 84, 0, 0.1);
+            border: 1px solid rgba(211, 84, 0, 0.3);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: var(--text-main);
+            cursor: text;
+            white-space: nowrap;
+            position: relative;
+            transition: all 0.2s;
+        }
+        
+        .ingredient-chip:hover {
+            background: rgba(211, 84, 0, 0.15);
+            border-color: var(--primary);
+        }
+        
+        .ingredient-chip .ingredient-name {
+            font-weight: 500;
+            color: var(--secondary);
+        }
+        
+        .ingredient-chip .ingredient-amount {
+            color: var(--primary);
+            font-size: 0.85rem;
+        }
+        
+        .ingredient-chip .delete-btn {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            padding: 0;
+            margin-left: 0.25rem;
+            font-size: 1.2rem;
+            line-height: 1;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.2s;
+        }
+        
+        .ingredient-chip .delete-btn:hover {
+            color: #e74c3c;
+            background: rgba(231, 76, 60, 0.1);
+        }
+        
+        .step-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-shrink: 0;
+        }
+        
+        .new-ingredient-btn {
+            display: none;
+            padding: 0.4rem 0.75rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            white-space: nowrap;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .new-ingredient-btn:hover {
+            background: var(--primary-dark);
+        }
+        
+        .new-step-form {
+            display: none;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            background: rgba(211, 84, 0, 0.05);
+            border: 2px dashed var(--primary);
+            border-radius: 8px;
+        }
+        
+        .new-step-form.active {
+            display: block;
+        }
+        
+        .new-step-form-content {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .new-step-form-content input {
+            flex: 1;
+            min-width: 200px;
+            padding: 0.75rem;
+            border: 2px solid var(--primary);
+            font-size: 1rem;
+            background: var(--bg-white);
+            color: var(--text-main);
+            border-radius: 4px;
+            font-family: inherit;
+        }
+        
+        .new-step-form-actions {
+            display: flex;
+            gap: 0.5rem;
+            width: 100%;
+            margin-top: 0.75rem;
+        }
+        
+        .new-ingredient-form {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            margin-top: 0.5rem;
+            padding: 1rem;
+            background: var(--bg-white);
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            z-index: 10;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .new-ingredient-form.active {
+            display: block;
+        }
+        
+        .new-ingredient-form-content {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .new-ingredient-form-content input {
+            flex: 1;
+            min-width: 150px;
+            padding: 0.5rem;
+            border: 2px solid var(--primary);
+            font-size: 0.9rem;
+            background: var(--bg-white);
+            color: var(--text-main);
+            border-radius: 4px;
+            font-family: inherit;
+        }
+        
+        .edit-mode {
+            display: none;
+        }
+        
+        .edit-mode.active {
+            display: block;
+        }
+        
+        .view-mode {
+            display: block;
+        }
+        
+        .view-mode.hidden {
+            display: none;
+        }
+        
+        input[type="text"], textarea, select {
+            padding: 0.75rem;
+            border: 2px solid var(--border);
+            font-size: 1rem;
+            background: var(--bg-white);
+            color: var(--text-main);
+            border-radius: 4px;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+        
+        input[type="text"]:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        select {
+            cursor: pointer;
+        }
+        
+        .new-step-btn {
+            margin-top: 1rem;
+            padding: 0.75rem 1.5rem;
+        }
+        
+        .ingredient-edit-form {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            margin-top: 0.5rem;
+            padding: 1rem;
+            background: var(--bg-white);
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            z-index: 10;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            min-width: 300px;
+        }
+        
+        .ingredient-edit-form.active {
+            display: block;
+        }
+        
+        .ingredient-edit-form-content {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .ingredient-edit-form-content input {
+            flex: 1;
+            min-width: 150px;
+            padding: 0.5rem;
+            border: 2px solid var(--primary);
+            font-size: 0.9rem;
+            background: var(--bg-white);
+            color: var(--text-main);
+            border-radius: 4px;
+            font-family: inherit;
+        }
+        
+        @media (max-width: 768px) {
+            .recipe-header h1 {
+                font-size: 2rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .step-content {
+                flex-direction: column;
+            }
+            
+            .ingredients-container {
+                width: 100%;
+            }
+        }
     </style>
-  </head>
-  <body>
+</head>
+<body>
     <!-- Navigation -->
     <nav class="navbar">
-      <a href="{{ url_for('index') }}" class="logo">
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2" />
-          <path d="M7 2v20" />
-          <path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7" />
-        </svg>
-        Savor
-      </a>
-      <div class="nav-links">
-        <a href="#" class="nav-link">Recipes</a>
-        <a href="#" class="nav-link">Ingredients</a>
-        <a href="#" class="nav-link">Community</a>
-        <a href="#" class="nav-link">About</a>
-      </div>
-      <div class="auth-buttons">
-        {% if current_user and current_user.is_authenticated %}
-        <span
-          style="color: var(--primary); font-weight: 500; margin-right: 10px"
-          >Hello, {{ current_user.username }}</span
-        >
-        <a href="{{ url_for('logout') }}" class="btn btn-ghost">Log Out</a>
-        {% else %}
-        <a href="{{ url_for('login') }}" class="btn btn-ghost">Log In</a>
-        <a href="{{ url_for('register') }}" class="btn btn-primary">Sign Up</a>
-        {% endif %}
-      </div>
+        <a href="{{ url_for('index') }}" class="logo">
+            <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+                <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2" />
+                <path d="M7 2v20" />
+                <path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7" />
+            </svg>
+            Snacklore
+        </a>
+        <div class="nav-links">
+            <a href="{{ url_for('directory') }}" class="nav-link">Recipes</a>
+            <a href="{{ url_for('world_map') }}" class="nav-link">World</a>
+            <a href="#" class="nav-link">About</a>
+        </div>
+        <div class="auth-buttons">
+            {% if current_user and current_user.is_authenticated %}
+            <span style="color: var(--primary); font-weight: 500; margin-right: 10px">Hello, {{ current_user.username }}</span>
+            <a href="{{ url_for('logout') }}" class="btn btn-ghost">Log Out</a>
+            {% else %}
+            <a href="{{ url_for('login') }}" class="btn btn-ghost">Log In</a>
+            <a href="{{ url_for('register') }}" class="btn btn-primary">Sign Up</a>
+            {% endif %}
+        </div>
     </nav>
-
+    
     <div class="container">
-      {% with messages = get_flashed_messages(with_categories=true) %} {% if
-      messages %}
-      <div class="flash-messages">
-        {% for category, message in messages %}
-        <div class="flash {{ category }}">{{ message }}</div>
-        {% endfor %}
-      </div>
-      {% endif %} {% endwith %}
-
-      <div class="recipe-header">
-        <div class="card-category">{{ recipe.primary_country.name if recipe.primary_country else 'International' }}</div>
-        <h1 class="recipe-title">{{ recipe.name }}</h1>
-        <div class="recipe-meta-top">
-          <div class="meta-item">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            <span>60 mins</span>
-          </div>
-          <div class="meta-item">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-            <span>4 Servings</span>
-          </div>
-          <div class="meta-item">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-            <span>{{ recipe.owner.username }}</span>
-          </div>
-        </div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
         
-        <div class="recipe-image-container">
-            <!-- Placeholder image for now, dynamic image support would be a future enhancement -->
-            <img src="https://images.unsplash.com/photo-1547592180-85f173990554?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="{{ recipe.name }}" class="recipe-image" />
-        </div>
-      </div>
-
-      <div class="recipe-content">
-        <div class="ingredients-column">
-          <div class="ingredients-section">
-            <h3 class="ingredients-title">Ingredients</h3>
-            <ul class="ingredients-list">
-              {% if ingredients %}
-                {% for ingredient in ingredients %}
-                <li class="ingredient-item">
-                    <span>{{ ingredient.name }}</span>
-                    <span class="ingredient-amount">{{ ingredient.amount }}</span>
-                </li>
-                {% endfor %}
-              {% else %}
-                <li class="ingredient-item">No ingredients listed yet.</li>
-              {% endif %}
-            </ul>
-          </div>
-        </div>
-
-        <div class="instructions-column">
-          <div class="instructions-section">
-            <h3 class="instructions-title">Preparation</h3>
-            
-            {% if steps %}
-                {% for step in steps %}
-                <div class="step">
-                    <div class="step-number">{{ step.step_number }}</div>
-                    <div class="step-content">
-                        <h4>Step {{ step.step_number }}</h4>
-                        <p>{{ step.step_text }}</p>
+        <div class="recipe-header">
+            <div class="view-mode" id="recipe-name-view">
+                <h1>{{ recipe.name }}</h1>
+                <div class="recipe-info">
+                    {% if recipe.primary_country %}Country: {{ recipe.primary_country.name }}{% endif %}
+                    {% if recipe.primary_state %} | State: {{ recipe.primary_state.name }}{% endif %}
+                    <div class="action-buttons">
+                        {% if is_owner %}
+                            <button onclick="enableEditMode()" class="btn btn-primary">Edit Recipe</button>
+                        {% endif %}
+                        {% if current_user.is_authenticated and not is_owner %}
+                            {% if is_favorited %}
+                                <form method="POST" action="{{ url_for('unfavorite_recipe', recipe_id=recipe.id) }}" style="display: inline;">
+                                    <button type="submit" class="btn btn-secondary">★ Unfavorite</button>
+                                </form>
+                            {% else %}
+                                <form method="POST" action="{{ url_for('favorite_recipe', recipe_id=recipe.id) }}" style="display: inline;">
+                                    <button type="submit" class="btn btn-secondary">☆ Favorite</button>
+                                </form>
+                            {% endif %}
+                        {% endif %}
                     </div>
                 </div>
-                {% endfor %}
-            {% else %}
-                <p>No instructions available for this recipe yet.</p>
-            {% endif %}
-          </div>
+            </div>
+            <div class="edit-mode" id="recipe-name-edit">
+                <form method="POST" action="{{ url_for('edit_recipe', recipe_id=recipe.id) }}">
+                    <input type="text" name="name" value="{{ recipe.name }}" required style="font-size: 2rem; font-weight: 600; margin-bottom: 0.5rem; width: 100%; padding: 0.75rem;">
+                    <div style="margin-top: 0.5rem;">
+                        <select name="country_id" id="recipe-country-select" onchange="loadRecipeStates()" style="margin-bottom: 0.5rem; width: 100%;">
+                            <option value="">No Country</option>
+                            {% for country in countries %}
+                            <option value="{{ country.id }}" {% if recipe.primary_country_id == country.id %}selected{% endif %}>{{ country.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <select name="state_id" id="recipe-state-select" style="width: 100%;">
+                            <option value="">No State</option>
+                            {% if recipe.primary_country_id %}
+                                {% for state in states %}
+                                    {% if state.country_id == recipe.primary_country_id %}
+                                    <option value="{{ state.id }}" {% if recipe.primary_state_id == state.id %}selected{% endif %}>{{ state.name }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </select>
+                    </div>
+                    <div class="action-buttons">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" onclick="disableEditMode()" class="btn btn-secondary">Cancel</button>
+                    </div>
+                </form>
+            </div>
         </div>
-      </div>
-
-      <div class="rating-section">
-        <h3 class="rating-title">Rate this Recipe</h3>
-        <div class="stars">
-            <span class="star" data-rating="1">★</span>
-            <span class="star" data-rating="2">★</span>
-            <span class="star" data-rating="3">★</span>
-            <span class="star" data-rating="4">★</span>
-            <span class="star" data-rating="5">★</span>
-        </div>
-        <p>Click to rate</p>
-      </div>
-
-    </div>
-
-    <!-- Footer -->
-    <footer>
-      <div class="footer-content">
-        <div class="footer-col">
-          <div class="logo" style="color: white; margin-bottom: 1rem">
-            Savor
-          </div>
-          <p style="color: #bdc3c7">
-            Bringing the world's kitchen to your home. Discover, cook, and share
-            recipes from every corner of the globe.
-          </p>
-        </div>
-        <div class="footer-col">
-          <h3>Explore</h3>
-          <ul class="footer-links">
-            <li><a href="#">Browse by Region</a></li>
-            <li><a href="#">Ingredients</a></li>
-            <li><a href="#">Collections</a></li>
-            <li><a href="#">Featured Chefs</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <h3>Company</h3>
-          <ul class="footer-links">
-            <li><a href="#">About Us</a></li>
-            <li><a href="#">Careers</a></li>
-            <li><a href="#">Contact</a></li>
-            <li><a href="#">Privacy Policy</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <h3>Connect</h3>
-          <ul class="footer-links">
-            <li><a href="#">Instagram</a></li>
-            <li><a href="#">Twitter</a></li>
-            <li><a href="#">Pinterest</a></li>
-            <li><a href="#">Newsletter</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="copyright">
-        <p>&copy; 2024 Savor Recipes. All rights reserved.</p>
-      </div>
-    </footer>
-
-    <script>
-        // Simple star rating interaction
-        const stars = document.querySelectorAll('.star');
         
-        stars.forEach(star => {
-            star.addEventListener('click', function() {
-                const rating = this.getAttribute('data-rating');
+        <div class="steps-section">
+            <h2>Steps</h2>
+            <ul class="steps-list" id="steps-list">
+            {% for step in recipe.steps %}
+            <li class="step" draggable="{% if is_owner %}true{% else %}false{% endif %}" data-step-id="{{ step.id }}" data-step-number="{{ step.step_number }}">
+                {% if is_owner %}
+                <span class="drag-handle">⋮⋮</span>
+                {% endif %}
+                <div class="step-number">{{ step.step_number }}</div>
+                <div class="step-content">
+                    <div class="step-text view-mode step-text-view-{{ step.id }}" onclick="{% if is_owner %}startEditStep({{ step.id }}){% endif %}">
+                        {{ step.step_text }}
+                    </div>
+                    <input type="text" class="step-text-input edit-mode step-text-edit-{{ step.id }}" style="display: none;" value="{{ step.step_text }}" data-step-id="{{ step.id }}">
+                    <div class="ingredients-container">
+                        {% for ingredient in step.ingredients %}
+                        <div class="ingredient-chip" data-ingredient-id="{{ ingredient.id }}">
+                            <span class="ingredient-name view-mode ingredient-view-{{ ingredient.id }}" onclick="{% if is_owner %}startEditIngredient({{ ingredient.id }}){% endif %}">{{ ingredient.name }}</span>
+                            <span class="ingredient-amount view-mode ingredient-view-{{ ingredient.id }}" onclick="{% if is_owner %}startEditIngredient({{ ingredient.id }}){% endif %}">({{ ingredient.amount }})</span>
+                            {% if is_owner %}
+                            <form method="POST" action="{{ url_for('delete_ingredient', recipe_id=recipe.id, ingredient_id=ingredient.id) }}" style="display: inline;" onsubmit="return confirm('Delete this ingredient?');">
+                                <button type="submit" class="delete-btn">×</button>
+                            </form>
+                            {% endif %}
+                        </div>
+                        <div class="ingredient-edit-form ingredient-edit-{{ ingredient.id }}" style="display: none;">
+                            <form method="POST" action="{{ url_for('edit_ingredient', recipe_id=recipe.id, ingredient_id=ingredient.id) }}" class="ingredient-edit-form-content">
+                                <input type="text" name="name" value="{{ ingredient.name }}" required>
+                                <input type="text" name="amount" value="{{ ingredient.amount }}" required>
+                                <button type="submit" class="btn btn-primary btn-small">Save</button>
+                                <button type="button" onclick="cancelIngredientEdit({{ ingredient.id }})" class="btn btn-secondary btn-small">Cancel</button>
+                            </form>
+                        </div>
+                        {% endfor %}
+                        {% if is_owner %}
+                        <button class="new-ingredient-btn" onclick="showNewIngredientForm({{ step.id }})">+ Ingredient</button>
+                        <div class="new-ingredient-form" id="new-ingredient-form-{{ step.id }}">
+                            <form method="POST" action="{{ url_for('add_ingredient', recipe_id=recipe.id, step_id=step.id) }}" class="new-ingredient-form-content">
+                                <input type="text" name="name" placeholder="Ingredient name" required>
+                                <input type="text" name="amount" placeholder="Amount" required>
+                                <button type="submit" class="btn btn-primary btn-small">Add</button>
+                                <button type="button" onclick="hideNewIngredientForm({{ step.id }})" class="btn btn-secondary btn-small">Cancel</button>
+                            </form>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="step-actions">
+                    {% if is_owner %}
+                    <form method="POST" action="{{ url_for('delete_step', recipe_id=recipe.id, step_id=step.id) }}" style="display: inline;" onsubmit="return confirm('Delete this step?');">
+                        <button type="submit" class="btn btn-danger btn-small">Delete</button>
+                    </form>
+                    {% endif %}
+                </div>
+            </li>
+            {% endfor %}
+            </ul>
+            
+            {% if is_owner %}
+            <div class="new-step-form" id="new-step-form">
+                <form method="POST" action="{{ url_for('add_step', recipe_id=recipe.id) }}" class="new-step-form-content" id="new-step-form-content">
+                    <input type="text" name="step_text" placeholder="Enter step instructions..." required id="new-step-text-input">
+                    <button type="button" class="new-ingredient-btn" id="new-step-ingredient-btn" onclick="showNewStepIngredientForm()" style="display: none;">+ Ingredient</button>
+                    <div class="new-step-form-actions">
+                        <button type="submit" class="btn btn-primary btn-small">Add Step</button>
+                        <button type="button" onclick="hideNewStepForm()" class="btn btn-secondary btn-small">Cancel</button>
+                    </div>
+                </form>
+                <div class="new-ingredient-form" id="new-step-ingredient-form" style="display: none; position: relative; margin-top: 0.5rem;">
+                    <div style="padding: 0.5rem; background: #fff3cd; border: 1px solid #ffc107; border-radius: 3px; margin-bottom: 0.5rem; font-size: 0.85rem; color: #856404;">
+                        Note: Ingredients can be added after the step is created.
+                    </div>
+                    <div class="new-ingredient-form-content">
+                        <input type="text" name="name" placeholder="Ingredient name" id="new-step-ingredient-name">
+                        <input type="text" name="amount" placeholder="Amount" id="new-step-ingredient-amount">
+                        <button type="button" class="btn btn-secondary btn-small" onclick="hideNewStepIngredientForm()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-primary new-step-btn" onclick="showNewStepForm()">+ New Step</button>
+            {% endif %}
+        </div>
+    </div>
+    
+    <script>
+        function enableEditMode() {
+            document.getElementById('recipe-name-view').classList.add('hidden');
+            document.getElementById('recipe-name-edit').classList.add('active');
+        }
+        
+        function disableEditMode() {
+            document.getElementById('recipe-name-view').classList.remove('hidden');
+            document.getElementById('recipe-name-edit').classList.remove('active');
+        }
+        
+        function showNewStepForm() {
+            const form = document.getElementById('new-step-form');
+            form.classList.add('active');
+            const input = document.getElementById('new-step-text-input');
+            if (input) input.focus();
+        }
+        
+        function hideNewStepForm() {
+            const form = document.getElementById('new-step-form');
+            form.classList.remove('active');
+            const input = document.getElementById('new-step-text-input');
+            if (input) input.value = '';
+            hideNewStepIngredientForm();
+            const btn = document.getElementById('new-step-ingredient-btn');
+            if (btn) btn.style.display = 'none';
+        }
+        
+        function showNewStepIngredientForm() {
+            const form = document.getElementById('new-step-ingredient-form');
+            if (form) {
+                form.style.display = 'block';
+                const nameInput = document.getElementById('new-step-ingredient-name');
+                if (nameInput) nameInput.focus();
+            }
+        }
+        
+        function hideNewStepIngredientForm() {
+            const form = document.getElementById('new-step-ingredient-form');
+            if (form) {
+                form.style.display = 'none';
+                const nameInput = document.getElementById('new-step-ingredient-name');
+                const amountInput = document.getElementById('new-step-ingredient-amount');
+                if (nameInput) nameInput.value = '';
+                if (amountInput) amountInput.value = '';
+            }
+        }
+        
+        function showNewIngredientForm(stepId) {
+            const form = document.getElementById('new-ingredient-form-' + stepId);
+            if (form) {
+                form.classList.add('active');
+                form.querySelector('input[name="name"]').focus();
+            }
+        }
+        
+        function hideNewIngredientForm(stepId) {
+            const form = document.getElementById('new-ingredient-form-' + stepId);
+            if (form) {
+                form.classList.remove('active');
+                const nameInput = form.querySelector('input[name="name"]');
+                const amountInput = form.querySelector('input[name="amount"]');
+                if (nameInput) nameInput.value = '';
+                if (amountInput) amountInput.value = '';
+            }
+        }
+        
+        let editingStepId = null;
+        
+        function startEditStep(stepId) {
+            if (editingStepId === stepId) return;
+            
+            // Cancel any other editing
+            if (editingStepId !== null) {
+                cancelStepEdit(editingStepId);
+            }
+            
+            editingStepId = stepId;
+            const viewEl = document.querySelector('.step-text-view-' + stepId);
+            const editEl = document.querySelector('.step-text-edit-' + stepId);
+            if (viewEl && editEl) {
+                viewEl.style.display = 'none';
+                editEl.style.display = 'block';
+                editEl.focus();
+                editEl.select();
                 
-                // Reset all
-                stars.forEach(s => s.classList.remove('active'));
-                s.style.color = '#ddd';
+                const saveHandler = function(e) {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        saveStepEdit(stepId);
+                    } else if (e.key === 'Escape') {
+                        e.preventDefault();
+                        cancelStepEdit(stepId);
+                    }
+                };
                 
-                // Activate clicked and previous
-                for(let i=0; i<rating; i++) {
-                    stars[i].classList.add('active');
-                    stars[i].style.color = '#f1c40f';
+                const blurHandler = function() {
+                    saveStepEdit(stepId);
+                };
+                
+                editEl.addEventListener('blur', blurHandler, { once: true });
+                editEl.addEventListener('keydown', saveHandler, { once: true });
+            }
+        }
+        
+        function cancelStepEdit(stepId) {
+            const viewEl = document.querySelector('.step-text-view-' + stepId);
+            const editEl = document.querySelector('.step-text-edit-' + stepId);
+            if (viewEl && editEl) {
+                editEl.value = viewEl.textContent.trim();
+                viewEl.style.display = 'block';
+                editEl.style.display = 'none';
+                editingStepId = null;
+            }
+        }
+        
+        function saveStepEdit(stepId) {
+            if (editingStepId !== stepId) return;
+            
+            const editEl = document.querySelector('.step-text-edit-' + stepId);
+            if (!editEl) {
+                editingStepId = null;
+                return;
+            }
+            
+            const stepText = editEl.value.trim();
+            if (!stepText) {
+                cancelStepEdit(stepId);
+                return;
+            }
+            
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '{{ url_for("edit_step", recipe_id=recipe.id, step_id=0) }}'.replace('0', stepId);
+            
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'step_text';
+            input.value = stepText;
+            form.appendChild(input);
+            
+            document.body.appendChild(form);
+            editingStepId = null;
+            form.submit();
+        }
+        
+        function startEditIngredient(ingredientId) {
+            const viewEls = document.querySelectorAll('.ingredient-view-' + ingredientId);
+            const editEl = document.querySelector('.ingredient-edit-' + ingredientId);
+            if (viewEls.length > 0 && editEl) {
+                viewEls.forEach(el => el.style.display = 'none');
+                editEl.classList.add('active');
+                editEl.querySelector('input[name="name"]').focus();
+            }
+        }
+        
+        function cancelIngredientEdit(ingredientId) {
+            const viewEls = document.querySelectorAll('.ingredient-view-' + ingredientId);
+            const editEl = document.querySelector('.ingredient-edit-' + ingredientId);
+            if (viewEls.length > 0 && editEl) {
+                viewEls.forEach(el => el.style.display = 'inline');
+                editEl.classList.remove('active');
+            }
+        }
+        
+        function loadRecipeStates() {
+            const countryId = document.getElementById('recipe-country-select').value;
+            const stateSelect = document.getElementById('recipe-state-select');
+            stateSelect.innerHTML = '<option value="">No State</option>';
+            
+            if (countryId) {
+                fetch('/api/states/' + countryId)
+                    .then(response => response.json())
+                    .then(data => {
+                        data.states.forEach(state => {
+                            const option = document.createElement('option');
+                            option.value = state.id;
+                            option.textContent = state.name;
+                            stateSelect.appendChild(option);
+                        });
+                    });
+            }
+        }
+        
+        // Show new ingredient button on hover for existing steps and new step form
+        {% if is_owner %}
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show new ingredient button on hover for existing steps
+            const steps = document.querySelectorAll('.step');
+            steps.forEach(step => {
+                const newIngredientBtn = step.querySelector('.new-ingredient-btn');
+                if (newIngredientBtn) {
+                    step.addEventListener('mouseenter', function() {
+                        newIngredientBtn.style.display = 'inline-block';
+                    });
+                    step.addEventListener('mouseleave', function() {
+                        const form = step.querySelector('.new-ingredient-form.active');
+                        if (!form) {
+                            newIngredientBtn.style.display = 'none';
+                        }
+                    });
                 }
-                
-                // Here you would typically send an AJAX request to save the rating
-                console.log('Rated:', rating);
             });
             
-            star.addEventListener('mouseover', function() {
-                const rating = this.getAttribute('data-rating');
-                for(let i=0; i<rating; i++) {
-                    stars[i].style.color = '#f1c40f';
-                }
-            });
-            
-            star.addEventListener('mouseout', function() {
-                stars.forEach(s => {
-                    if(!s.classList.contains('active')) {
-                        s.style.color = '#ddd';
-                    } else {
-                        s.style.color = '#f1c40f';
+            // Show new ingredient button on hover when creating new step
+            const newStepForm = document.getElementById('new-step-form');
+            const newStepIngredientBtn = document.getElementById('new-step-ingredient-btn');
+            if (newStepForm && newStepIngredientBtn) {
+                newStepForm.addEventListener('mouseenter', function() {
+                    if (newStepForm.classList.contains('active')) {
+                        newStepIngredientBtn.style.display = 'inline-block';
                     }
                 });
-            });
+                newStepForm.addEventListener('mouseleave', function() {
+                    const form = newStepForm.querySelector('#new-step-ingredient-form');
+                    if (!form || form.style.display === 'none') {
+                        newStepIngredientBtn.style.display = 'none';
+                    }
+                });
+            }
         });
+        {% endif %}
+        
+        // Drag and drop functionality
+        {% if is_owner %}
+        let draggedElement = null;
+        const stepsList = document.getElementById('steps-list');
+        
+        stepsList.addEventListener('dragstart', function(e) {
+            if (e.target.classList.contains('step') || e.target.closest('.step')) {
+                const step = e.target.classList.contains('step') ? e.target : e.target.closest('.step');
+                draggedElement = step;
+                step.classList.add('dragging');
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/html', step.outerHTML);
+            }
+        });
+        
+        stepsList.addEventListener('dragend', function(e) {
+            if (draggedElement) {
+                draggedElement.classList.remove('dragging');
+                draggedElement = null;
+            }
+        });
+        
+        stepsList.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            
+            const afterElement = getDragAfterElement(stepsList, e.clientY);
+            const dragging = document.querySelector('.dragging');
+            
+            if (dragging && afterElement == null) {
+                stepsList.appendChild(dragging);
+            } else if (dragging && afterElement) {
+                stepsList.insertBefore(dragging, afterElement);
+            }
+        });
+        
+        stepsList.addEventListener('drop', function(e) {
+            e.preventDefault();
+            if (draggedElement) {
+                updateStepOrder();
+            }
+        });
+        
+        function getDragAfterElement(container, y) {
+            const draggableElements = [...container.querySelectorAll('.step:not(.dragging)')];
+            
+            return draggableElements.reduce((closest, child) => {
+                const box = child.getBoundingClientRect();
+                const offset = y - box.top - box.height / 2;
+                
+                if (offset < 0 && offset > closest.offset) {
+                    return { offset: offset, element: child };
+                } else {
+                    return closest;
+                }
+            }, { offset: Number.NEGATIVE_INFINITY }).element;
+        }
+        
+        function updateStepOrder() {
+            const steps = stepsList.querySelectorAll('.step');
+            const stepOrders = [];
+            
+            steps.forEach((step, index) => {
+                const stepId = step.getAttribute('data-step-id');
+                stepOrders.push({
+                    step_id: parseInt(stepId),
+                    step_number: index + 1
+                });
+                
+                // Update displayed step number
+                const stepNumberEl = step.querySelector('.step-number');
+                if (stepNumberEl) {
+                    stepNumberEl.textContent = index + 1;
+                }
+            });
+            
+            // Send update to server
+            fetch('{{ url_for("update_step_order", recipe_id=recipe.id) }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ step_orders: stepOrders })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update data attributes
+                    steps.forEach((step, index) => {
+                        step.setAttribute('data-step-number', index + 1);
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error updating step order:', error);
+            });
+        }
+        {% endif %}
     </script>
-  </body>
+</body>
 </html>
 
