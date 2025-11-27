@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Savor | Global Recipe Explorer</title>
+{% extends "base.html" %}
 
+{% block title %}Snacklore | Global Recipe Explorer{% endblock %}
+
+{% block extra_head %}
     <!-- Leaflet CSS -->
     <link
       rel="stylesheet"
@@ -12,131 +10,10 @@
       integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
       crossorigin=""
     />
+{% endblock %}
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap"
-      rel="stylesheet"
-    />
-
-    <style>
-      :root {
-        --primary: #d35400; /* Burnt Orange */
-        --primary-dark: #a04000;
-        --secondary: #2c3e50; /* Dark Slate */
-        --accent: #27ae60; /* Sage Green */
-        --bg-warm: #fdfbf7; /* Warm White */
-        --bg-white: #ffffff;
-        --text-main: #2c3e50;
-        --text-light: #7f8c8d;
-        --border: #ebdccb;
-      }
-
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-
-      body {
-        font-family: "Inter", sans-serif;
-        background-color: var(--bg-warm);
-        color: var(--text-main);
-        line-height: 1.6;
-      }
-
-      h1,
-      h2,
-      h3,
-      h4 {
-        font-family: "Playfair Display", serif;
-        color: var(--secondary);
-      }
-
-      a {
-        text-decoration: none;
-        color: inherit;
-        transition: color 0.2s;
-      }
-
-      /* Navbar */
-      .navbar {
-        background: var(--bg-white);
-        padding: 1rem 5%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-      }
-
-      .logo {
-        font-family: "Playfair Display", serif;
-        font-size: 1.8rem;
-        font-weight: 700;
-        color: var(--primary);
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-
-      .nav-links {
-        display: flex;
-        gap: 2rem;
-        align-items: center;
-      }
-
-      .nav-link {
-        font-weight: 500;
-        color: var(--secondary);
-        font-size: 0.95rem;
-      }
-
-      .nav-link:hover {
-        color: var(--primary);
-      }
-
-      .auth-buttons {
-        display: flex;
-        gap: 1rem;
-        align-items: center;
-      }
-
-      .btn {
-        padding: 0.6rem 1.2rem;
-        border-radius: 4px;
-        font-weight: 600;
-        font-size: 0.9rem;
-        cursor: pointer;
-        transition: all 0.2s;
-        display: inline-block;
-      }
-
-      .btn-ghost {
-        color: var(--secondary);
-        border: 1px solid transparent;
-        background: transparent;
-      }
-
-      .btn-ghost:hover {
-        background: rgba(0, 0, 0, 0.03);
-      }
-
-      .btn-primary {
-        background: var(--primary);
-        color: white;
-        border: 1px solid var(--primary);
-      }
-
-      .btn-primary:hover {
-        background: var(--primary-dark);
-        border-color: var(--primary-dark);
-        color: white;
-      }
+{% block extra_css %}
+<style>
 
       /* Hero Section */
       .hero {
@@ -197,37 +74,11 @@
         font-weight: 600;
       }
 
-      /* Container */
+      /* Container for homepage */
       .container {
         max-width: 1200px;
         margin: 0 auto;
         padding: 4rem 1.5rem;
-      }
-
-      /* Flash Messages */
-      .flash-messages {
-        margin-bottom: 2rem;
-      }
-      .flash {
-        padding: 1rem;
-        margin-bottom: 1rem;
-        border-radius: 4px;
-        border: 1px solid transparent;
-      }
-      .flash.error {
-        background-color: #fce4e4;
-        color: #cc0000;
-        border-color: #fcc2c2;
-      }
-      .flash.success {
-        background-color: #d4edda;
-        color: #155724;
-        border-color: #c3e6cb;
-      }
-      .flash.info {
-        background-color: #d1ecf1;
-        color: #0c5460;
-        border-color: #bee5eb;
       }
 
       /* Section Headers */
@@ -495,53 +346,11 @@
         .hero h1 {
           font-size: 2.5rem;
         }
-        .nav-links {
-          display: none;
-        }
       }
     </style>
-  </head>
-  <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-      <a href="{{ url_for('index') }}" class="logo">
-        <!-- Simple SVG Icon -->
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2" />
-          <path d="M7 2v20" />
-          <path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7" />
-        </svg>
-        Savor
-      </a>
-      <div class="nav-links">
-        <a href="#" class="nav-link">Recipes</a>
-        <a href="#" class="nav-link">Ingredients</a>
-        <a href="#" class="nav-link">Community</a>
-        <a href="#" class="nav-link">About</a>
-      </div>
-      <div class="auth-buttons">
-        {% if current_user and current_user.is_authenticated %}
-        <span
-          style="color: var(--primary); font-weight: 500; margin-right: 10px"
-          >Hello, {{ current_user.username }}</span
-        >
-        <a href="{{ url_for('logout') }}" class="btn btn-ghost">Log Out</a>
-        {% else %}
-        <a href="{{ url_for('login') }}" class="btn btn-ghost">Log In</a>
-        <a href="{{ url_for('register') }}" class="btn btn-primary">Sign Up</a>
-        {% endif %}
-      </div>
-    </nav>
+{% endblock %}
 
+{% block content %}
     <!-- Hero Section -->
     <header class="hero">
       <h1>Taste the World</h1>
@@ -747,7 +556,9 @@
         <p>&copy; 2024 Savor Recipes. All rights reserved.</p>
       </div>
     </footer>
+{% endblock %}
 
+{% block extra_js %}
     <!-- Leaflet JavaScript -->
     <script
       src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
@@ -1159,5 +970,4 @@
         })
         .catch((err) => console.error("Error loading map data:", err));
     </script>
-  </body>
-</html>
+{% endblock %}
