@@ -374,9 +374,22 @@
                 <div class="recipe-info">
                     {% if recipe.primary_country %}Country: {{ recipe.primary_country.name }}{% endif %}
                     {% if recipe.primary_state %} | State: {{ recipe.primary_state.name }}{% endif %}
-                    {% if is_owner %}
-                        <button onclick="enableEditMode()" style="margin-left: 1rem;">Edit Recipe</button>
-                    {% endif %}
+                    <div style="margin-top: 0.5rem; display: flex; gap: 0.5rem; align-items: center;">
+                        {% if is_owner %}
+                            <button onclick="enableEditMode()">Edit Recipe</button>
+                        {% endif %}
+                        {% if current_user.is_authenticated and not is_owner %}
+                            {% if is_favorited %}
+                                <form method="POST" action="{{ url_for('unfavorite_recipe', recipe_id=recipe.id) }}" style="display: inline;">
+                                    <button type="submit" class="btn-secondary">★ Unfavorite</button>
+                                </form>
+                            {% else %}
+                                <form method="POST" action="{{ url_for('favorite_recipe', recipe_id=recipe.id) }}" style="display: inline;">
+                                    <button type="submit" class="btn-secondary">☆ Favorite</button>
+                                </form>
+                            {% endif %}
+                        {% endif %}
+                    </div>
                 </div>
             </div>
             <div class="edit-mode" id="recipe-name-edit">

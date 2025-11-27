@@ -4,6 +4,7 @@ from flask_login import LoginManager, UserMixin, login_user, logout_user, login_
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 import os
+import re
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-secret-key-change-in-production')
@@ -25,6 +26,12 @@ class State(db.Model):
     name = db.Column(db.String(100), nullable=False)
     country_id = db.Column(db.Integer, db.ForeignKey('country.id'), nullable=False)
 
+# Association table for favorites
+favorites = db.Table('favorites',
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
+    db.Column('recipe_id', db.Integer, db.ForeignKey('recipe.id'), primary_key=True)
+)
+
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
@@ -37,10 +44,12 @@ class User(UserMixin, db.Model):
     primary_country = db.relationship('Country', foreign_keys=[primary_country_id], backref='users')
     primary_state = db.relationship('State', foreign_keys=[primary_state_id], backref='users')
     recipes = db.relationship('Recipe', backref='owner', lazy=True)
+    favorite_recipes = db.relationship('Recipe', secondary=favorites, lazy='subquery', backref=db.backref('favorited_by', lazy=True))
 
 class Recipe(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200), nullable=False)
+    slug = db.Column(db.String(300), nullable=True, index=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     primary_country_id = db.Column(db.Integer, db.ForeignKey('country.id'), nullable=True)
     primary_state_id = db.Column(db.Integer, db.ForeignKey('state.id'), nullable=True)
@@ -67,6 +76,34 @@ class Ingredient(db.Model):
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
+def generate_slug(username, recipe_name):
+    """Generate a slug from username and recipe name"""
+    # Combine username and recipe name
+    combined = f"{username}-{recipe_name}"
+    # Convert to lowercase
+    slug = combined.lower()
+    # Replace spaces and special characters with hyphens
+    slug = re.sub(r'[^\w\s-]', '', slug)
+    slug = re.sub(r'[-\s]+', '-', slug)
+    # Remove leading/trailing hyphens
+    slug = slug.strip('-')
+    return slug
+
+def ensure_recipe_slug(recipe):
+    """Ensure a recipe has a slug, generating one if needed"""
+    if not recipe.slug:
+        recipe.slug = generate_slug(recipe.owner.username, recipe.name)
+        db.session.commit()
+    return recipe.slug
+
+def get_recipe_url(recipe):
+    """Get the URL for a recipe, using slug-based route if possible"""
+    ensure_recipe_slug(recipe)
+    if recipe.primary_country and recipe.primary_state:
+        return url_for('view_recipe', country_name=recipe.primary_country.name, state_name=recipe.primary_state.name, recipe_slug=recipe.slug)
+    # Fallback to old route if no location
+    return url_for('view_recipe_old', recipe_id=recipe.id)
 
 @app.route('/')
 def index():
@@ -149,14 +186,69 @@ def logout():
     flash('You have been logged out', 'info')
     return redirect(url_for('login'))
 
-@app.route('/recipe/<int:recipe_id>')
-def view_recipe(recipe_id):
-    recipe = Recipe.query.get_or_404(recipe_id)
+@app.route('/user/<username>')
+def user_profile(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    user_recipes = Recipe.query.filter_by(user_id=user.id).order_by(Recipe.created_at.desc()).all()
+    # Show favorites only if viewing own profile
+    favorite_recipes = user.favorite_recipes if (current_user.is_authenticated and current_user.id == user.id) else []
+    
+    breadcrumbs = [{'label': username, 'url': None}]
+    return render_template('user_profile.html', profile_user=user, user_recipes=user_recipes, favorite_recipes=favorite_recipes, breadcrumbs=breadcrumbs)
+
+@app.route('/world')
+def world_map():
+    countries = Country.query.order_by(Country.name).all()
+    breadcrumbs = [{'label': 'World', 'url': None}]
+    return render_template('world.html', countries=countries, breadcrumbs=breadcrumbs)
+
+@app.route('/country/<country_name>')
+def view_country(country_name):
+    country = Country.query.filter_by(name=country_name).first_or_404()
+    states = State.query.filter_by(country_id=country.id).order_by(State.name).all()
+    recipes = Recipe.query.filter_by(primary_country_id=country.id).order_by(Recipe.created_at.desc()).all()
+    
+    breadcrumbs = [{'label': 'World', 'url': url_for('world_map')}, {'label': country_name, 'url': None}]
+    return render_template('country.html', country=country, states=states, recipes=recipes, breadcrumbs=breadcrumbs)
+
+@app.route('/country/<country_name>/<state_name>/<recipe_slug>')
+def view_recipe(country_name, state_name, recipe_slug):
+    # Find recipe by slug
+    recipe = Recipe.query.filter_by(slug=recipe_slug).first_or_404()
+    
+    # Verify country and state match
+    if recipe.primary_country and recipe.primary_country.name != country_name:
+        flash('Recipe location mismatch', 'error')
+        return redirect(url_for('index'))
+    if recipe.primary_state and recipe.primary_state.name != state_name:
+        flash('Recipe location mismatch', 'error')
+        return redirect(url_for('index'))
+    
     is_owner = current_user.is_authenticated and recipe.user_id == current_user.id
+    is_favorited = current_user.is_authenticated and recipe in current_user.favorite_recipes
     countries = Country.query.all()
     states = State.query.all()
-    breadcrumbs = [{'label': recipe.name, 'url': None}]
-    return render_template('recipe.html', recipe=recipe, is_owner=is_owner, countries=countries, states=states, breadcrumbs=breadcrumbs)
+    
+    breadcrumbs = []
+    if recipe.primary_country:
+        breadcrumbs.append({'label': recipe.primary_country.name, 'url': url_for('view_country', country_name=recipe.primary_country.name)})
+    if recipe.primary_state:
+        breadcrumbs.append({'label': recipe.primary_state.name, 'url': None})
+    breadcrumbs.append({'label': recipe.name, 'url': None})
+    
+    return render_template('recipe.html', recipe=recipe, is_owner=is_owner, is_favorited=is_favorited, countries=countries, states=states, breadcrumbs=breadcrumbs)
+
+# Keep old route for backwards compatibility, redirect to new route
+@app.route('/recipe/<int:recipe_id>')
+def view_recipe_old(recipe_id):
+    recipe = Recipe.query.get_or_404(recipe_id)
+    ensure_recipe_slug(recipe)
+    if recipe.primary_country and recipe.primary_state:
+        return redirect(url_for('view_recipe', country_name=recipe.primary_country.name, state_name=recipe.primary_state.name, recipe_slug=recipe.slug))
+    else:
+        # If no location, redirect to home
+        flash('Recipe location not set', 'error')
+        return redirect(url_for('index'))
 
 @app.route('/recipe/<int:recipe_id>/edit', methods=['POST'])
 @login_required
@@ -164,16 +256,29 @@ def edit_recipe(recipe_id):
     recipe = Recipe.query.get_or_404(recipe_id)
     if recipe.user_id != current_user.id:
         flash('You do not have permission to edit this recipe', 'error')
-        return redirect(url_for('view_recipe', recipe_id=recipe_id))
+        ensure_recipe_slug(recipe)
+        if recipe.primary_country and recipe.primary_state:
+            return redirect(url_for('view_recipe', country_name=recipe.primary_country.name, state_name=recipe.primary_state.name, recipe_slug=recipe.slug))
+        return redirect(url_for('index'))
     
+    old_name = recipe.name
     recipe.name = request.form.get('name', recipe.name)
     country_id = request.form.get('country_id')
     state_id = request.form.get('state_id')
     recipe.primary_country_id = int(country_id) if country_id else None
     recipe.primary_state_id = int(state_id) if state_id else None
+    
+    # Regenerate slug if name changed
+    if old_name != recipe.name:
+        recipe.slug = generate_slug(recipe.owner.username, recipe.name)
+    
+    ensure_recipe_slug(recipe)
     db.session.commit()
     flash('Recipe updated successfully', 'success')
-    return redirect(url_for('view_recipe', recipe_id=recipe_id))
+    
+    if recipe.primary_country and recipe.primary_state:
+        return redirect(url_for('view_recipe', country_name=recipe.primary_country.name, state_name=recipe.primary_state.name, recipe_slug=recipe.slug))
+    return redirect(url_for('index'))
 
 @app.route('/recipe/<int:recipe_id>/step/<int:step_id>/edit', methods=['POST'])
 @login_required
@@ -321,6 +426,28 @@ def update_step_order(recipe_id):
     db.session.commit()
     return jsonify({'success': True})
 
+@app.route('/recipe/<int:recipe_id>/favorite', methods=['POST'])
+@login_required
+def favorite_recipe(recipe_id):
+    recipe = Recipe.query.get_or_404(recipe_id)
+    if recipe not in current_user.favorite_recipes:
+        current_user.favorite_recipes.append(recipe)
+        db.session.commit()
+        flash('Recipe added to favorites', 'success')
+    else:
+        flash('Recipe already in favorites', 'info')
+    return redirect(get_recipe_url(recipe))
+
+@app.route('/recipe/<int:recipe_id>/unfavorite', methods=['POST'])
+@login_required
+def unfavorite_recipe(recipe_id):
+    recipe = Recipe.query.get_or_404(recipe_id)
+    if recipe in current_user.favorite_recipes:
+        current_user.favorite_recipes.remove(recipe)
+        db.session.commit()
+        flash('Recipe removed from favorites', 'success')
+    return redirect(get_recipe_url(recipe))
+
 def init_db():
     """Initialize database with system user, countries, states, and test recipe"""
     # Create System user if it doesn't exist
@@ -379,7 +506,8 @@ def init_db():
             name='Test Recipe',
             user_id=system_user.id,
             primary_country_id=us.id if us else None,
-            primary_state_id=california.id if california else None
+            primary_state_id=california.id if california else None,
+            slug=generate_slug(system_user.username, 'Test Recipe')
         )
         db.session.add(test_recipe)
         db.session.flush()
@@ -453,4 +581,9 @@ if __name__ == '__main__':
     with app.app_context():
         db.create_all()
         init_db()
+        # Generate slugs for any existing recipes that don't have them
+        recipes_without_slugs = Recipe.query.filter_by(slug=None).all()
+        for recipe in recipes_without_slugs:
+            recipe.slug = generate_slug(recipe.owner.username, recipe.name)
+        db.session.commit()
     app.run(host='0.0.0.0', port=5000, debug=True)

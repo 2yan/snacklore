@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ country.name }} - Snacklore</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #000;
+            min-height: 100vh;
+            padding: 0;
+        }
+        .container {
+            background: #fff;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            border: 1px solid #333;
+            border-top: none;
+            margin-top: 0;
+        }
+        h1 { margin-bottom: 1rem; color: #000; }
+        .section-title {
+            font-size: 1.5rem;
+            color: #000;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #666;
+        }
+        .states-section, .recipes-section {
+            margin-top: 2rem;
+        }
+        .states-grid, .recipes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .state-card, .recipe-card {
+            background: #f9f9f9;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .state-card:hover, .recipe-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .state-card a, .recipe-card a {
+            color: #000;
+            text-decoration: none;
+            display: block;
+        }
+        .recipe-card h4 {
+            margin-bottom: 0.5rem;
+            color: #000;
+        }
+        .recipe-meta {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    {% include 'includes/header.html' %}
+    <div class="container">
+        <h1>{{ country.name }}</h1>
+        
+        <div class="states-section">
+            <h2 class="section-title">States/Regions</h2>
+            {% if states %}
+            <div class="states-grid">
+                {% for state in states %}
+                <div class="state-card">
+                    <a href="#">{{ state.name }}</a>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="empty-state">No states/regions available.</div>
+            {% endif %}
+        </div>
+        
+        <div class="recipes-section">
+            <h2 class="section-title">Recipes from {{ country.name }}</h2>
+            {% if recipes %}
+            <div class="recipes-grid">
+                {% for recipe in recipes %}
+                <div class="recipe-card">
+                    <a href="{% if recipe.primary_state %}{{ url_for('view_recipe', country_name=country.name, state_name=recipe.primary_state.name, recipe_slug=recipe.slug) }}{% else %}{{ url_for('view_recipe_old', recipe_id=recipe.id) }}{% endif %}">
+                        <h4>{{ recipe.name }}</h4>
+                        <div class="recipe-meta">
+                            <div>👤 {{ recipe.owner.username }}</div>
+                            {% if recipe.primary_state %}
+                                <div>📍 {{ recipe.primary_state.name }}</div>
+                            {% endif %}
+                            {% if recipe.created_at %}
+                                <div>📅 {{ recipe.created_at.strftime('%Y-%m-%d') }}</div>
+                            {% endif %}
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="empty-state">No recipes from this country yet.</div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
+

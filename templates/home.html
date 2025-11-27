@@ -262,7 +262,7 @@
                 {% if recipes %}
                 <span class="breadcrumb-separator">→</span>
                 <div class="breadcrumb-item">
-                    <a href="{{ url_for('view_recipe', recipe_id=recipes[0].id) }}">View Recipe</a>
+                    <a href="{% if recipes[0].primary_country and recipes[0].primary_state %}{{ url_for('view_recipe', country_name=recipes[0].primary_country.name, state_name=recipes[0].primary_state.name, recipe_slug=recipes[0].slug) }}{% else %}{{ url_for('view_recipe_old', recipe_id=recipes[0].id) }}{% endif %}">View Recipe</a>
                 </div>
                 <span class="breadcrumb-separator">→</span>
                 <div class="breadcrumb-item">
@@ -292,7 +292,7 @@
                     <ul class="site-map-links">
                         {% if recipes %}
                             {% for recipe in recipes %}
-                            <li><a href="{{ url_for('view_recipe', recipe_id=recipe.id) }}">{{ recipe.name }}</a></li>
+                            <li><a href="{% if recipe.primary_country and recipe.primary_state %}{{ url_for('view_recipe', country_name=recipe.primary_country.name, state_name=recipe.primary_state.name, recipe_slug=recipe.slug) }}{% else %}{{ url_for('view_recipe_old', recipe_id=recipe.id) }}{% endif %}">{{ recipe.name }}</a></li>
                             {% endfor %}
                         {% else %}
                             <li class="empty-state">No recipes available</li>
@@ -315,7 +315,7 @@
             <div class="recipes-grid">
                 {% for recipe in recipes %}
                 <div class="recipe-card">
-                    <a href="{{ url_for('view_recipe', recipe_id=recipe.id) }}">
+                    <a href="{% if recipe.primary_country and recipe.primary_state %}{{ url_for('view_recipe', country_name=recipe.primary_country.name, state_name=recipe.primary_state.name, recipe_slug=recipe.slug) }}{% else %}{{ url_for('view_recipe_old', recipe_id=recipe.id) }}{% endif %}">
                         <h4>{{ recipe.name }}</h4>
                         <div class="recipe-meta">
                             {% if recipe.primary_country %}
