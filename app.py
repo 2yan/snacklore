@@ -91,6 +91,32 @@ def generate_slug(username, recipe_name):
     slug = slug.strip('-')
     return slug
 
+def country_name_to_slug(country_name):
+    """Convert country name to lowercase slug"""
+    slug = country_name.lower()
+    # Replace spaces with hyphens
+    slug = re.sub(r'[-\s]+', '-', slug)
+    # Remove special characters
+    slug = re.sub(r'[^\w-]', '', slug)
+    # Remove leading/trailing hyphens
+    slug = slug.strip('-')
+    return slug
+
+def slug_to_country_name(country_slug):
+    """Convert country slug back to country name (case-insensitive lookup)"""
+    # Try to find country by slug (case-insensitive)
+    country = Country.query.filter(Country.name.ilike(country_slug.replace('-', ' '))).first()
+    if country:
+        return country.name
+    # Fallback: title case the slug
+    return country_slug.replace('-', ' ').title()
+
+# Add helper function to Jinja templates
+@app.template_filter('country_slug')
+def country_slug_filter(country_name):
+    """Convert country name to slug for use in templates"""
+    return country_name_to_slug(country_name)
+
 def ensure_recipe_slug(recipe):
     """Ensure a recipe has a slug, generating one if needed"""
     if not recipe.slug:
@@ -102,9 +128,9 @@ def get_recipe_url(recipe):
     """Get the URL for a recipe, using slug-based route if possible"""
     ensure_recipe_slug(recipe)
     if recipe.primary_country and recipe.primary_state:
-        return url_for('view_recipe', country_name=recipe.primary_country.name, state_name=recipe.primary_state.name, recipe_slug=recipe.slug)
+        return url_for('view_recipe', country_slug=country_name_to_slug(recipe.primary_country.name), state_slug=country_name_to_slug(recipe.primary_state.name), recipe_slug=recipe.slug)
     elif recipe.primary_country:
-        return url_for('view_recipe_country_only', country_name=recipe.primary_country.name, recipe_slug=recipe.slug)
+        return url_for('view_recipe_country_only', country_slug=country_name_to_slug(recipe.primary_country.name), recipe_slug=recipe.slug)
     # Fallback to old route if no location
     return url_for('view_recipe_old', recipe_id=recipe.id)
 
@@ -200,7 +226,7 @@ def logout():
     flash('You have been logged out', 'info')
     return redirect(url_for('login'))
 
-@app.route('/user/<username>')
+@app.route('/u/<username>')
 def user_profile(username):
     user = User.query.filter_by(username=username).first_or_404()
     user_recipes = Recipe.query.filter_by(user_id=user.id).order_by(Recipe.created_at.desc()).all()
@@ -216,69 +242,17 @@ def world_map():
     breadcrumbs = [{'label': 'World', 'url': None}]
     return render_template('world.html', countries=countries, breadcrumbs=breadcrumbs)
 
-@app.route('/country/<country_name>')
-def view_country(country_name):
-    country = Country.query.filter_by(name=country_name).first_or_404()
+@app.route('/c/<country_slug>')
+def view_country(country_slug):
+    # Convert slug to country name (case-insensitive lookup)
+    country_name = slug_to_country_name(country_slug)
+    country = Country.query.filter(Country.name.ilike(country_name)).first_or_404()
     states = State.query.filter_by(country_id=country.id).order_by(State.name).all()
     recipes = Recipe.query.filter_by(primary_country_id=country.id).order_by(Recipe.created_at.desc()).all()
     
-    breadcrumbs = [{'label': 'World', 'url': url_for('world_map')}, {'label': country_name, 'url': None}]
+    breadcrumbs = [{'label': 'World', 'url': url_for('world_map')}, {'label': country.name, 'url': None}]
     return render_template('country.html', country=country, states=states, recipes=recipes, breadcrumbs=breadcrumbs)
 
-@app.route('/country/<country_name>/<recipe_slug>')
-def view_recipe_country_only(country_name, recipe_slug):
-    # Find recipe by slug
-    recipe = Recipe.query.filter_by(slug=recipe_slug).first_or_404()
-    
-    # Verify country matches and recipe has no state
-    if not recipe.primary_country:
-        flash('Recipe location not set', 'error')
-        return redirect(url_for('index'))
-    if recipe.primary_country.name != country_name:
-        flash('Recipe location mismatch', 'error')
-        return redirect(url_for('index'))
-    if recipe.primary_state:
-        # If recipe has a state, redirect to the state route
-        return redirect(url_for('view_recipe', country_name=recipe.primary_country.name, state_name=recipe.primary_state.name, recipe_slug=recipe.slug))
-    
-    is_owner = current_user.is_authenticated and recipe.user_id == current_user.id
-    is_favorited = current_user.is_authenticated and recipe in current_user.favorite_recipes
-    countries = Country.query.all()
-    states = State.query.all()
-    
-    breadcrumbs = []
-    if recipe.primary_country:
-        breadcrumbs.append({'label': recipe.primary_country.name, 'url': url_for('view_country', country_name=recipe.primary_country.name)})
-    breadcrumbs.append({'label': recipe.name, 'url': None})
-    
-    return render_template('recipe.html', recipe=recipe, is_owner=is_owner, is_favorited=is_favorited, countries=countries, states=states, breadcrumbs=breadcrumbs)
-
-@app.route('/country/<country_name>/<state_name>/<recipe_slug>')
-def view_recipe(country_name, state_name, recipe_slug):
-    # Find recipe by slug
-    recipe = Recipe.query.filter_by(slug=recipe_slug).first_or_404()
-    
-    # Verify country and state match
-    if recipe.primary_country and recipe.primary_country.name != country_name:
-        flash('Recipe location mismatch', 'error')
-        return redirect(url_for('index'))
-    if recipe.primary_state and recipe.primary_state.name != state_name:
-        flash('Recipe location mismatch', 'error')
-        return redirect(url_for('index'))
-    
-    is_owner = current_user.is_authenticated and recipe.user_id == current_user.id
-    is_favorited = current_user.is_authenticated and recipe in current_user.favorite_recipes
-    countries = Country.query.all()
-    states = State.query.all()
-    
-    breadcrumbs = []
-    if recipe.primary_country:
-        breadcrumbs.append({'label': recipe.primary_country.name, 'url': url_for('view_country', country_name=recipe.primary_country.name)})
-    if recipe.primary_state:
-        breadcrumbs.append({'label': recipe.primary_state.name, 'url': None})
-    breadcrumbs.append({'label': recipe.name, 'url': None})
-    
-    return render_template('recipe.html', recipe=recipe, is_owner=is_owner, is_favorited=is_favorited, countries=countries, states=states, breadcrumbs=breadcrumbs)
 
 # Keep old route for backwards compatibility, redirect to new route
 @app.route('/recipe/<int:recipe_id>')
@@ -286,10 +260,10 @@ def view_recipe_old(recipe_id):
     recipe = Recipe.query.get_or_404(recipe_id)
     ensure_recipe_slug(recipe)
     if recipe.primary_country and recipe.primary_state:
-        return redirect(url_for('view_recipe', country_name=recipe.primary_country.name, state_name=recipe.primary_state.name, recipe_slug=recipe.slug))
+        return redirect(url_for('view_recipe', country_slug=country_name_to_slug(recipe.primary_country.name), state_slug=country_name_to_slug(recipe.primary_state.name), recipe_slug=recipe.slug))
     elif recipe.primary_country:
         # Recipe has country but no state
-        return redirect(url_for('view_recipe_country_only', country_name=recipe.primary_country.name, recipe_slug=recipe.slug))
+        return redirect(url_for('view_recipe_country_only', country_slug=country_name_to_slug(recipe.primary_country.name), recipe_slug=recipe.slug))
     else:
         # If no location, redirect to home
         flash('Recipe location not set', 'error')
@@ -322,21 +296,6 @@ def view_recipe_slug(recipe_slug):
             
     return render_template('recipe_detail.html', recipe=recipe, ingredients=ingredients, steps=recipe.steps)
 
-@app.route('/countries/<string:country_slug>')
-def view_country_slug(country_slug):
-    # Convert slug to name (e.g. "japan" -> "Japan", "united-states" -> "United States")
-    name = country_slug.replace('-', ' ').title()
-    # Handle specific cases if needed, but title() works for most
-    if name.lower() == 'usa':
-        name = 'United States'
-        
-    country = Country.query.filter(Country.name.ilike(name)).first()
-    
-    if not country:
-        return "Country not found", 404
-        
-    recipes = Recipe.query.filter_by(primary_country_id=country.id).all()
-    return render_template('country_detail.html', country=country, recipes=recipes)
 
 @app.route('/recipe/<int:recipe_id>/edit', methods=['POST'])
 @login_required
@@ -346,7 +305,7 @@ def edit_recipe(recipe_id):
         flash('You do not have permission to edit this recipe', 'error')
         ensure_recipe_slug(recipe)
         if recipe.primary_country and recipe.primary_state:
-            return redirect(url_for('view_recipe', country_name=recipe.primary_country.name, state_name=recipe.primary_state.name, recipe_slug=recipe.slug))
+            return redirect(url_for('view_recipe', country_slug=country_name_to_slug(recipe.primary_country.name), state_slug=country_name_to_slug(recipe.primary_state.name), recipe_slug=recipe.slug))
         return redirect(url_for('index'))
     
     old_name = recipe.name
@@ -365,7 +324,7 @@ def edit_recipe(recipe_id):
     flash('Recipe updated successfully', 'success')
     
     if recipe.primary_country and recipe.primary_state:
-        return redirect(url_for('view_recipe', country_name=recipe.primary_country.name, state_name=recipe.primary_state.name, recipe_slug=recipe.slug))
+        return redirect(url_for('view_recipe', country_slug=country_name_to_slug(recipe.primary_country.name), state_slug=country_name_to_slug(recipe.primary_state.name), recipe_slug=recipe.slug))
     return redirect(url_for('index'))
 
 @app.route('/recipe/<int:recipe_id>/step/<int:step_id>/edit', methods=['POST'])
@@ -549,31 +508,7 @@ def init_db():
         db.session.add(system_user)
         db.session.commit()
     
-    # Create countries and states if they don't exist
-    us = Country.query.filter_by(name='United States').first()
-    if not us:
-        us = Country(name='United States')
-        db.session.add(us)
-        db.session.flush()
-        
-        us_states = [
-            'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado',
-            'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho',
-            'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana',
-            'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota',
-            'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada',
-            'New Hampshire', 'New Jersey', 'New Mexico', 'New York',
-            'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon',
-            'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota',
-            'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington',
-            'West Virginia', 'Wisconsin', 'Wyoming'
-        ]
-        
-        for state_name in us_states:
-            state = State(name=state_name, country_id=us.id)
-            db.session.add(state)
-    
-    # Load all countries from static/countries.json
+    # Load all countries and states from static/countries.json (sole source of truth)
     json_path = os.path.join(os.path.dirname(__file__), 'static', 'countries.json')
     try:
         with open(json_path, 'r', encoding='utf-8') as f:
@@ -583,21 +518,47 @@ def init_db():
             for country_entry in countries_data:
                 if 'country' in country_entry:
                     country_name = country_entry['country']
-                    # Check if country already exists
+                    # Check if country already exists, create if not
                     existing_country = Country.query.filter_by(name=country_name).first()
                     if not existing_country:
                         country = Country(name=country_name)
                         db.session.add(country)
+                        db.session.flush()
+                        country_id = country.id
+                    else:
+                        country_id = existing_country.id
+                    
+                    # Load states for this country from JSON
+                    if 'states' in country_entry and isinstance(country_entry['states'], list):
+                        for state_name in country_entry['states']:
+                            # Skip empty or invalid state names
+                            if not state_name or not isinstance(state_name, str) or len(state_name.strip()) == 0:
+                                continue
+                            
+                            # Clean up state name (remove leading/trailing whitespace)
+                            state_name = state_name.strip()
+                            
+                            # Skip obviously invalid entries (like "Month", "Record high", etc.)
+                            # These are often metadata from Wikipedia tables
+                            invalid_patterns = ['month', 'record', 'mean', 'average', 'precipitation', 'humidity', 
+                                               'sunshine', 'gdp', 'population', 'president', 'vice', 'cabinet',
+                                               'assembly', 'court', 'parties', 'km2', 'edit', 'list', 'district']
+                            if any(pattern in state_name.lower() for pattern in invalid_patterns):
+                                continue
+                            
+                            # Check if state already exists for this country
+                            existing_state = State.query.filter_by(
+                                name=state_name,
+                                country_id=country_id
+                            ).first()
+                            
+                            if not existing_state:
+                                state = State(name=state_name, country_id=country_id)
+                                db.session.add(state)
     except (FileNotFoundError, json.JSONDecodeError, IOError) as e:
-        print(f"Warning: Could not load countries from {json_path}: {e}")
-        print("Falling back to minimal country set")
-        # Fallback to a minimal set if JSON file is missing
-        fallback_countries = ['Canada', 'Mexico', 'United Kingdom', 'France', 'Germany', 'Japan', 'China', 'Australia', 'Italy', 'Thailand']
-        for country_name in fallback_countries:
-            country = Country.query.filter_by(name=country_name).first()
-            if not country:
-                country = Country(name=country_name)
-                db.session.add(country)
+        print(f"Error: Could not load countries from {json_path}: {e}")
+        print("Database initialization requires countries.json file")
+        raise
     
     db.session.commit()
     
