@@ -107,11 +107,16 @@ def get_recipe_url(recipe):
 
 @app.route('/')
 def index():
+    breadcrumbs = []
+    return render_template('home.html', breadcrumbs=breadcrumbs)
+
+@app.route('/directory')
+def directory():
     recipes = Recipe.query.order_by(Recipe.created_at.desc()).all()
     countries = Country.query.order_by(Country.name).all()
     users = User.query.order_by(User.username).all()
-    breadcrumbs = []
-    return render_template('home.html', recipes=recipes, countries=countries, users=users, breadcrumbs=breadcrumbs)
+    breadcrumbs = [{'label': 'Directory', 'url': None}]
+    return render_template('directory.html', recipes=recipes, countries=countries, users=users, breadcrumbs=breadcrumbs)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
