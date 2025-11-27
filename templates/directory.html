@@ -243,34 +243,34 @@
             <h2 class="section-title">Site Flow & Structure</h2>
             <div class="breadcrumb-nav" style="background: #fff; border: 2px solid #666; padding: 1.5rem; margin-bottom: 2rem;">
                 <div class="breadcrumb-item">
-                    <a href="{{ url_for('index') }}">Home</a>
+                    <span style="color: #666; font-weight: 600;">Directory</span>
                 </div>
                 <span class="breadcrumb-separator">→</span>
                 <div class="breadcrumb-item">
-                    <a href="{{ url_for('directory') }}">Directory</a>
+                    <a href="{{ url_for('world_map') }}">World Map</a>
                 </div>
                 <span class="breadcrumb-separator">→</span>
-                {% if not current_user.is_authenticated %}
+                {% if countries %}
                 <div class="breadcrumb-item">
-                    <a href="{{ url_for('login') }}">Login</a>
-                </div>
-                <span class="breadcrumb-separator">→</span>
-                <div class="breadcrumb-item">
-                    <a href="{{ url_for('register') }}">Register</a>
+                    <a href="{{ url_for('view_country', country_name=countries[0].name) }}">{{ countries[0].name }}</a>
                 </div>
                 <span class="breadcrumb-separator">→</span>
                 {% endif %}
+                {% if recipes and recipes[0].primary_state %}
                 <div class="breadcrumb-item">
-                    <span style="color: #666;">Browse Recipes</span>
-                </div>
-                {% if recipes %}
-                <span class="breadcrumb-separator">→</span>
-                <div class="breadcrumb-item">
-                    <a href="{% if recipes[0].primary_country and recipes[0].primary_state %}{{ url_for('view_recipe', country_name=recipes[0].primary_country.name, state_name=recipes[0].primary_state.name, recipe_slug=recipes[0].slug) }}{% else %}{{ url_for('view_recipe_old', recipe_id=recipes[0].id) }}{% endif %}">View Recipe</a>
+                    <span style="color: #666;">{{ recipes[0].primary_state.name }}</span>
                 </div>
                 <span class="breadcrumb-separator">→</span>
                 <div class="breadcrumb-item">
-                    <span style="color: #666;">Edit Steps & Ingredients</span>
+                    <a href="{% if recipes[0].primary_country and recipes[0].primary_state %}{{ url_for('view_recipe', country_name=recipes[0].primary_country.name, state_name=recipes[0].primary_state.name, recipe_slug=recipes[0].slug) }}{% else %}{{ url_for('view_recipe_old', recipe_id=recipes[0].id) }}{% endif %}">{{ recipes[0].name }}</a>
+                </div>
+                {% elif recipes %}
+                <div class="breadcrumb-item">
+                    <a href="{% if recipes[0].primary_country and recipes[0].primary_state %}{{ url_for('view_recipe', country_name=recipes[0].primary_country.name, state_name=recipes[0].primary_state.name, recipe_slug=recipes[0].slug) }}{% else %}{{ url_for('view_recipe_old', recipe_id=recipes[0].id) }}{% endif %}">{{ recipes[0].name }}</a>
+                </div>
+                {% else %}
+                <div class="breadcrumb-item">
+                    <span style="color: #666;">Browse Content</span>
                 </div>
                 {% endif %}
             </div>
