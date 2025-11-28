@@ -32,6 +32,19 @@
             </div>
         </div>
         
+        <div class="profile-statistics">
+            <div class="stat-card">
+                <div class="stat-number">{{ user_recipes|length if user_recipes else 0 }}</div>
+                <div class="stat-label">Recipes</div>
+            </div>
+            {% if current_user.is_authenticated and current_user.id == profile_user.id %}
+            <div class="stat-card">
+                <div class="stat-number">{{ favorite_recipes|length if favorite_recipes else 0 }}</div>
+                <div class="stat-label">Favorites</div>
+            </div>
+            {% endif %}
+        </div>
+        
         <div class="recipes-section">
             <h2 class="profile-section-title">Recipes by {{ profile_user.username }}</h2>
             {% if user_recipes %}
@@ -56,7 +69,9 @@
                 {% endfor %}
             </div>
             {% else %}
-            <div class="profile-empty-state">No recipes yet.</div>
+            <div class="profile-empty-state">
+                <p>No recipes yet. Start sharing your culinary adventures!</p>
+            </div>
             {% endif %}
         </div>
         
@@ -83,7 +98,9 @@
                 {% endfor %}
             </div>
             {% else %}
-            <div class="profile-empty-state">No favorite recipes yet.</div>
+            <div class="profile-empty-state">
+                <p>No favorite recipes yet. Explore and save recipes you love!</p>
+            </div>
             {% endif %}
         </div>
         {% endif %}

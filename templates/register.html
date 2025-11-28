@@ -52,9 +52,15 @@
             </div>
             <div class="register-form-group">
                 <label for="state_id" class="register-label">State</label>
-                <select id="state_id" name="state_id" required class="register-select">
-                    <option value="">Select a state</option>
-                </select>
+                <div class="state-select-wrapper">
+                    <select id="state_id" name="state_id" required class="register-select">
+                        <option value="">Select a state</option>
+                    </select>
+                    <div class="state-loading" id="state-loading" style="display: none;">
+                        <span class="spinner"></span>
+                        <span>Loading states...</span>
+                    </div>
+                </div>
             </div>
             <button type="submit" class="register-button">Register</button>
         </form>
@@ -89,17 +95,133 @@
         function loadStates() {
             const countryId = document.getElementById('country_id').value;
             const stateSelect = document.getElementById('state_id');
+            const stateLoading = document.getElementById('state-loading');
+            
             stateSelect.innerHTML = '<option value="">Select a state</option>';
             
             if (countryId && statesByCountry[countryId]) {
-                statesByCountry[countryId].forEach(state => {
-                    const option = document.createElement('option');
-                    option.value = state.id;
-                    option.textContent = state.name;
-                    stateSelect.appendChild(option);
-                });
+                // Show loading indicator
+                if (stateLoading) {
+                    stateLoading.style.display = 'flex';
+                }
+                stateSelect.disabled = true;
+                
+                // Simulate async loading (in real app, this would be an API call)
+                setTimeout(() => {
+                    statesByCountry[countryId].forEach(state => {
+                        const option = document.createElement('option');
+                        option.value = state.id;
+                        option.textContent = state.name;
+                        stateSelect.appendChild(option);
+                    });
+                    
+                    // Hide loading indicator
+                    if (stateLoading) {
+                        stateLoading.style.display = 'none';
+                    }
+                    stateSelect.disabled = false;
+                }, 300);
+            } else {
+                if (stateLoading) {
+                    stateLoading.style.display = 'none';
+                }
+                stateSelect.disabled = false;
             }
         }
+        
+        // Form validation
+        const form = document.querySelector('form');
+        const usernameInput = document.getElementById('username');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const countrySelect = document.getElementById('country_id');
+        const stateSelect = document.getElementById('state_id');
+        
+        function showError(input, message) {
+            input.classList.add('error');
+            input.classList.remove('success');
+            let errorDiv = input.parentElement.querySelector('.input-error-message');
+            if (!errorDiv) {
+                errorDiv = document.createElement('div');
+                errorDiv.className = 'input-error-message';
+                input.parentElement.appendChild(errorDiv);
+            }
+            errorDiv.textContent = message;
+        }
+        
+        function showSuccess(input) {
+            input.classList.remove('error');
+            input.classList.add('success');
+            const errorDiv = input.parentElement.querySelector('.input-error-message');
+            if (errorDiv) {
+                errorDiv.remove();
+            }
+        }
+        
+        function validateUsername() {
+            const value = usernameInput.value.trim();
+            if (value.length < 3) {
+                showError(usernameInput, 'Username must be at least 3 characters');
+                return false;
+            }
+            showSuccess(usernameInput);
+            return true;
+        }
+        
+        function validateEmail() {
+            const value = emailInput.value.trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(value)) {
+                showError(emailInput, 'Please enter a valid email address');
+                return false;
+            }
+            showSuccess(emailInput);
+            return true;
+        }
+        
+        function validatePassword() {
+            const value = passwordInput.value;
+            if (value.length < 6) {
+                showError(passwordInput, 'Password must be at least 6 characters');
+                return false;
+            }
+            showSuccess(passwordInput);
+            return true;
+        }
+        
+        function validateCountry() {
+            if (!countrySelect.value) {
+                showError(countrySelect, 'Please select a country');
+                return false;
+            }
+            showSuccess(countrySelect);
+            return true;
+        }
+        
+        function validateState() {
+            if (!stateSelect.value) {
+                showError(stateSelect, 'Please select a state');
+                return false;
+            }
+            showSuccess(stateSelect);
+            return true;
+        }
+        
+        usernameInput.addEventListener('blur', validateUsername);
+        emailInput.addEventListener('blur', validateEmail);
+        passwordInput.addEventListener('blur', validatePassword);
+        countrySelect.addEventListener('change', function() {
+            validateCountry();
+            loadStates();
+        });
+        stateSelect.addEventListener('blur', validateState);
+        
+        form.addEventListener('submit', function(e) {
+            const isValid = validateUsername() && validateEmail() && validatePassword() && validateCountry() && validateState();
+            if (!isValid) {
+                e.preventDefault();
+            }
+        });
     </script>
 </body>
 </html>

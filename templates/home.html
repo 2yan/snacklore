@@ -76,28 +76,29 @@
         <div class="footer-col">
           <h3>Explore</h3>
           <ul class="footer-links">
-            <li><a href="#">Browse by Region</a></li>
-            <li><a href="#">Ingredients</a></li>
-            <li><a href="#">Collections</a></li>
-            <li><a href="#">Featured Chefs</a></li>
+            <li><a href="{{ url_for('world_map') }}">World Map</a></li>
+            <li><a href="{{ url_for('directory') }}">Directory</a></li>
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('directory') }}">All Recipes</a></li>
           </ul>
         </div>
         <div class="footer-col">
-          <h3>Company</h3>
+          <h3>Account</h3>
           <ul class="footer-links">
-            <li><a href="#">About Us</a></li>
-            <li><a href="#">Careers</a></li>
-            <li><a href="#">Contact</a></li>
-            <li><a href="#">Privacy Policy</a></li>
+            {% if current_user and current_user.is_authenticated %}
+            <li><a href="{{ url_for('user_profile', username=current_user.username) }}">My Profile</a></li>
+            <li><a href="{{ url_for('logout') }}">Log Out</a></li>
+            {% else %}
+            <li><a href="{{ url_for('login') }}">Log In</a></li>
+            <li><a href="{{ url_for('register') }}">Sign Up</a></li>
+            {% endif %}
           </ul>
         </div>
         <div class="footer-col">
-          <h3>Connect</h3>
+          <h3>About</h3>
           <ul class="footer-links">
-            <li><a href="#">Instagram</a></li>
-            <li><a href="#">Twitter</a></li>
-            <li><a href="#">Pinterest</a></li>
-            <li><a href="#">Newsletter</a></li>
+            <li><a href="{{ url_for('index') }}#about">About Snacklore</a></li>
+            <li><a href="{{ url_for('directory') }}">Site Directory</a></li>
           </ul>
         </div>
       </div>

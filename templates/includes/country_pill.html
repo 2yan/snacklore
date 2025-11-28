@@ -1,0 +1,10 @@
+{# Simple Country Link Pill #}
+{% set display_count = recipe_count if recipe_count is defined else (country.recipe_count if country.recipe_count is defined else (country.recipes|length if country.recipes else 0)) %}
+
+<div class="country-pill" data-country-name="{{ country.name.lower() }}">
+    <a href="{{ url_for('view_country', country_slug=country.name|country_slug) }}">
+        {{ country.name }}
+    </a>
+    <span class="country-pill-count">({{ display_count }})</span>
+</div>
+

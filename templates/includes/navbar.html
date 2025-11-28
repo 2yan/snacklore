@@ -35,10 +35,14 @@
         </nav>
         {% endif %}
     </div>
+    <button class="mobile-menu-toggle" aria-label="Toggle mobile menu" aria-expanded="false">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+    </button>
     <div class="nav-links">
         <a href="{{ url_for('directory') }}" class="nav-link">Recipes</a>
         <a href="{{ url_for('world_map') }}" class="nav-link">World</a>
-        <a href="#" class="nav-link">About</a>
     </div>
     <div class="auth-buttons">
         {% if current_user and current_user.is_authenticated %}
@@ -50,4 +54,52 @@
         {% endif %}
     </div>
 </nav>
+<div class="mobile-menu-overlay" id="mobile-menu-overlay">
+    <div class="mobile-menu-content">
+        <a href="{{ url_for('directory') }}" class="mobile-nav-link">Recipes</a>
+        <a href="{{ url_for('world_map') }}" class="mobile-nav-link">World</a>
+        <div class="mobile-auth-section">
+            {% if current_user and current_user.is_authenticated %}
+            <span class="mobile-username-greeting">Hello, {{ current_user.username }}</span>
+            <a href="{{ url_for('logout') }}" class="btn btn-ghost mobile-auth-btn">Log Out</a>
+            {% else %}
+            <a href="{{ url_for('login') }}" class="btn btn-ghost mobile-auth-btn">Log In</a>
+            <a href="{{ url_for('register') }}" class="btn btn-primary mobile-auth-btn">Sign Up</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<script>
+    const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+    const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+    const body = document.body;
+    
+    if (mobileMenuToggle && mobileMenuOverlay) {
+        mobileMenuToggle.addEventListener('click', function() {
+            const isExpanded = mobileMenuToggle.getAttribute('aria-expanded') === 'true';
+            mobileMenuToggle.setAttribute('aria-expanded', !isExpanded);
+            mobileMenuOverlay.classList.toggle('active');
+            body.classList.toggle('menu-open');
+        });
+        
+        // Close menu when clicking overlay
+        mobileMenuOverlay.addEventListener('click', function(e) {
+            if (e.target === mobileMenuOverlay) {
+                mobileMenuToggle.setAttribute('aria-expanded', 'false');
+                mobileMenuOverlay.classList.remove('active');
+                body.classList.remove('menu-open');
+            }
+        });
+        
+        // Close menu when clicking a link
+        const mobileLinks = mobileMenuOverlay.querySelectorAll('.mobile-nav-link');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                mobileMenuToggle.setAttribute('aria-expanded', 'false');
+                mobileMenuOverlay.classList.remove('active');
+                body.classList.remove('menu-open');
+            });
+        });
+    }
+</script>
 
