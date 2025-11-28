@@ -1,34 +1,26 @@
-# Flask Hello World
+# Snacklore - Fresh Start
 
-A simple Flask application.
+This is a minimal setup for the Snacklore project.
 
-## Setup
+## Contents
 
-### Using Docker (Recommended)
+- **app.py**: Minimal Flask application with Hello World.
+- **boot.sh**: Internal script to start PostgreSQL and the Flask app inside the container.
+- **start.sh**: Host script to build and run the Docker container.
+- **Dockerfile**: Configuration to build the container.
+- **static/countries.json**: Country data.
 
-1.  Build the Docker image:
-    ```bash
-    docker build -t flask-hello-world .
-    ```
+## Running
 
-2.  Run the container:
-    ```bash
-    docker run -p 5000:5000 flask-hello-world
-    ```
+Simply run the start script:
 
-3.  Open http://127.0.0.1:5000 in your browser.
+```bash
+./start.sh
+```
 
-### Local Development
+Or manually:
 
-1.  Install dependencies:
-    ```bash
-    pip install -r requirements.txt
-    ```
-
-2.  Run the application:
-    ```bash
-    python app.py
-    ```
-
-3.  Open http://127.0.0.1:5000 in your browser.
-
+```bash
+docker build -t snacklore .
+docker run -p 5000:5000 snacklore
+```

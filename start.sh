@@ -1,18 +1,31 @@
 #!/bin/bash
-set -e
 
-# Start PostgreSQL in the background as postgres user
-su - postgres -c "/usr/lib/postgresql/17/bin/postgres -D /var/lib/postgresql/17/main -c config_file=/etc/postgresql/17/main/postgresql.conf" &
+# Function to check if a port is in use
+check_port() {
+    lsof -i :5000 > /dev/null
+    return $?
+}
 
-# Wait for PostgreSQL to be ready
-until su - postgres -c "psql -c '\q'" 2>/dev/null; do
-  >&2 echo "PostgreSQL is unavailable - sleeping"
-  sleep 1
-done
+echo "Building Snacklore Docker image..."
+docker build -t snacklore .
 
-# Create database if it doesn't exist
-su - postgres -c "psql -c \"SELECT 1 FROM pg_database WHERE datname = 'snacklore'\"" | grep -q 1 || su - postgres -c "psql -c 'CREATE DATABASE snacklore;'"
+# Check if port 5000 is already in use
+if check_port; then
+    echo "Port 5000 is already in use. Attempting to stop existing container..."
+    
+    # Try to find container ID using port 5000 and stop it
+    CONTAINER_ID=$(docker ps --filter "publish=5000" --format "{{.ID}}")
+    
+    if [ ! -z "$CONTAINER_ID" ]; then
+        echo "Stopping Docker container $CONTAINER_ID..."
+        docker stop $CONTAINER_ID
+        echo "Container stopped."
+    else
+        echo "Could not identify Docker container on port 5000."
+        echo "Please free up port 5000 manually."
+        exit 1
+    fi
+fi
 
-# Keep PostgreSQL running and start Flask
-exec python app.py
-
+echo "Starting Snacklore container..."
+docker run --rm -p 5000:5000 snacklore
