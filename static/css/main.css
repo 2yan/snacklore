@@ -1,15 +1,42 @@
-/* Main CSS - Base styles from base.html */
+/* Main CSS - Modern High Fantasy (LOTR/D&D Style) */
 
 :root {
-    --primary: #000000; /* Black */
-    --primary-dark: #333333; /* Dark Grey */
-    --secondary: #000000; /* Black */
-    --accent: #666666; /* Medium Grey */
-    --bg-warm: #ffffff; /* White */
-    --bg-white: #ffffff;
-    --text-main: #000000;
-    --text-light: #666666;
-    --border: #e0e0e0; /* Light Grey */
+    /* Color Palette - "The Elven Archive" */
+    
+    /* Primary Bases */
+    --primary: #2F3E32; /* Deep Hunter Green - Ranger-like */
+    --primary-dark: #1a231c;
+    --primary-light: #4a5d4e;
+    
+    /* Accents */
+    --accent: #C5A059; /* Muted Gold / Brass */
+    --accent-light: #e6c67c;
+    --accent-dark: #8a6e35;
+    
+    /* Secondary / Semantic */
+    --secondary: #742a2a; /* Deep Red for actions/highlights (Sealing Wax) */
+    --secondary-hover: #5c2121;
+    
+    /* Backgrounds */
+    --bg-body: #F9F7F1; /* Warm, clean paper (not yellow parchment) */
+    --bg-card: #FFFFFF; /* Crisp white for modern feel */
+    --bg-overlay: rgba(26, 35, 28, 0.95); /* Dark green glass */
+    --bg-input: #ffffff;
+    
+    /* Text */
+    --text-main: #1A202C; /* Soft Black */
+    --text-muted: #565d64; /* Slate Grey */
+    --text-on-dark: #F0E6D2; /* Off-white gold */
+    
+    /* Borders */
+    --border-light: #e2e8f0;
+    --border-accent: #C5A059;
+    
+    /* Shadows - Soft & Atmospheric */
+    --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-gold: 0 0 15px rgba(197, 160, 89, 0.2);
 }
 
 * { 
@@ -19,98 +46,119 @@
 }
 
 body {
-    font-family: "Inter", sans-serif;
-    background-color: var(--bg-warm);
+    font-family: "Cormorant Garamond", serif;
+    background-color: var(--bg-body);
+    /* Subtle noise texture for quality feel, not heavy parchment */
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
     color: var(--text-main);
-    line-height: 1.6;
+    line-height: 1.7;
     min-height: 100vh;
+    font-size: 1.25rem; /* Slightly larger base size for readability */
 }
 
 h1, h2, h3, h4 {
-    font-family: "Playfair Display", serif;
-    color: var(--secondary);
+    font-family: "Cinzel", serif;
+    color: var(--primary);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+}
+
+h1 { font-size: 3rem; margin-bottom: 1rem; }
+h2 { font-size: 2.25rem; margin-bottom: 0.75rem; position: relative; display: inline-block; }
+h3 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+
+/* Elegant underlines for H2 */
+h2::after {
+    content: '';
+    display: block;
+    width: 60%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent) 0%, transparent 100%);
+    margin-top: 0.25rem;
 }
 
 a {
     text-decoration: none;
-    color: inherit;
-    transition: color 0.2s;
+    color: var(--primary);
+    transition: all 0.3s ease;
+    font-weight: 600;
+    position: relative;
 }
 
-/* Navbar */
+a:hover {
+    color: var(--accent-dark);
+}
+
+/* Navbar - Sleek & Modern Fantasy */
 .navbar {
-    background: var(--bg-white);
-    padding: 1rem 5%;
+    background: var(--primary);
+    padding: 0.75rem 5%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     position: sticky;
     top: 0;
     z-index: 1000;
+    border-bottom: 1px solid var(--accent);
+    backdrop-filter: blur(10px); /* Modern touch */
 }
 
 .navbar-left {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    gap: 2rem;
     flex: 1;
-    min-width: 0;
 }
 
 .logo {
-    font-family: "Playfair Display", serif;
+    font-family: "Cinzel", serif;
     font-size: 1.8rem;
+    color: var(--text-on-dark);
     font-weight: 700;
-    color: var(--primary);
+    letter-spacing: 2px;
+    text-transform: uppercase;
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    flex-shrink: 0;
 }
 
-/* Navbar Breadcrumbs */
+.logo span {
+    color: var(--accent);
+}
+
+/* Breadcrumbs - Subtler */
 .navbar-breadcrumbs {
     display: flex;
     align-items: center;
-    gap: 0.25rem;
-    font-size: 0.9rem;
-    overflow: hidden;
-}
-
-.navbar-breadcrumbs .breadcrumb-item {
-    display: flex;
-    align-items: center;
-    white-space: nowrap;
+    gap: 0.5rem;
+    font-size: 1rem;
+    opacity: 0.9;
 }
 
 .navbar-breadcrumbs .breadcrumb-item a {
-    color: var(--text-light);
-    text-decoration: none;
-    padding: 0.25rem 0.5rem;
-    border-radius: 4px;
-    transition: all 0.2s;
+    color: #a0aec0;
+    font-family: "Cormorant Garamond", serif;
     font-weight: 500;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
 }
 
 .navbar-breadcrumbs .breadcrumb-item a:hover {
-    color: var(--primary);
-    background: rgba(0, 0, 0, 0.1);
+    color: var(--accent);
 }
 
 .navbar-breadcrumbs .breadcrumb-item.active span {
-    color: var(--secondary);
-    font-weight: 600;
-    padding: 0.25rem 0.5rem;
+    color: var(--accent);
 }
 
 .navbar-breadcrumbs .breadcrumb-separator {
-    color: var(--text-light);
-    font-size: 0.85rem;
-    opacity: 0.6;
-    padding: 0 0.25rem;
+    color: #4a5568;
 }
 
+/* Nav Links */
 .nav-links {
     display: flex;
     gap: 2rem;
@@ -118,140 +166,151 @@ a {
 }
 
 .nav-link {
-    font-weight: 500;
-    color: var(--secondary);
-    font-size: 0.95rem;
+    font-family: "Cinzel", serif;
+    color: var(--text-on-dark);
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 600;
 }
 
 .nav-link:hover {
-    color: var(--primary);
+    color: var(--accent);
+    text-shadow: 0 0 8px rgba(197, 160, 89, 0.4);
 }
 
+/* Auth Buttons */
 .auth-buttons {
     display: flex;
     gap: 1rem;
     align-items: center;
 }
 
-/* Username greeting style */
 .username-greeting {
-    color: var(--primary);
-    font-weight: 500;
-    margin-right: 10px;
+    color: var(--text-on-dark);
+    font-family: "Cinzel", serif;
+    font-size: 0.9rem;
 }
 
-/* Buttons */
+/* Buttons - Elegant & Refined */
 .btn {
-    padding: 0.6rem 1.2rem;
-    border-radius: 4px;
-    font-weight: 600;
+    padding: 0.6rem 1.5rem;
+    border-radius: 2px;
+    font-family: "Cinzel", serif;
     font-size: 0.9rem;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.3s ease;
     display: inline-block;
-    border: none;
-    font-family: inherit;
+    border: 1px solid transparent;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 600;
+}
+
+.btn:active {
+    transform: translateY(1px);
 }
 
 .btn-ghost {
-    color: var(--secondary);
-    border: 1px solid transparent;
+    color: var(--text-on-dark);
     background: transparent;
+    border: 1px solid rgba(255,255,255,0.2);
 }
 
 .btn-ghost:hover {
-    background: rgba(0, 0, 0, 0.03);
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(26, 35, 28, 0.5);
 }
 
 .btn-primary {
-    background: var(--primary);
-    color: white;
-    border: 1px solid var(--primary);
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    border: 1px solid var(--primary-light);
+    color: var(--text-on-dark);
+    box-shadow: 0 2px 10px rgba(47, 62, 50, 0.3);
 }
 
 .btn-primary:hover {
     background: var(--primary-dark);
-    border-color: var(--primary-dark);
-    color: white;
+    border-color: var(--accent);
+    box-shadow: 0 0 15px rgba(197, 160, 89, 0.15);
 }
 
 .btn-secondary {
-    background: var(--text-light);
-    border-color: var(--text-light);
-    color: white;
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--primary);
 }
 
 .btn-secondary:hover {
-    background: var(--secondary);
-    border-color: var(--secondary);
+    background: var(--accent);
     color: white;
 }
 
 .btn-danger {
-    background: #333333;
-    border-color: #333333;
+    background: var(--secondary);
     color: white;
 }
 
 .btn-danger:hover {
-    background: #000000;
-    border-color: #000000;
-    color: white;
+    background: var(--secondary-hover);
+    box-shadow: 0 0 10px rgba(116, 42, 42, 0.4);
 }
 
 .btn-small {
-    padding: 0.25rem 0.75rem;
-    font-size: 0.85rem;
+    padding: 0.4rem 1rem;
+    font-size: 0.75rem;
 }
 
 /* Flash Messages */
 .flash-messages {
     margin-bottom: 2rem;
+    max-width: 1200px;
+    margin: 1rem auto;
+    padding: 0 1.5rem;
 }
 
 .flash {
-    padding: 1rem;
+    padding: 1rem 1.5rem;
     margin-bottom: 1rem;
-    border-radius: 4px;
-    border: 1px solid transparent;
+    border-radius: 2px;
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    border-left: 3px solid;
+    background: white;
+    box-shadow: var(--shadow-sm);
 }
 
 .flash.error {
-    background-color: #f5f5f5;
-    color: #000000;
-    border-color: #999999;
+    border-color: var(--secondary);
+    background-color: #fff5f5;
+    color: var(--secondary);
 }
 
 .flash.success {
-    background-color: #f5f5f5;
-    color: #000000;
-    border-color: #666666;
+    border-color: var(--primary);
+    background-color: #f0fff4;
+    color: var(--primary);
 }
 
 .flash.info {
-    background-color: #f5f5f5;
-    color: #000000;
-    border-color: #999999;
+    border-color: var(--accent);
+    background-color: #fffaf0;
+    color: var(--accent-dark);
 }
 
 /* Container */
 .container {
-    max-width: 1000px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 4rem 1.5rem;
 }
 
 @media (max-width: 768px) {
-    .nav-links {
-        display: none;
-    }
-    
-    .navbar-breadcrumbs {
-        display: none;
-    }
-    
-    .navbar-left {
-        gap: 1rem;
-    }
+    .nav-links { display: none; }
+    .navbar-breadcrumbs { display: none; }
+    .navbar-left { gap: 1rem; }
+    h1 { font-size: 2.5rem; }
 }
-
