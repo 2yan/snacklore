@@ -1,0 +1,53 @@
+<!-- Navigation -->
+<nav class="navbar">
+    <div class="navbar-left">
+        <a href="{{ url_for('index') }}" class="logo">
+            <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+                <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2" />
+                <path d="M7 2v20" />
+                <path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7" />
+            </svg>
+            Snacklore
+        </a>
+        {% if breadcrumbs %}
+        <nav class="navbar-breadcrumbs">
+            {% for crumb in breadcrumbs %}
+            <div class="breadcrumb-item {% if loop.last %}active{% endif %}">
+                {% if crumb.url and not loop.last %}
+                <a href="{{ crumb.url }}">{{ crumb.label }}</a>
+                {% else %}
+                <span>{{ crumb.label }}</span>
+                {% endif %}
+            </div>
+            {% if not loop.last %}
+            <span class="breadcrumb-separator">/</span>
+            {% endif %}
+            {% endfor %}
+        </nav>
+        {% endif %}
+    </div>
+    <div class="nav-links">
+        <a href="{{ url_for('directory') }}" class="nav-link">Recipes</a>
+        <a href="{{ url_for('world_map') }}" class="nav-link">World</a>
+        <a href="#" class="nav-link">About</a>
+    </div>
+    <div class="auth-buttons">
+        {% if current_user and current_user.is_authenticated %}
+        <span class="username-greeting">Hello, {{ current_user.username }}</span>
+        <a href="{{ url_for('logout') }}" class="btn btn-ghost">Log Out</a>
+        {% else %}
+        <a href="{{ url_for('login') }}" class="btn btn-ghost">Log In</a>
+        <a href="{{ url_for('register') }}" class="btn btn-primary">Sign Up</a>
+        {% endif %}
+    </div>
+</nav>
+

@@ -164,17 +164,20 @@ def register():
         if not username or not email or not password:
             flash('All fields are required', 'error')
             countries = Country.query.all()
-            return render_template('register.html', countries=countries)
+            breadcrumbs = [{'label': 'Register', 'url': None}]
+            return render_template('register.html', countries=countries, breadcrumbs=breadcrumbs)
         
         if User.query.filter_by(username=username).first():
             flash('Username already exists', 'error')
             countries = Country.query.all()
-            return render_template('register.html', countries=countries)
+            breadcrumbs = [{'label': 'Register', 'url': None}]
+            return render_template('register.html', countries=countries, breadcrumbs=breadcrumbs)
         
         if User.query.filter_by(email=email).first():
             flash('Email already exists', 'error')
             countries = Country.query.all()
-            return render_template('register.html', countries=countries)
+            breadcrumbs = [{'label': 'Register', 'url': None}]
+            return render_template('register.html', countries=countries, breadcrumbs=breadcrumbs)
         
         password_hash = generate_password_hash(password)
         user = User(
@@ -397,7 +400,22 @@ def view_recipe_slug(recipe_slug):
     countries = Country.query.order_by(Country.name).all()
     states_list = State.query.order_by(State.name).all()
     
-    return render_template('recipe_detail.html', recipe=recipe, ingredients=ingredients, steps=recipe.steps, is_owner=is_owner, is_favorited=is_favorited, countries=countries, states=states_list)
+    # Build breadcrumbs
+    breadcrumbs = []
+    if recipe.primary_country:
+        breadcrumbs.append({'label': 'World', 'url': url_for('world_map')})
+        breadcrumbs.append({
+            'label': recipe.primary_country.name,
+            'url': url_for('view_country', country_slug=country_name_to_slug(recipe.primary_country.name))
+        })
+        if recipe.primary_state:
+            breadcrumbs.append({
+                'label': recipe.primary_state.name,
+                'url': None
+            })
+    breadcrumbs.append({'label': recipe.name, 'url': None})
+    
+    return render_template('recipe_detail.html', recipe=recipe, ingredients=ingredients, steps=recipe.steps, breadcrumbs=breadcrumbs, is_owner=is_owner, is_favorited=is_favorited, countries=countries, states=states_list)
 
 
 @app.route('/test_template')

@@ -3,410 +3,7 @@
 {% block title %}{{ recipe.name }} - Snacklore{% endblock %}
 
 {% block extra_css %}
-<style>
-    /* Container */
-    .container {
-        max-width: 1000px;
-        margin: 0 auto;
-        padding: 4rem 1.5rem;
-    }
-
-    /* Recipe Header */
-    .recipe-header {
-        margin-bottom: 3rem;
-        padding-bottom: 2rem;
-        border-bottom: 2px solid var(--border);
-    }
-
-    .recipe-header h1 {
-        font-size: 3rem;
-        margin-bottom: 1rem;
-        color: var(--secondary);
-    }
-
-    .recipe-info {
-        color: var(--text-light);
-        margin-top: 0.5rem;
-        font-size: 1rem;
-    }
-
-    .action-buttons {
-        margin-top: 1rem;
-        display: flex;
-        gap: 0.5rem;
-        flex-wrap: wrap;
-    }
-
-    /* Steps Section */
-    .steps-section {
-        margin-top: 2rem;
-    }
-
-    .steps-section h2 {
-        font-size: 2rem;
-        margin-bottom: 2rem;
-        color: var(--secondary);
-    }
-
-    .steps-list {
-        list-style: none;
-        margin-top: 1rem;
-    }
-
-    .step {
-        display: flex;
-        align-items: flex-start;
-        gap: 1rem;
-        padding: 1.5rem;
-        margin-bottom: 1rem;
-        background: var(--bg-white);
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        position: relative;
-        cursor: move;
-        transition: all 0.2s;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    }
-
-    .step:hover {
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        border-color: var(--primary);
-    }
-
-    .step.dragging {
-        opacity: 0.5;
-        background: #f0f0f0;
-    }
-
-    .drag-handle {
-        cursor: grab;
-        color: var(--text-light);
-        font-size: 1.2rem;
-        user-select: none;
-        flex-shrink: 0;
-        padding-top: 0.25rem;
-    }
-
-    .drag-handle:active {
-        cursor: grabbing;
-    }
-
-    .step-number {
-        font-family: "Playfair Display", serif;
-        font-weight: 700;
-        color: var(--bg-white);
-        background: var(--secondary);
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.2rem;
-        flex-shrink: 0;
-        margin-top: 0.25rem;
-    }
-
-    .step-content {
-        display: flex;
-        align-items: flex-start;
-        gap: 1rem;
-        flex: 1;
-        min-width: 0;
-        flex-wrap: wrap;
-    }
-
-    .step-text {
-        flex: 1;
-        min-width: 200px;
-        color: var(--text-main);
-        cursor: text;
-        padding: 0.5rem;
-        min-height: 2rem;
-        line-height: 1.6;
-        font-size: 1.05rem;
-    }
-
-    .step-text:hover {
-        background: rgba(211, 84, 0, 0.05);
-        border-radius: 4px;
-    }
-
-    .step-text-input {
-        flex: 1;
-        min-width: 200px;
-        padding: 0.5rem;
-        border: 2px solid var(--primary);
-        font-size: 1rem;
-        background: var(--bg-white);
-        color: var(--text-main);
-        border-radius: 4px;
-        font-family: inherit;
-    }
-
-    .ingredients-container {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        flex-wrap: wrap;
-        flex-shrink: 0;
-        width: 100%;
-        margin-top: 0.75rem;
-        position: relative;
-    }
-
-    .ingredient-chip {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.4rem 0.75rem;
-        background: rgba(211, 84, 0, 0.1);
-        border: 1px solid rgba(211, 84, 0, 0.3);
-        border-radius: 20px;
-        font-size: 0.9rem;
-        color: var(--text-main);
-        cursor: text;
-        white-space: nowrap;
-        position: relative;
-        transition: all 0.2s;
-    }
-
-    .ingredient-chip:hover {
-        background: rgba(211, 84, 0, 0.15);
-        border-color: var(--primary);
-    }
-
-    .ingredient-chip .ingredient-name {
-        font-weight: 500;
-        color: var(--secondary);
-    }
-
-    .ingredient-chip .ingredient-amount {
-        color: var(--primary);
-        font-size: 0.85rem;
-    }
-
-    .ingredient-chip .delete-btn {
-        background: none;
-        border: none;
-        color: var(--text-light);
-        cursor: pointer;
-        padding: 0;
-        margin-left: 0.25rem;
-        font-size: 1.2rem;
-        line-height: 1;
-        width: 20px;
-        height: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        transition: all 0.2s;
-    }
-
-    .ingredient-chip .delete-btn:hover {
-        color: #e74c3c;
-        background: rgba(231, 76, 60, 0.1);
-    }
-
-    .step-actions {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        flex-shrink: 0;
-    }
-
-    .new-ingredient-btn {
-        display: none;
-        padding: 0.4rem 0.75rem;
-        background: var(--primary);
-        color: white;
-        border: none;
-        border-radius: 20px;
-        font-size: 0.85rem;
-        cursor: pointer;
-        white-space: nowrap;
-        font-weight: 500;
-        transition: all 0.2s;
-    }
-
-    .new-ingredient-btn:hover {
-        background: var(--primary-dark);
-    }
-
-    .new-step-form {
-        display: none;
-        padding: 1.5rem;
-        margin-bottom: 1rem;
-        background: rgba(211, 84, 0, 0.05);
-        border: 2px dashed var(--primary);
-        border-radius: 8px;
-    }
-
-    .new-step-form.active {
-        display: block;
-    }
-
-    .new-step-form-content {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        flex-wrap: wrap;
-    }
-
-    .new-step-form-content input {
-        flex: 1;
-        min-width: 200px;
-        padding: 0.75rem;
-        border: 2px solid var(--primary);
-        font-size: 1rem;
-        background: var(--bg-white);
-        color: var(--text-main);
-        border-radius: 4px;
-        font-family: inherit;
-    }
-
-    .new-step-form-actions {
-        display: flex;
-        gap: 0.5rem;
-        width: 100%;
-        margin-top: 0.75rem;
-    }
-
-    .new-ingredient-form {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        margin-top: 0.5rem;
-        padding: 1rem;
-        background: var(--bg-white);
-        border: 2px solid var(--primary);
-        border-radius: 8px;
-        z-index: 10;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    }
-
-    .new-ingredient-form.active {
-        display: block;
-    }
-
-    .new-ingredient-form-content {
-        display: flex;
-        gap: 0.5rem;
-        flex-wrap: wrap;
-    }
-
-    .new-ingredient-form-content input {
-        flex: 1;
-        min-width: 150px;
-        padding: 0.5rem;
-        border: 2px solid var(--primary);
-        font-size: 0.9rem;
-        background: var(--bg-white);
-        color: var(--text-main);
-        border-radius: 4px;
-        font-family: inherit;
-    }
-
-    .edit-mode {
-        display: none;
-    }
-
-    .edit-mode.active {
-        display: block;
-    }
-
-    .view-mode {
-        display: block;
-    }
-
-    .view-mode.hidden {
-        display: none;
-    }
-
-    input[type="text"], textarea, select {
-        padding: 0.75rem;
-        border: 2px solid var(--border);
-        font-size: 1rem;
-        background: var(--bg-white);
-        color: var(--text-main);
-        border-radius: 4px;
-        font-family: inherit;
-        transition: border-color 0.2s;
-    }
-
-    input[type="text"]:focus, textarea:focus, select:focus {
-        outline: none;
-        border-color: var(--primary);
-    }
-
-    textarea {
-        min-height: 100px;
-        resize: vertical;
-    }
-
-    select {
-        cursor: pointer;
-    }
-
-    .new-step-btn {
-        margin-top: 1rem;
-        padding: 0.75rem 1.5rem;
-    }
-
-    .ingredient-edit-form {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        margin-top: 0.5rem;
-        padding: 1rem;
-        background: var(--bg-white);
-        border: 2px solid var(--primary);
-        border-radius: 8px;
-        z-index: 10;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        min-width: 300px;
-    }
-
-    .ingredient-edit-form.active {
-        display: block;
-    }
-
-    .ingredient-edit-form-content {
-        display: flex;
-        gap: 0.5rem;
-        flex-wrap: wrap;
-    }
-
-    .ingredient-edit-form-content input {
-        flex: 1;
-        min-width: 150px;
-        padding: 0.5rem;
-        border: 2px solid var(--primary);
-        font-size: 0.9rem;
-        background: var(--bg-white);
-        color: var(--text-main);
-        border-radius: 4px;
-        font-family: inherit;
-    }
-
-    @media (max-width: 768px) {
-        .recipe-header h1 {
-            font-size: 2rem;
-        }
-
-        .step-content {
-            flex-direction: column;
-        }
-
-        .ingredients-container {
-            width: 100%;
-        }
-    }
-</style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -433,11 +30,11 @@
                     {% endif %}
                     {% if current_user.is_authenticated and not is_owner %}
                         {% if is_favorited %}
-                            <form method="POST" action="{{ url_for('unfavorite_recipe', recipe_id=recipe.id) }}" style="display: inline;">
+                            <form method="POST" action="{{ url_for('unfavorite_recipe', recipe_id=recipe.id) }}" class="form-inline">
                                 <button type="submit" class="btn btn-secondary">★ Unfavorite</button>
                             </form>
                         {% else %}
-                            <form method="POST" action="{{ url_for('favorite_recipe', recipe_id=recipe.id) }}" style="display: inline;">
+                            <form method="POST" action="{{ url_for('favorite_recipe', recipe_id=recipe.id) }}" class="form-inline">
                                 <button type="submit" class="btn btn-secondary">☆ Favorite</button>
                             </form>
                         {% endif %}
@@ -447,15 +44,15 @@
         </div>
         <div class="edit-mode" id="recipe-name-edit">
             <form method="POST" action="{{ url_for('edit_recipe', recipe_id=recipe.id) }}">
-                <input type="text" name="name" value="{{ recipe.name }}" required style="font-size: 2rem; font-weight: 600; margin-bottom: 0.5rem; width: 100%; padding: 0.75rem;">
-                <div style="margin-top: 0.5rem;">
-                    <select name="country_id" id="recipe-country-select" onchange="loadRecipeStates()" style="margin-bottom: 0.5rem; width: 100%;">
+                <input type="text" name="name" value="{{ recipe.name }}" required class="recipe-edit-input">
+                <div class="recipe-edit-spacing">
+                    <select name="country_id" id="recipe-country-select" onchange="loadRecipeStates()" class="recipe-edit-select">
                         <option value="">No Country</option>
                         {% for country in countries %}
                         <option value="{{ country.id }}" {% if recipe.primary_country_id == country.id %}selected{% endif %}>{{ country.name }}</option>
                         {% endfor %}
                     </select>
-                    <select name="state_id" id="recipe-state-select" style="width: 100%;">
+                    <select name="state_id" id="recipe-state-select" class="recipe-edit-select-full">
                         <option value="">No State</option>
                         {% if recipe.primary_country_id %}
                             {% for state in states %}
@@ -487,19 +84,19 @@
                 <div class="step-text view-mode step-text-view-{{ step.id }}" onclick="{% if is_owner %}startEditStep({{ step.id }}){% endif %}">
                     {{ step.step_text }}
                 </div>
-                <input type="text" class="step-text-input edit-mode step-text-edit-{{ step.id }}" style="display: none;" value="{{ step.step_text }}" data-step-id="{{ step.id }}">
+                <input type="text" class="step-text-input edit-mode step-text-edit-{{ step.id }} step-text-input-hidden" value="{{ step.step_text }}" data-step-id="{{ step.id }}">
                 <div class="ingredients-container">
                     {% for ingredient in step.ingredients %}
                     <div class="ingredient-chip" data-ingredient-id="{{ ingredient.id }}">
                         <span class="ingredient-name view-mode ingredient-view-{{ ingredient.id }}" onclick="{% if is_owner %}startEditIngredient({{ ingredient.id }}){% endif %}">{{ ingredient.name }}</span>
                         <span class="ingredient-amount view-mode ingredient-view-{{ ingredient.id }}" onclick="{% if is_owner %}startEditIngredient({{ ingredient.id }}){% endif %}">({{ ingredient.amount }})</span>
                         {% if is_owner %}
-                        <form method="POST" action="{{ url_for('delete_ingredient', recipe_id=recipe.id, ingredient_id=ingredient.id) }}" style="display: inline;" onsubmit="return confirm('Delete this ingredient?');">
+                        <form method="POST" action="{{ url_for('delete_ingredient', recipe_id=recipe.id, ingredient_id=ingredient.id) }}" class="form-inline" onsubmit="return confirm('Delete this ingredient?');">
                             <button type="submit" class="delete-btn">×</button>
                         </form>
                         {% endif %}
                     </div>
-                    <div class="ingredient-edit-form ingredient-edit-{{ ingredient.id }}" style="display: none;">
+                    <div class="ingredient-edit-form ingredient-edit-{{ ingredient.id }}">
                         <form method="POST" action="{{ url_for('edit_ingredient', recipe_id=recipe.id, ingredient_id=ingredient.id) }}" class="ingredient-edit-form-content">
                             <input type="text" name="name" value="{{ ingredient.name }}" required>
                             <input type="text" name="amount" value="{{ ingredient.amount }}" required>
@@ -523,7 +120,7 @@
             </div>
             <div class="step-actions">
                 {% if is_owner %}
-                <form method="POST" action="{{ url_for('delete_step', recipe_id=recipe.id, step_id=step.id) }}" style="display: inline;" onsubmit="return confirm('Delete this step?');">
+                <form method="POST" action="{{ url_for('delete_step', recipe_id=recipe.id, step_id=step.id) }}" class="form-inline" onsubmit="return confirm('Delete this step?');">
                     <button type="submit" class="btn btn-danger btn-small">Delete</button>
                 </form>
                 {% endif %}
@@ -543,7 +140,7 @@
                 </div>
             </form>
             <div class="new-ingredient-form" id="new-step-ingredient-form" style="display: none; position: relative; margin-top: 0.5rem;">
-                <div style="padding: 0.5rem; background: #fff3cd; border: 1px solid #ffc107; border-radius: 3px; margin-bottom: 0.5rem; font-size: 0.85rem; color: #856404;">
+                <div class="ingredient-note-box">
                     Note: Ingredients can be added after the step is created.
                 </div>
                 <div class="new-ingredient-form-content">
