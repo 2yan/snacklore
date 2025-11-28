@@ -666,64 +666,37 @@ input[type="text"]:focus, textarea:focus, select:focus {
 
 .countries-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: var(--spacing-lg);
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--spacing-sm);
+    max-height: 70vh;
+    overflow-y: auto;
+    padding-right: var(--spacing-sm);
 }
 
-.countries-header-wrapper {
+.country-card {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: var(--spacing-lg);
-    flex-wrap: wrap;
-    gap: var(--spacing-md);
-}
-
-.world-section-title {
-    font-family: "Cinzel", serif;
-    font-size: var(--text-2xl);
-    color: var(--primary);
-    margin: 0;
-}
-
-.world-search-wrapper {
-    display: flex;
-    gap: var(--spacing-sm);
-    align-items: center;
-}
-
-.world-search-input {
-    padding: var(--spacing-sm) var(--spacing-md);
+    gap: var(--spacing-xs);
+    transition: all 0.2s ease;
+    padding: var(--spacing-sm);
     border: 1px solid var(--border-light);
     border-radius: 4px;
-    font-family: "Cormorant Garamond", serif;
+    background: white;
+}
+
+.country-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+    border-color: var(--accent);
+}
+
+.country-card a {
     font-size: var(--text-base);
-    min-width: 200px;
-    background: white;
-    color: var(--text-main);
-}
-
-.world-search-input:focus {
-    outline: none;
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.1);
-}
-
-.world-sort-select {
-    padding: var(--spacing-sm) var(--spacing-md);
-    border: 1px solid var(--border-light);
-    border-radius: 4px;
-    font-family: "Cinzel", serif;
-    font-size: var(--text-sm);
-    background: white;
-    color: var(--text-main);
-    cursor: pointer;
-}
-
-.world-sort-select:focus {
-    outline: none;
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.1);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 140px;
 }
 
 .country-recipe-count {
@@ -731,21 +704,8 @@ input[type="text"]:focus, textarea:focus, select:focus {
     color: var(--text-muted);
     font-family: "Cormorant Garamond", serif;
     font-weight: 500;
-    margin-left: var(--spacing-xs);
-}
-
-.country-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--spacing-xs);
-    transition: all 0.3s ease;
-}
-
-.country-card:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-lg);
-    border-color: var(--accent);
+    margin-left: auto;
+    white-space: nowrap;
 }
 
 .country-empty-state {
@@ -1171,4 +1131,64 @@ input[type="text"]:focus, textarea:focus, select:focus {
     .profile-container, .login-container, .register-container {
         padding: var(--spacing-md);
     }
+}
+
+/* Helper Classes */
+.hidden {
+    display: none !important;
+}
+
+.edit-mode {
+    display: none;
+}
+
+.edit-mode.active {
+    display: block;
+    background: #f8fafc;
+    padding: var(--spacing-lg);
+    border-radius: 8px;
+    border: 1px dashed var(--border-light);
+    margin-top: var(--spacing-md);
+}
+
+.view-mode.hidden {
+    display: none;
+}
+
+.state-recipe-count {
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-left: auto;
+}
+
+.recipe-edit-input {
+    width: 100%;
+    font-size: var(--text-3xl);
+    font-family: "Cinzel", serif;
+    padding: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+    text-align: center;
+    border: 1px solid var(--border-light);
+    border-radius: 4px;
+}
+
+.recipe-edit-spacing {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    justify-content: center;
+}
+
+.recipe-edit-select, .recipe-edit-select-full {
+    padding: var(--spacing-sm);
+    font-size: var(--text-base);
+    min-width: 200px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: center;
+    margin-top: var(--spacing-md);
 }

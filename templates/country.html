@@ -20,6 +20,7 @@
                 {% for state in states %}
                 <div class="state-card">
                     <a href="#">{{ state.name }}</a>
+                    <span class="state-recipe-count">({{ state.recipes|length }} recipes)</span>
                 </div>
                 {% endfor %}
             </div>

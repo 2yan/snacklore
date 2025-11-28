@@ -22,29 +22,35 @@
         <div class="view-mode" id="recipe-name-view">
             <h1>{{ recipe.name }}</h1>
             <div class="recipe-info">
-                {% if recipe.primary_country %}Country: {{ recipe.primary_country.name }}{% endif %}
-                {% if recipe.primary_state %} | State: {{ recipe.primary_state.name }}{% endif %}
-                <div class="action-buttons">
-                    {% if is_owner %}
-                        <button onclick="enableEditMode()" class="btn btn-primary">Edit Recipe</button>
+                {% if recipe.primary_country %}
+                    <span class="recipe-location">Country: {{ recipe.primary_country.name }}</span>
+                {% endif %}
+                {% if recipe.primary_state %}
+                    <span class="recipe-location-separator">|</span>
+                    <span class="recipe-location">State: {{ recipe.primary_state.name }}</span>
+                {% endif %}
+            </div>
+            <div class="action-buttons">
+                {% if is_owner %}
+                    <button onclick="enableEditMode()" class="btn btn-primary">Edit Recipe</button>
+                {% endif %}
+                {% if current_user.is_authenticated and not is_owner %}
+                    {% if is_favorited %}
+                        <form method="POST" action="{{ url_for('unfavorite_recipe', recipe_id=recipe.id) }}" class="form-inline">
+                            <button type="submit" class="btn btn-secondary">★ Unfavorite</button>
+                        </form>
+                    {% else %}
+                        <form method="POST" action="{{ url_for('favorite_recipe', recipe_id=recipe.id) }}" class="form-inline">
+                            <button type="submit" class="btn btn-secondary">☆ Favorite</button>
+                        </form>
                     {% endif %}
-                    {% if current_user.is_authenticated and not is_owner %}
-                        {% if is_favorited %}
-                            <form method="POST" action="{{ url_for('unfavorite_recipe', recipe_id=recipe.id) }}" class="form-inline">
-                                <button type="submit" class="btn btn-secondary">★ Unfavorite</button>
-                            </form>
-                        {% else %}
-                            <form method="POST" action="{{ url_for('favorite_recipe', recipe_id=recipe.id) }}" class="form-inline">
-                                <button type="submit" class="btn btn-secondary">☆ Favorite</button>
-                            </form>
-                        {% endif %}
-                    {% endif %}
-                </div>
+                {% endif %}
             </div>
         </div>
+        {% if is_owner %}
         <div class="edit-mode" id="recipe-name-edit">
             <form method="POST" action="{{ url_for('edit_recipe', recipe_id=recipe.id) }}">
-                <input type="text" name="name" value="{{ recipe.name }}" required class="recipe-edit-input">
+                <input type="text" name="name" value="{{ recipe.name }}" required class="recipe-edit-input" placeholder="Recipe Name">
                 <div class="recipe-edit-spacing">
                     <select name="country_id" id="recipe-country-select" onchange="loadRecipeStates()" class="recipe-edit-select">
                         <option value="">No Country</option>
@@ -69,6 +75,7 @@
                 </div>
             </form>
         </div>
+        {% endif %}
     </div>
     
     <div class="steps-section">
