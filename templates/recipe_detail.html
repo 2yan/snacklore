@@ -1,489 +1,98 @@
 {% extends "base.html" %}
 
-{% block title %}{{ recipe.name }} - Snacklore{% endblock %}
-
-{% block extra_css %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages.css') }}">
-{% endblock %}
+{% block title %}{{ recipe.title }} - Snacklore{% endblock %}
 
 {% block content %}
-<div class="container">
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <div class="flash-messages">
-                {% for category, message in messages %}
-                    <div class="flash {{ category }}">{{ message }}</div>
-                {% endfor %}
-            </div>
-        {% endif %}
-    {% endwith %}
-    
-    <div class="recipe-header">
-        <div class="view-mode" id="recipe-name-view">
-            <h1>{{ recipe.name }}</h1>
-            <div class="recipe-info">
-                {% if recipe.primary_country %}
-                    <span class="recipe-location">Country: {{ recipe.primary_country.name }}</span>
-                {% endif %}
-                {% if recipe.primary_state %}
-                    <span class="recipe-location-separator">|</span>
-                    <span class="recipe-location">State: {{ recipe.primary_state.name }}</span>
-                {% endif %}
-            </div>
-            <div class="action-buttons">
-                {% if is_owner %}
-                    <button onclick="enableEditMode()" class="btn btn-primary">Edit Recipe</button>
-                {% endif %}
-                {% if current_user.is_authenticated and not is_owner %}
-                    {% if is_favorited %}
-                        <form method="POST" action="{{ url_for('unfavorite_recipe', recipe_id=recipe.id) }}" class="form-inline">
-                            <button type="submit" class="btn btn-secondary">★ Unfavorite</button>
-                        </form>
-                    {% else %}
-                        <form method="POST" action="{{ url_for('favorite_recipe', recipe_id=recipe.id) }}" class="form-inline">
-                            <button type="submit" class="btn btn-secondary">☆ Favorite</button>
-                        </form>
-                    {% endif %}
-                {% endif %}
-            </div>
-        </div>
-        {% if is_owner %}
-        <div class="edit-mode" id="recipe-name-edit">
-            <form method="POST" action="{{ url_for('edit_recipe', recipe_id=recipe.id) }}">
-                <input type="text" name="name" value="{{ recipe.name }}" required class="recipe-edit-input" placeholder="Recipe Name">
-                <div class="recipe-edit-spacing">
-                    <select name="country_id" id="recipe-country-select" onchange="loadRecipeStates()" class="recipe-edit-select">
-                        <option value="">No Country</option>
-                        {% for country in countries %}
-                        <option value="{{ country.id }}" {% if recipe.primary_country_id == country.id %}selected{% endif %}>{{ country.name }}</option>
-                        {% endfor %}
-                    </select>
-                    <select name="state_id" id="recipe-state-select" class="recipe-edit-select-full">
-                        <option value="">No State</option>
-                        {% if recipe.primary_country_id %}
-                            {% for state in states %}
-                                {% if state.country_id == recipe.primary_country_id %}
-                                <option value="{{ state.id }}" {% if recipe.primary_state_id == state.id %}selected{% endif %}>{{ state.name }}</option>
-                                {% endif %}
-                            {% endfor %}
-                        {% endif %}
-                    </select>
-                </div>
-                <div class="action-buttons">
-                    <button type="submit" class="btn btn-primary">Save</button>
-                    <button type="button" onclick="disableEditMode()" class="btn btn-secondary">Cancel</button>
-                </div>
-            </form>
-        </div>
-        {% endif %}
+<div class="recipe-detail">
+    <!-- Breadcrumb -->
+    <div class="mb-1" style="font-size: 0.9rem;">
+        <a href="{{ url_for('home.index') }}">Home</a> &gt; 
+        <a href="{{ url_for('countries.detail', country_id=recipe.state.country.id) }}">{{ recipe.state.country.name }}</a> &gt; 
+        <a href="{{ url_for('states.detail', state_id=recipe.state.id) }}">{{ recipe.state.name }}</a> &gt; 
+        <span>{{ recipe.title }}</span>
     </div>
-    
-    <div class="steps-section">
-        <h2>Steps</h2>
-        <ul class="steps-list" id="steps-list">
-        {% for step in recipe.steps %}
-        <li class="step" draggable="{% if is_owner %}true{% else %}false{% endif %}" data-step-id="{{ step.id }}" data-step-number="{{ step.step_number }}">
-            {% if is_owner %}
-            <span class="drag-handle">⋮⋮</span>
-            {% endif %}
-            <div class="step-number">{{ step.step_number }}</div>
-            <div class="step-content">
-                <div class="step-text view-mode step-text-view-{{ step.id }}" onclick="{% if is_owner %}startEditStep({{ step.id }}){% endif %}">
-                    {{ step.step_text }}
-                </div>
-                <input type="text" class="step-text-input edit-mode step-text-edit-{{ step.id }} step-text-input-hidden" value="{{ step.step_text }}" data-step-id="{{ step.id }}">
-                <div class="ingredients-container">
-                    {% for ingredient in step.ingredients %}
-                    <div class="ingredient-chip" data-ingredient-id="{{ ingredient.id }}">
-                        <span class="ingredient-name view-mode ingredient-view-{{ ingredient.id }}" onclick="{% if is_owner %}startEditIngredient({{ ingredient.id }}){% endif %}">{{ ingredient.name }}</span>
-                        <span class="ingredient-amount view-mode ingredient-view-{{ ingredient.id }}" onclick="{% if is_owner %}startEditIngredient({{ ingredient.id }}){% endif %}">({{ ingredient.amount }})</span>
-                        {% if is_owner %}
-                        <form method="POST" action="{{ url_for('delete_ingredient', recipe_id=recipe.id, ingredient_id=ingredient.id) }}" class="form-inline" onsubmit="return confirm('Delete this ingredient?');">
-                            <button type="submit" class="delete-btn">×</button>
-                        </form>
-                        {% endif %}
-                    </div>
-                    <div class="ingredient-edit-form ingredient-edit-{{ ingredient.id }}">
-                        <form method="POST" action="{{ url_for('edit_ingredient', recipe_id=recipe.id, ingredient_id=ingredient.id) }}" class="ingredient-edit-form-content">
-                            <input type="text" name="name" value="{{ ingredient.name }}" required>
-                            <input type="text" name="amount" value="{{ ingredient.amount }}" required>
-                            <button type="submit" class="btn btn-primary btn-small">Save</button>
-                            <button type="button" onclick="cancelIngredientEdit({{ ingredient.id }})" class="btn btn-secondary btn-small">Cancel</button>
-                        </form>
-                    </div>
-                    {% endfor %}
-                    {% if is_owner %}
-                    <button class="new-ingredient-btn" onclick="showNewIngredientForm({{ step.id }})">+ Ingredient</button>
-                    <div class="new-ingredient-form" id="new-ingredient-form-{{ step.id }}">
-                        <form method="POST" action="{{ url_for('add_ingredient', recipe_id=recipe.id, step_id=step.id) }}" class="new-ingredient-form-content">
-                            <input type="text" name="name" placeholder="Ingredient name" required>
-                            <input type="text" name="amount" placeholder="Amount" required>
-                            <button type="submit" class="btn btn-primary btn-small">Add</button>
-                            <button type="button" onclick="hideNewIngredientForm({{ step.id }})" class="btn btn-secondary btn-small">Cancel</button>
-                        </form>
-                    </div>
-                    {% endif %}
-                </div>
-            </div>
-            <div class="step-actions">
-                {% if is_owner %}
-                <form method="POST" action="{{ url_for('delete_step', recipe_id=recipe.id, step_id=step.id) }}" class="form-inline" onsubmit="return confirm('Delete this step?');">
-                    <button type="submit" class="btn btn-danger btn-small">Delete</button>
-                </form>
+
+    <div class="grid grid-2" style="grid-template-columns: 2fr 1fr; gap: 2rem;">
+        <div class="main-content">
+            <h1 style="margin-top: 0;">{{ recipe.title }}</h1>
+            
+            <div class="mb-1">
+                By <a href="{{ url_for('users.profile', username=recipe.author.username) }}">{{ recipe.author.username }}</a>
+                | ⭐ {{ recipe.get_score() }}
+                {% if current_user.is_authenticated and current_user.id == recipe.author_id %}
+                    | <a href="{{ url_for('recipes.edit', recipe_id=recipe.id) }}">Edit</a>
                 {% endif %}
             </div>
-        </li>
-        {% endfor %}
-        </ul>
-        
-        {% if is_owner %}
-        <div class="new-step-form" id="new-step-form">
-            <form method="POST" action="{{ url_for('add_step', recipe_id=recipe.id) }}" class="new-step-form-content" id="new-step-form-content">
-                <input type="text" name="step_text" placeholder="Enter step instructions..." required id="new-step-text-input">
-                <button type="button" class="new-ingredient-btn" id="new-step-ingredient-btn" onclick="showNewStepIngredientForm()" style="display: none;">+ Ingredient</button>
-                <div class="new-step-form-actions">
-                    <button type="submit" class="btn btn-primary btn-small">Add Step</button>
-                    <button type="button" onclick="hideNewStepForm()" class="btn btn-secondary btn-small">Cancel</button>
+
+            {% if recipe.image_url %}
+                <img src="{{ recipe.image_url }}" alt="{{ recipe.title }}" style="width: 100%; border-radius: var(--squiggly-radius-2); border: 2px solid black; margin-bottom: 2rem;">
+            {% endif %}
+
+            {% if recipe.description %}
+                <div class="squiggly-box mb-2" style="background: #f9f9f9;">
+                    <p style="font-size: 1.3rem; font-style: italic;">{{ recipe.description }}</p>
                 </div>
-            </form>
-            <div class="new-ingredient-form" id="new-step-ingredient-form" style="display: none; position: relative; margin-top: 0.5rem;">
-                <div class="ingredient-note-box">
-                    Note: Ingredients can be added after the step is created.
+            {% endif %}
+
+            <!-- Steps and Ingredients -->
+            {% if recipe.steps %}
+                <div class="steps-container">
+                    <h2>Instructions</h2>
+                    {% for step in recipe.steps %}
+                        <div class="step squiggly-box mb-1">
+                            <h3>Step {{ step.step_number }}</h3>
+                            {% if step.duration_minutes %}
+                                <p><em>Duration: {{ step.duration_minutes }} mins</em></p>
+                            {% endif %}
+                            
+                            <p>{{ step.instruction }}</p>
+
+                            {% if step.ingredients %}
+                                <div class="step-ingredients" style="background: #eee; padding: 1rem; border-radius: var(--squiggly-radius-2); margin-top: 1rem;">
+                                    <strong>Ingredients for this step:</strong>
+                                    <ul>
+                                    {% for ing in step.ingredients %}
+                                        <li>{{ ing.quantity }} {{ ing.unit }} {{ ing.name }} {% if ing.notes %}({{ ing.notes }}){% endif %}</li>
+                                    {% endfor %}
+                                    </ul>
+                                </div>
+                            {% endif %}
+                            
+                            {% if step.image_url %}
+                                <img src="{{ step.image_url }}" alt="Step {{ step.step_number }}" style="max-width: 100%; margin-top: 1rem; border-radius: var(--squiggly-radius-2); border: 1px solid black;">
+                            {% endif %}
+                        </div>
+                    {% endfor %}
                 </div>
-                <div class="new-ingredient-form-content">
-                    <input type="text" name="name" placeholder="Ingredient name" id="new-step-ingredient-name">
-                    <input type="text" name="amount" placeholder="Amount" id="new-step-ingredient-amount">
-                    <button type="button" class="btn btn-secondary btn-small" onclick="hideNewStepIngredientForm()">Cancel</button>
+            {% elif recipe.instructions %}
+                <!-- Fallback for text-only recipes -->
+                <div class="squiggly-box">
+                    <h2>Instructions</h2>
+                    <div class="recipe-text">
+                        {{ recipe.instructions|safe }}
+                    </div>
+                </div>
+            {% endif %}
+            
+            <!-- Comments -->
+            {% include 'includes/comment_component.html' %}
+        </div>
+
+        <div class="sidebar">
+            <div class="squiggly-box mb-2" style="background: #fff0f0;">
+                <h3 style="margin-top: 0;">At a Glance</h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li><strong>Country:</strong> {{ recipe.state.country.name }}</li>
+                    <li><strong>State/Region:</strong> {{ recipe.state.name }}</li>
+                    <li><strong>Posted:</strong> {{ recipe.created_at.strftime('%Y-%m-%d') }}</li>
+                </ul>
+                
+                <div class="mt-1 text-center">
+                    <button class="btn btn-primary">Add to Favorites</button>
                 </div>
             </div>
         </div>
-        <button class="btn btn-primary new-step-btn" onclick="showNewStepForm()">+ New Step</button>
-        {% endif %}
     </div>
 </div>
 {% endblock %}
 
-{% block extra_js %}
-<script>
-    function enableEditMode() {
-        document.getElementById('recipe-name-view').classList.add('hidden');
-        document.getElementById('recipe-name-edit').classList.add('active');
-    }
-    
-    function disableEditMode() {
-        document.getElementById('recipe-name-view').classList.remove('hidden');
-        document.getElementById('recipe-name-edit').classList.remove('active');
-    }
-    
-    function showNewStepForm() {
-        const form = document.getElementById('new-step-form');
-        form.classList.add('active');
-        const input = document.getElementById('new-step-text-input');
-        if (input) input.focus();
-    }
-    
-    function hideNewStepForm() {
-        const form = document.getElementById('new-step-form');
-        form.classList.remove('active');
-        const input = document.getElementById('new-step-text-input');
-        if (input) input.value = '';
-        hideNewStepIngredientForm();
-        const btn = document.getElementById('new-step-ingredient-btn');
-        if (btn) btn.style.display = 'none';
-    }
-    
-    function showNewStepIngredientForm() {
-        const form = document.getElementById('new-step-ingredient-form');
-        if (form) {
-            form.style.display = 'block';
-            const nameInput = document.getElementById('new-step-ingredient-name');
-            if (nameInput) nameInput.focus();
-        }
-    }
-    
-    function hideNewStepIngredientForm() {
-        const form = document.getElementById('new-step-ingredient-form');
-        if (form) {
-            form.style.display = 'none';
-            const nameInput = document.getElementById('new-step-ingredient-name');
-            const amountInput = document.getElementById('new-step-ingredient-amount');
-            if (nameInput) nameInput.value = '';
-            if (amountInput) amountInput.value = '';
-        }
-    }
-    
-    function showNewIngredientForm(stepId) {
-        const form = document.getElementById('new-ingredient-form-' + stepId);
-        if (form) {
-            form.classList.add('active');
-            form.querySelector('input[name="name"]').focus();
-        }
-    }
-    
-    function hideNewIngredientForm(stepId) {
-        const form = document.getElementById('new-ingredient-form-' + stepId);
-        if (form) {
-            form.classList.remove('active');
-            const nameInput = form.querySelector('input[name="name"]');
-            const amountInput = form.querySelector('input[name="amount"]');
-            if (nameInput) nameInput.value = '';
-            if (amountInput) amountInput.value = '';
-        }
-    }
-    
-    let editingStepId = null;
-    
-    function startEditStep(stepId) {
-        if (editingStepId === stepId) return;
-        
-        // Cancel any other editing
-        if (editingStepId !== null) {
-            cancelStepEdit(editingStepId);
-        }
-        
-        editingStepId = stepId;
-        const viewEl = document.querySelector('.step-text-view-' + stepId);
-        const editEl = document.querySelector('.step-text-edit-' + stepId);
-        if (viewEl && editEl) {
-            viewEl.style.display = 'none';
-            editEl.style.display = 'block';
-            editEl.focus();
-            editEl.select();
-            
-            const saveHandler = function(e) {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    saveStepEdit(stepId);
-                } else if (e.key === 'Escape') {
-                    e.preventDefault();
-                    cancelStepEdit(stepId);
-                }
-            };
-            
-            const blurHandler = function() {
-                saveStepEdit(stepId);
-            };
-            
-            editEl.addEventListener('blur', blurHandler, { once: true });
-            editEl.addEventListener('keydown', saveHandler, { once: true });
-        }
-    }
-    
-    function cancelStepEdit(stepId) {
-        const viewEl = document.querySelector('.step-text-view-' + stepId);
-        const editEl = document.querySelector('.step-text-edit-' + stepId);
-        if (viewEl && editEl) {
-            editEl.value = viewEl.textContent.trim();
-            viewEl.style.display = 'block';
-            editEl.style.display = 'none';
-            editingStepId = null;
-        }
-    }
-    
-    function saveStepEdit(stepId) {
-        if (editingStepId !== stepId) return;
-        
-        const editEl = document.querySelector('.step-text-edit-' + stepId);
-        if (!editEl) {
-            editingStepId = null;
-            return;
-        }
-        
-        const stepText = editEl.value.trim();
-        if (!stepText) {
-            cancelStepEdit(stepId);
-            return;
-        }
-        
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = '{{ url_for("edit_step", recipe_id=recipe.id, step_id=0) }}'.replace('0', stepId);
-        
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = 'step_text';
-        input.value = stepText;
-        form.appendChild(input);
-        
-        document.body.appendChild(form);
-        editingStepId = null;
-        form.submit();
-    }
-    
-    function startEditIngredient(ingredientId) {
-        const viewEls = document.querySelectorAll('.ingredient-view-' + ingredientId);
-        const editEl = document.querySelector('.ingredient-edit-' + ingredientId);
-        if (viewEls.length > 0 && editEl) {
-            viewEls.forEach(el => el.style.display = 'none');
-            editEl.classList.add('active');
-            editEl.querySelector('input[name="name"]').focus();
-        }
-    }
-    
-    function cancelIngredientEdit(ingredientId) {
-        const viewEls = document.querySelectorAll('.ingredient-view-' + ingredientId);
-        const editEl = document.querySelector('.ingredient-edit-' + ingredientId);
-        if (viewEls.length > 0 && editEl) {
-            viewEls.forEach(el => el.style.display = 'inline');
-            editEl.classList.remove('active');
-        }
-    }
-    
-    function loadRecipeStates() {
-        const countryId = document.getElementById('recipe-country-select').value;
-        const stateSelect = document.getElementById('recipe-state-select');
-        stateSelect.innerHTML = '<option value="">No State</option>';
-        
-        if (countryId) {
-            fetch('/api/states/' + countryId)
-                .then(response => response.json())
-                .then(data => {
-                    data.states.forEach(state => {
-                        const option = document.createElement('option');
-                        option.value = state.id;
-                        option.textContent = state.name;
-                        stateSelect.appendChild(option);
-                    });
-                });
-        }
-    }
-    
-    // Show new ingredient button on hover for existing steps and new step form
-    {% if is_owner %}
-    document.addEventListener('DOMContentLoaded', function() {
-        // Show new ingredient button on hover for existing steps
-        const steps = document.querySelectorAll('.step');
-        steps.forEach(step => {
-            const newIngredientBtn = step.querySelector('.new-ingredient-btn');
-            if (newIngredientBtn) {
-                step.addEventListener('mouseenter', function() {
-                    newIngredientBtn.style.display = 'inline-block';
-                });
-                step.addEventListener('mouseleave', function() {
-                    const form = step.querySelector('.new-ingredient-form.active');
-                    if (!form) {
-                        newIngredientBtn.style.display = 'none';
-                    }
-                });
-            }
-        });
-        
-        // Show new ingredient button on hover when creating new step
-        const newStepForm = document.getElementById('new-step-form');
-        const newStepIngredientBtn = document.getElementById('new-step-ingredient-btn');
-        if (newStepForm && newStepIngredientBtn) {
-            newStepForm.addEventListener('mouseenter', function() {
-                if (newStepForm.classList.contains('active')) {
-                    newStepIngredientBtn.style.display = 'inline-block';
-                }
-            });
-            newStepForm.addEventListener('mouseleave', function() {
-                const form = newStepForm.querySelector('#new-step-ingredient-form');
-                if (!form || form.style.display === 'none') {
-                    newStepIngredientBtn.style.display = 'none';
-                }
-            });
-        }
-    });
-    {% endif %}
-    
-    // Drag and drop functionality
-    {% if is_owner %}
-    let draggedElement = null;
-    const stepsList = document.getElementById('steps-list');
-    
-    stepsList.addEventListener('dragstart', function(e) {
-        if (e.target.classList.contains('step') || e.target.closest('.step')) {
-            const step = e.target.classList.contains('step') ? e.target : e.target.closest('.step');
-            draggedElement = step;
-            step.classList.add('dragging');
-            e.dataTransfer.effectAllowed = 'move';
-            e.dataTransfer.setData('text/html', step.outerHTML);
-        }
-    });
-    
-    stepsList.addEventListener('dragend', function(e) {
-        if (draggedElement) {
-            draggedElement.classList.remove('dragging');
-            draggedElement = null;
-        }
-    });
-    
-    stepsList.addEventListener('dragover', function(e) {
-        e.preventDefault();
-        e.dataTransfer.dropEffect = 'move';
-        
-        const afterElement = getDragAfterElement(stepsList, e.clientY);
-        const dragging = document.querySelector('.dragging');
-        
-        if (dragging && afterElement == null) {
-            stepsList.appendChild(dragging);
-        } else if (dragging && afterElement) {
-            stepsList.insertBefore(dragging, afterElement);
-        }
-    });
-    
-    stepsList.addEventListener('drop', function(e) {
-        e.preventDefault();
-        if (draggedElement) {
-            updateStepOrder();
-        }
-    });
-    
-    function getDragAfterElement(container, y) {
-        const draggableElements = [...container.querySelectorAll('.step:not(.dragging)')];
-        
-        return draggableElements.reduce((closest, child) => {
-            const box = child.getBoundingClientRect();
-            const offset = y - box.top - box.height / 2;
-            
-            if (offset < 0 && offset > closest.offset) {
-                return { offset: offset, element: child };
-            } else {
-                return closest;
-            }
-        }, { offset: Number.NEGATIVE_INFINITY }).element;
-    }
-    
-    function updateStepOrder() {
-        const steps = stepsList.querySelectorAll('.step');
-        const stepOrders = [];
-        
-        steps.forEach((step, index) => {
-            const stepId = step.getAttribute('data-step-id');
-            stepOrders.push({
-                step_id: parseInt(stepId),
-                step_number: index + 1
-            });
-            
-            // Update displayed step number
-            const stepNumberEl = step.querySelector('.step-number');
-            if (stepNumberEl) {
-                stepNumberEl.textContent = index + 1;
-            }
-        });
-        
-        // Send update to server
-        fetch('{{ url_for("update_step_order", recipe_id=recipe.id) }}', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ step_orders: stepOrders })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                // Update data attributes
-                steps.forEach((step, index) => {
-                    step.setAttribute('data-step-number', index + 1);
-                });
-            }
-        })
-        .catch(error => {
-            console.error('Error updating step order:', error);
-        });
-    }
-    {% endif %}
-</script>
-{% endblock %}

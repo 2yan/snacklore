@@ -1,0 +1,25 @@
+<div class="recipe-card squiggly-box">
+    {% if recipe.image_url %}
+        <img src="{{ recipe.image_url }}" alt="{{ recipe.title }}" class="recipe-image">
+    {% else %}
+        <div class="recipe-image" style="background: #eee; display: flex; align-items: center; justify-content: center;">
+            <span>No Image</span>
+        </div>
+    {% endif %}
+    
+    <div class="recipe-content">
+        <h3><a href="{{ url_for('recipes.detail', recipe_id=recipe.id) }}" style="border: none;">{{ recipe.title }}</a></h3>
+        
+        <div class="mb-1">
+            <span style="font-size: 0.9em; color: #555;">
+                📍 {{ recipe.state.name }}, {{ recipe.state.country.name }}
+            </span>
+        </div>
+
+        <div class="recipe-meta">
+            <span title="Author">👤 <a href="{{ url_for('users.profile', username=recipe.author.username) }}" style="border: none;">{{ recipe.author.username }}</a></span>
+            <span>⭐ {{ recipe.get_score() }}</span>
+        </div>
+    </div>
+</div>
+

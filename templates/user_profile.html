@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}{{ user.username }}'s Profile - Snacklore{% endblock %}
+
+{% block content %}
+<div class="profile-header text-center mb-2">
+    <div class="squiggly-box" style="display: inline-block; min-width: 300px;">
+        <h1>{{ user.username }}</h1>
+        {% if user.bio %}
+            <p>{{ user.bio }}</p>
+        {% else %}
+            <p class="text-muted">No bio yet.</p>
+        {% endif %}
+        
+        <div class="stats mt-1">
+            <span><strong>{{ recipes|length }}</strong> Recipes</span>
+            <span style="margin: 0 1rem;">|</span>
+            <span>Joined {{ user.created_at.strftime('%b %Y') }}</span>
+        </div>
+
+        {% if current_user.is_authenticated and current_user.id == user.id %}
+            <div class="mt-1">
+                <a href="#" class="btn btn-primary">Edit Profile</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="profile-tabs mb-2 text-center">
+    <a href="{{ url_for('users.profile', username=user.username, tab='recipes') }}" class="btn {% if active_tab == 'recipes' %}btn-primary{% endif %}">Recipes</a>
+    <a href="{{ url_for('users.profile', username=user.username, tab='favorites') }}" class="btn {% if active_tab == 'favorites' %}btn-primary{% endif %}">Favorites</a>
+</div>
+
+<div class="profile-content">
+    {% if active_tab == 'recipes' %}
+        <h2 class="text-center">Recipes by {{ user.username }}</h2>
+        <div class="grid grid-3">
+            {% for recipe in recipes %}
+                {% include 'includes/recipe_card.html' %}
+            {% else %}
+                <div class="text-center" style="grid-column: 1 / -1;">
+                    <p>No recipes posted yet.</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% elif active_tab == 'favorites' %}
+        <h2 class="text-center">Favorites</h2>
+        <div class="grid grid-3">
+            {% for fav in favorites %}
+                {% if fav.recipe %}
+                    {% with recipe = fav.recipe %}
+                        {% include 'includes/recipe_card.html' %}
+                    {% endwith %}
+                {% endif %}
+            {% else %}
+                <div class="text-center" style="grid-column: 1 / -1;">
+                    <p>No favorites yet.</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}{% if recipe %}Edit Recipe{% else %}New Recipe{% endif %} - Snacklore{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 800px;">
+    <h1 class="text-center mb-2">{% if recipe %}Edit Recipe{% else %}Share a Snack{% endif %}</h1>
+    
+    <div class="text-center mb-2">
+        <span class="btn btn-primary">Text Editor</span>
+        <a href="{{ url_for('recipes.create', mode='gui') }}" class="btn">Switch to Step-by-Step Editor</a>
+    </div>
+
+    <form action="{{ url_for('recipes.create') if not recipe else url_for('recipes.update', recipe_id=recipe.id) }}" method="post" enctype="multipart/form-data" class="squiggly-box">
+        <input type="hidden" name="mode" value="text">
+        
+        <div class="form-group">
+            <label for="title">Recipe Title</label>
+            <input type="text" id="title" name="title" value="{{ recipe.title if recipe else '' }}" required placeholder="e.g. Grandma's Apple Pie">
+        </div>
+
+        <div class="grid grid-2">
+            <div class="form-group">
+                <label for="country">Country</label>
+                <select id="country" name="country_id" required onchange="loadStates(this.value)">
+                    <option value="">Select Country</option>
+                    {% for country in countries %}
+                        <option value="{{ country.id }}" {% if recipe and recipe.state.country.id == country.id %}selected{% endif %}>{{ country.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="state">State/Region</label>
+                <select id="state" name="state_id" required>
+                    <option value="">Select State</option>
+                    <!-- Populated by JS -->
+                    {% if recipe and recipe.state %}
+                        <option value="{{ recipe.state.id }}" selected>{{ recipe.state.name }}</option>
+                    {% endif %}
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description / Story</label>
+            <textarea id="description" name="description" rows="3" placeholder="Tell us about this snack...">{{ recipe.description if recipe else '' }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="image">Photo URL (Upload coming soon)</label>
+            <input type="text" id="image" name="image_url" value="{{ recipe.image_url if recipe else '' }}" placeholder="https://...">
+        </div>
+
+        <div class="form-group">
+            <label for="ingredients">Ingredients (One per line)</label>
+            <textarea id="ingredients" name="ingredients_text" rows="10" placeholder="2 cups Flour&#10;1 tsp Salt">{{ recipe_ingredients_text if recipe else '' }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="instructions">Instructions</label>
+            <textarea id="instructions" name="instructions" rows="10" placeholder="Mix ingredients...&#10;Bake at 350F...">{{ recipe.instructions if recipe else '' }}</textarea>
+        </div>
+
+        <div class="text-center mt-2">
+            <a href="{{ url_for('home.index') }}" class="btn">Cancel</a>
+            <button type="submit" class="btn btn-primary" style="margin-left: 1rem;">Save Recipe</button>
+        </div>
+    </form>
+</div>
+
+<script>
+async function loadStates(countryId) {
+    const stateSelect = document.getElementById('state');
+    stateSelect.innerHTML = '<option value="">Loading...</option>';
+    
+    if (!countryId) {
+        stateSelect.innerHTML = '<option value="">Select State</option>';
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/countries/${countryId}/states`);
+        const states = await response.json();
+        
+        stateSelect.innerHTML = '<option value="">Select State</option>';
+        states.forEach(state => {
+            const option = document.createElement('option');
+            option.value = state.id;
+            option.textContent = state.name;
+            stateSelect.appendChild(option);
+        });
+    } catch (e) {
+        console.error('Error loading states:', e);
+        stateSelect.innerHTML = '<option value="">Error loading states</option>';
+    }
+}
+</script>
+{% endblock %}
+

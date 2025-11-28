@@ -1,0 +1,241 @@
+/* Squiggly Design System for Snacklore */
+
+@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap');
+
+:root {
+  --font-hand: 'Patrick Hand', cursive;
+  --bg-color: #ffffff;
+  --text-color: #000000;
+  --border-color: #000000;
+  --accent-color: #000000; /* keeping it monochrome as per request */
+  
+  /* Squiggly border radii */
+  --squiggly-radius-1: 255px 15px 225px 15px / 15px 225px 15px 255px;
+  --squiggly-radius-2: 25px 55px 15px 15px / 15px 15px 55px 25px;
+  --squiggly-radius-3: 15px 225px 15px 255px / 255px 15px 225px 15px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-hand);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+  font-size: 1.2rem;
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+h1 { font-size: 3rem; }
+h2 { font-size: 2.5rem; }
+h3 { font-size: 2rem; }
+
+a {
+  color: var(--text-color);
+  text-decoration: none;
+  border-bottom: 2px dashed var(--border-color);
+}
+
+a:hover {
+  border-bottom-style: solid;
+}
+
+/* Layout Containers */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Squiggly Box */
+.squiggly-box {
+  border: 2px solid var(--border-color);
+  border-radius: var(--squiggly-radius-1);
+  padding: 2rem;
+  background: white;
+  transition: all 0.3s ease;
+  box-shadow: 2px 3px 0px rgba(0,0,0,0.1);
+}
+
+.squiggly-box:hover {
+  border-radius: var(--squiggly-radius-3);
+  box-shadow: 3px 4px 0px rgba(0,0,0,0.2);
+  transform: translateY(-2px);
+}
+
+/* Navigation */
+.main-nav {
+  padding: 1.5rem 0;
+  border-bottom: 2px solid var(--border-color);
+  margin-bottom: 2rem;
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 2.5rem;
+  font-weight: bold;
+  border: none;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.nav-links a {
+  font-size: 1.3rem;
+  border: none;
+}
+
+/* Buttons */
+.btn {
+  display: inline-block;
+  padding: 0.5rem 1.5rem;
+  background: white;
+  border: 2px solid var(--border-color);
+  border-radius: var(--squiggly-radius-2);
+  font-family: var(--font-hand);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  color: black;
+}
+
+.btn:hover {
+  background: #f0f0f0;
+  border-radius: var(--squiggly-radius-1);
+  transform: scale(1.02);
+}
+
+.btn-primary {
+  background: black;
+  color: white;
+  border-color: black;
+}
+
+.btn-primary:hover {
+  background: #333;
+  color: white;
+}
+
+/* Forms */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="search"],
+textarea,
+select {
+  width: 100%;
+  padding: 0.8rem;
+  border: 2px solid var(--border-color);
+  border-radius: var(--squiggly-radius-2);
+  font-family: var(--font-hand);
+  font-size: 1.1rem;
+  background: transparent;
+}
+
+input:focus, textarea:focus {
+  outline: none;
+  border-width: 3px;
+  border-radius: var(--squiggly-radius-3);
+}
+
+/* Grid Layouts */
+.grid {
+  display: grid;
+  gap: 2rem;
+}
+
+.grid-2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.grid-3 { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+.grid-4 { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+
+/* Recipe Card */
+.recipe-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.recipe-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-bottom: 2px solid black;
+  border-radius: 255px 15px 0 0 / 15px 15px 0 0; /* rough top corners */
+  margin-bottom: 1rem;
+  background-color: #eee;
+}
+
+.recipe-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.recipe-meta {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px dashed #ccc;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+}
+
+/* Utilities */
+.text-center { text-align: center; }
+.mt-1 { margin-top: 1rem; }
+.mt-2 { margin-top: 2rem; }
+.mb-1 { margin-bottom: 1rem; }
+.flex { display: flex; }
+.items-center { align-items: center; }
+.gap-1 { gap: 1rem; }
+.justify-between { justify-content: space-between; }
+
+/* Flash Messages */
+.flash-messages {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 2rem;
+}
+
+.flash-message {
+  padding: 1rem;
+  border: 2px solid black;
+  border-radius: var(--squiggly-radius-2);
+  margin-bottom: 0.5rem;
+  background: #fff;
+}
+
+/* Search Bar Specifics */
+.search-container {
+  display: flex;
+  gap: 0.5rem;
+}
+

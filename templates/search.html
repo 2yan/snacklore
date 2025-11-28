@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}Search Results - Snacklore{% endblock %}
+
+{% block content %}
+<div class="search-page">
+    <h1 class="mb-2">Find Your Snack</h1>
+    
+    <div class="grid grid-2" style="grid-template-columns: 1fr 3fr; gap: 2rem;">
+        <!-- Filters Sidebar -->
+        <aside class="filters">
+            <div class="squiggly-box">
+                <h3>Filters</h3>
+                <form action="{{ url_for('search.search') }}" method="get">
+                    <input type="hidden" name="q" value="{{ request.args.get('q', '') }}">
+                    
+                    <div class="form-group">
+                        <label>Country</label>
+                        <select name="country">
+                            <option value="">All Countries</option>
+                            {% for country in countries %}
+                                <option value="{{ country.id }}" {% if request.args.get('country')|int == country.id %}selected{% endif %}>{{ country.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Sort By</label>
+                        <select name="sort">
+                            <option value="recent">Newest</option>
+                            <option value="popular">Most Popular</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Apply Filters</button>
+                    <a href="{{ url_for('search.search') }}" class="btn mt-1" style="width: 100%; text-align: center;">Clear</a>
+                </form>
+            </div>
+        </aside>
+
+        <!-- Results -->
+        <div class="results">
+            {% if query %}
+                <p class="mb-1">Showing results for "<strong>{{ query }}</strong>"</p>
+            {% endif %}
+
+            <div class="grid grid-2">
+                {% for recipe in recipes %}
+                    {% include 'includes/recipe_card.html' %}
+                {% else %}
+                    <div class="squiggly-box" style="grid-column: 1 / -1;">
+                        <p>No snacks found matching your criteria. Try a different search or <a href="{{ url_for('recipes.create') }}">add your own!</a></p>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination (Simplified) -->
+            {% if pagination and pagination.pages > 1 %}
+            <div class="pagination mt-2 text-center">
+                {% if pagination.has_prev %}
+                    <a href="{{ url_for('search.search', page=pagination.prev_num, **request.args) }}" class="btn">&laquo; Prev</a>
+                {% endif %}
+                
+                <span style="margin: 0 1rem;">Page {{ pagination.page }} of {{ pagination.pages }}</span>
+                
+                {% if pagination.has_next %}
+                    <a href="{{ url_for('search.search', page=pagination.next_num, **request.args) }}" class="btn">Next &raquo;</a>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,40 @@
+<div class="comments-section mt-2">
+    <h3>Comments ({{ comments|length }})</h3>
+
+    {% if current_user.is_authenticated %}
+    <div class="squiggly-box mb-1">
+        <form action="{{ url_for('comments.add_comment', recipe_id=recipe.id) }}" method="post">
+            <div class="form-group">
+                <textarea name="content" rows="3" placeholder="What do you think of this recipe?"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Post Comment</button>
+        </form>
+    </div>
+    {% else %}
+    <p><a href="{{ url_for('auth.login') }}">Login</a> to leave a comment.</p>
+    {% endif %}
+
+    <div class="comments-list">
+        {% for comment in comments recursive %}
+        <div class="comment squiggly-box mb-1" style="border-radius: var(--squiggly-radius-2); padding: 1rem; margin-left: {{ loop.depth0 * 20 }}px;">
+            <div class="flex justify-between">
+                <strong>{{ comment.user.username }}</strong>
+                <small>{{ comment.created_at.strftime('%Y-%m-%d') }}</small>
+            </div>
+            <p>{{ comment.content }}</p>
+            
+            <div class="comment-actions text-sm">
+                <!-- Upvote/Downvote logic would go here -->
+                {% if current_user.id == comment.user_id %}
+                    <!-- Edit/Delete buttons -->
+                {% endif %}
+            </div>
+
+            {% if comment.replies %}
+                {{ loop(comment.replies) }}
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+

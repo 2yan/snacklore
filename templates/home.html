@@ -1,12 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Snacklore - Fresh Start</title>
-</head>
-<body>
-    <h1>Hello World</h1>
-    <p>PostgreSQL is running.</p>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero text-center mb-2">
+    <div class="squiggly-box" style="padding: 3rem; background: #fffbe6;">
+        <h1>Welcome to Snacklore!</h1>
+        <p style="font-size: 1.5rem;">Discover and share authentic snack recipes from around the world.</p>
+        <div class="mt-1">
+            <a href="{{ url_for('search.search') }}" class="btn btn-primary">Start Exploring</a>
+            <a href="{{ url_for('recipes.create') }}" class="btn">Share a Recipe</a>
+        </div>
+    </div>
+</section>
+
+{% if popular_recipes %}
+<section class="popular-section mb-2">
+    <h2>Popular Snacks</h2>
+    <div class="grid grid-3">
+        {% for recipe in popular_recipes %}
+            {% include 'includes/recipe_card.html' %}
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<section class="recent-section">
+    <h2>Fresh from the Oven</h2>
+    <div class="grid grid-3">
+        {% for recipe in recent_recipes %}
+            {% include 'includes/recipe_card.html' %}
+        {% else %}
+            <p>No recipes yet. Be the first to add one!</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
+

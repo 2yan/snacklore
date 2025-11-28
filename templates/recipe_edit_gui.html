@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+
+{% block title %}Visual Editor - Snacklore{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 900px;">
+    <h1 class="text-center mb-2">Step-by-Step Editor</h1>
+    
+    <div class="text-center mb-2">
+        <a href="{{ url_for('recipes.create', mode='text') }}" class="btn">Switch to Text Editor</a>
+        <span class="btn btn-primary">Step-by-Step Editor</span>
+    </div>
+
+    <form id="recipeForm" action="{{ url_for('recipes.create') if not recipe else url_for('recipes.update', recipe_id=recipe.id) }}" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="mode" value="gui">
+        
+        <!-- Basic Info -->
+        <div class="squiggly-box mb-2">
+            <h2>Basic Info</h2>
+            <div class="form-group">
+                <label for="title">Recipe Title</label>
+                <input type="text" id="title" name="title" value="{{ recipe.title if recipe else '' }}" required>
+            </div>
+
+            <div class="grid grid-2">
+                <div class="form-group">
+                    <label for="country">Country</label>
+                    <select id="country" name="country_id" required onchange="loadStates(this.value)">
+                        <option value="">Select Country</option>
+                        {% for country in countries %}
+                            <option value="{{ country.id }}" {% if recipe and recipe.state.country.id == country.id %}selected{% endif %}>{{ country.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="state">State/Region</label>
+                    <select id="state" name="state_id" required>
+                        <option value="">Select State</option>
+                        {% if recipe and recipe.state %}
+                            <option value="{{ recipe.state.id }}" selected>{{ recipe.state.name }}</option>
+                        {% endif %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" rows="3">{{ recipe.description if recipe else '' }}</textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="main_image">Main Image URL</label>
+                <input type="text" id="main_image" name="image_url" value="{{ recipe.image_url if recipe else '' }}">
+            </div>
+        </div>
+
+        <!-- Steps Container -->
+        <div id="steps-container">
+            <!-- Steps will be added here via JS -->
+        </div>
+
+        <div class="text-center mb-2">
+            <button type="button" class="btn" onclick="addStep()">+ Add Step</button>
+        </div>
+
+        <div class="text-center mt-2">
+            <a href="{{ url_for('home.index') }}" class="btn">Cancel</a>
+            <button type="submit" class="btn btn-primary" style="margin-left: 1rem;">Save Recipe</button>
+        </div>
+    </form>
+</div>
+
+<template id="step-template">
+    <div class="step-card squiggly-box mb-2" data-step-index="{index}">
+        <div class="flex justify-between items-center mb-1">
+            <h3>Step <span class="step-number">{number}</span></h3>
+            <button type="button" class="btn" onclick="removeStep(this)" style="color: red; border-color: red;">Remove Step</button>
+        </div>
+        
+        <div class="form-group">
+            <label>Instructions</label>
+            <textarea name="steps[{index}][instruction]" rows="3" required></textarea>
+        </div>
+
+        <div class="grid grid-2">
+            <div class="form-group">
+                <label>Image URL (Optional)</label>
+                <input type="text" name="steps[{index}][image_url]">
+            </div>
+            <div class="form-group">
+                <label>Duration (minutes)</label>
+                <input type="number" name="steps[{index}][duration]" min="0">
+            </div>
+        </div>
+
+        <div class="ingredients-section" style="background: #f9f9f9; padding: 1rem; border-radius: var(--squiggly-radius-2);">
+            <h4>Ingredients for this step</h4>
+            <div class="step-ingredients-list" id="ingredients-list-{index}">
+                <!-- Ingredients added here -->
+            </div>
+            <button type="button" class="btn mt-1" onclick="addIngredient({index})">+ Add Ingredient</button>
+        </div>
+    </div>
+</template>
+
+<template id="ingredient-template">
+    <div class="ingredient-row flex gap-1 mb-1 items-center">
+        <input type="text" name="steps[{stepIndex}][ingredients][{ingIndex}][quantity]" placeholder="Qty" style="width: 80px;">
+        <input type="text" name="steps[{stepIndex}][ingredients][{ingIndex}][unit]" placeholder="Unit" style="width: 80px;">
+        <input type="text" name="steps[{stepIndex}][ingredients][{ingIndex}][name]" placeholder="Ingredient Name" style="flex-grow: 1;">
+        <input type="text" name="steps[{stepIndex}][ingredients][{ingIndex}][notes]" placeholder="Notes" style="flex-grow: 1;">
+        <button type="button" class="btn" onclick="this.parentElement.remove()">X</button>
+    </div>
+</template>
+
+<script>
+let stepCount = 0;
+
+function addStep() {
+    const container = document.getElementById('steps-container');
+    const template = document.getElementById('step-template').innerHTML;
+    const index = stepCount;
+    const number = stepCount + 1;
+    
+    const html = template.replace(/{index}/g, index)
+                         .replace(/{number}/g, number);
+    
+    // Create a wrapper div to insert HTML string
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    container.appendChild(div.firstElementChild);
+    
+    stepCount++;
+}
+
+function removeStep(btn) {
+    btn.closest('.step-card').remove();
+    // Re-indexing logic would be ideal here but for MVP we might skip complex re-ordering
+    // or just let backend handle sparse arrays
+}
+
+function addIngredient(stepIndex) {
+    const list = document.getElementById(`ingredients-list-${stepIndex}`);
+    const template = document.getElementById('ingredient-template').innerHTML;
+    const ingIndex = list.children.length;
+    
+    const html = template.replace(/{stepIndex}/g, stepIndex)
+                         .replace(/{ingIndex}/g, ingIndex);
+    
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    list.appendChild(div.firstElementChild);
+}
+
+// Initial step
+addStep();
+
+// State loading logic
+async function loadStates(countryId) {
+    const stateSelect = document.getElementById('state');
+    stateSelect.innerHTML = '<option value="">Loading...</option>';
+    
+    if (!countryId) {
+        stateSelect.innerHTML = '<option value="">Select State</option>';
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/countries/${countryId}/states`);
+        const states = await response.json();
+        
+        stateSelect.innerHTML = '<option value="">Select State</option>';
+        states.forEach(state => {
+            const option = document.createElement('option');
+            option.value = state.id;
+            option.textContent = state.name;
+            stateSelect.appendChild(option);
+        });
+    } catch (e) {
+        console.error('Error loading states:', e);
+        stateSelect.innerHTML = '<option value="">Error loading states</option>';
+    }
+}
+</script>
+{% endblock %}
+
