@@ -149,7 +149,7 @@
       // Styling for the country polygons
       function getCountryStyle(feature) {
         return {
-          fillColor: "#d35400",
+          fillColor: "#000000",
           weight: 1,
           opacity: 1,
           color: "white",
@@ -162,7 +162,7 @@
         var layer = e.target;
         layer.setStyle({
           weight: 2,
-          color: "#d35400",
+          color: "#000000",
           dashArray: "",
           fillOpacity: 0.3,
         });
@@ -449,7 +449,7 @@
                 color: "white",
                 dashArray: "3",
                 fillOpacity: 0.1,
-                fillColor: "#d35400",
+                fillColor: "#000000",
               };
 
               // Try to add flag pattern
@@ -496,7 +496,7 @@
                   // Use the pattern
                   style.fillColor = `url(#${patternId})`;
                   style.fillOpacity = 0.3; // Make it semi-transparent as requested
-                  style.color = "#d35400"; // Border color
+                  style.color = "#000000"; // Border color
                 }
               }
 

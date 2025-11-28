@@ -1,15 +1,15 @@
 /* Main CSS - Base styles from base.html */
 
 :root {
-    --primary: #d35400; /* Burnt Orange */
-    --primary-dark: #a04000;
-    --secondary: #2c3e50; /* Dark Slate */
-    --accent: #27ae60; /* Sage Green */
-    --bg-warm: #fdfbf7; /* Warm White */
+    --primary: #000000; /* Black */
+    --primary-dark: #333333; /* Dark Grey */
+    --secondary: #000000; /* Black */
+    --accent: #666666; /* Medium Grey */
+    --bg-warm: #ffffff; /* White */
     --bg-white: #ffffff;
-    --text-main: #2c3e50;
-    --text-light: #7f8c8d;
-    --border: #ebdccb;
+    --text-main: #000000;
+    --text-light: #666666;
+    --border: #e0e0e0; /* Light Grey */
 }
 
 * { 
@@ -95,7 +95,7 @@ a {
 
 .navbar-breadcrumbs .breadcrumb-item a:hover {
     color: var(--primary);
-    background: rgba(211, 84, 0, 0.1);
+    background: rgba(0, 0, 0, 0.1);
 }
 
 .navbar-breadcrumbs .breadcrumb-item.active span {
@@ -188,14 +188,14 @@ a {
 }
 
 .btn-danger {
-    background: #e74c3c;
-    border-color: #e74c3c;
+    background: #333333;
+    border-color: #333333;
     color: white;
 }
 
 .btn-danger:hover {
-    background: #c0392b;
-    border-color: #c0392b;
+    background: #000000;
+    border-color: #000000;
     color: white;
 }
 
@@ -217,21 +217,21 @@ a {
 }
 
 .flash.error {
-    background-color: #fce4e4;
-    color: #cc0000;
-    border-color: #fcc2c2;
+    background-color: #f5f5f5;
+    color: #000000;
+    border-color: #999999;
 }
 
 .flash.success {
-    background-color: #d4edda;
-    color: #155724;
-    border-color: #c3e6cb;
+    background-color: #f5f5f5;
+    color: #000000;
+    border-color: #666666;
 }
 
 .flash.info {
-    background-color: #d1ecf1;
-    color: #0c5460;
-    border-color: #bee5eb;
+    background-color: #f5f5f5;
+    color: #000000;
+    border-color: #999999;
 }
 
 /* Container */
