@@ -46,11 +46,14 @@ All templates use Jinja2 templating engine. Templates are placed in the `templat
 
 **Components**:
 - Recipe title and main image
-- Recipe metadata (country, difficulty, time, servings)
-- Ingredients list
+- Breadcrumb navigation (Recipe → State → Country)
+- Recipe metadata (state, country via state)
+- Ingredients list (organized by steps)
 - Instructions/steps
 - Author name
+- Upvote/downvote buttons
 - Edit button (if user is author)
+- Favorite button
 - Comment section (includes `comment_component.html`)
 
 **Data Requirements**:
@@ -72,8 +75,7 @@ All templates use Jinja2 templating engine. Templates are placed in the `templat
 - Search bar (with query displayed)
 - Filter sidebar:
   - Country filter
-  - Category filter
-  - Difficulty filter
+  - State filter (filtered by selected country)
 - Results grid
 - Basic pagination (if needed)
 
@@ -92,13 +94,14 @@ All templates use Jinja2 templating engine. Templates are placed in the `templat
 **Wireframe**: `user_profile.png`
 
 **Components**:
-- User avatar and username
+- Username
 - Bio/description (optional)
 - Statistics (recipes count)
 - Tabs:
   - My Recipes
-  - Favorites (if implemented)
+  - Favorites (with type filtering: recipes, users, states, countries)
 - Recipe grid of user's recipes
+- Favorite button (if viewing another user's profile)
 
 **Data Requirements**:
 - User object
@@ -152,16 +155,11 @@ All templates use Jinja2 templating engine. Templates are placed in the `templat
 
 **Components**:
 - Recipe title input
-- Recipe description/notes (textarea)
-- Ingredients text area
-- Instructions text area
-- Metadata fields:
-  - Country selection
-  - Difficulty level
-  - Prep time
-  - Cook time
-  - Servings
-- Image upload (single file)
+- Recipe description/notes (textarea, optional)
+- State selection (which implies country)
+- Image upload (single file, optional)
+- Ingredients text area (can be structured by steps)
+- Instructions text area (can be structured by steps)
 - Save button
 - Cancel button
 
@@ -180,21 +178,25 @@ All templates use Jinja2 templating engine. Templates are placed in the `templat
 
 **Components**:
 - Recipe title input
-- Ingredient builder:
-  - Add ingredient button
-  - Ingredient rows with:
-    - Name field
-    - Quantity field
-    - Unit dropdown
-    - Remove button
-- Instruction builder:
+- Recipe description (textarea, optional)
+- State selection (which implies country)
+- Image upload (single file, optional)
+- Step builder:
   - Add step button
   - Step rows with:
     - Step number
     - Instruction text area
-    - Remove button
-- Metadata fields (same as text editor)
-- Image upload
+    - Image upload (optional, per step)
+    - Duration minutes (optional)
+    - Ingredient builder for this step:
+      - Add ingredient button
+      - Ingredient rows with:
+        - Name field
+        - Quantity field
+        - Unit dropdown
+        - Notes field (optional)
+        - Remove button
+    - Remove step button
 - Save button
 - Cancel button
 
@@ -243,7 +245,12 @@ All templates use Jinja2 templating engine. Templates are placed in the `templat
     - User name
     - Comment text
     - Timestamp
+    - "Edited" indicator (if is_edited)
+    - Upvote/downvote buttons with vote counts
+    - Reply button (for nested comments)
+    - Edit button (if user's comment)
     - Delete button (if user's comment)
+    - Nested replies (indented)
 
 **Data Requirements**:
 - Comments array
@@ -259,10 +266,10 @@ All templates use Jinja2 templating engine. Templates are placed in the `templat
 **Components**:
 - Recipe image thumbnail
 - Recipe title
-- Country name
-- Difficulty indicator
-- Time estimate
+- State and country name (breadcrumb style)
+- Upvote/downvote counts
 - Author name
+- Favorite button (if logged in)
 
 **Data Requirements**:
 - Recipe object
@@ -303,12 +310,9 @@ templates/
 ### Out of Scope for MVP
 - Auto-save drafts
 - Drag-and-drop reordering
-- Nested comments
 - Social sharing
-- Favorites system (can be added later)
 - Advanced filtering
 - Real-time search
-- Image upload per step
 - Markdown support
 - Password strength indicators
 - Settings page

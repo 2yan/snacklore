@@ -19,10 +19,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY app.py .
 COPY templates/ templates/
 COPY static/ static/
-COPY boot.sh .
-RUN chmod +x boot.sh
+COPY boot/ boot/
+RUN chmod +x boot/boot.sh boot/seed_data.py
 
 EXPOSE 5000
 
 # Start PostgreSQL and run Flask app
-CMD ["./boot.sh"]
+CMD ["./boot/boot.sh"]

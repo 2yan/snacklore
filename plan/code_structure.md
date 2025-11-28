@@ -12,20 +12,26 @@ snacklore/
 │   ├── __init__.py            # Model exports
 │   ├── user.py                # User model
 │   ├── recipe.py              # Recipe model
-│   ├── ingredient.py          # Ingredient model
+│   ├── recipe_step.py         # Recipe step model
+│   ├── recipe_ingredient.py   # Recipe ingredient model
 │   ├── comment.py             # Comment model
-│   ├── vote.py                # Vote model (upvotes/downvotes)
-│   └── rating.py              # Rating model (star ratings)
+│   ├── recipe_vote.py         # Recipe vote model (upvotes/downvotes)
+│   ├── comment_vote.py        # Comment vote model (upvotes/downvotes)
+│   ├── country.py             # Country model
+│   ├── country_state.py       # State model
+│   └── favorite.py            # Favorite model (polymorphic)
 ├── routes/
 │   ├── __init__.py            # Blueprint registration
 │   ├── auth.py                # Authentication routes
 │   ├── recipes.py             # Recipe CRUD routes
 │   ├── comments.py            # Comment routes
-│   ├── votes.py               # Vote routes (upvote/downvote)
-│   ├── ratings.py             # Rating routes
+│   ├── recipe_votes.py        # Recipe vote routes (upvote/downvote)
+│   ├── comment_votes.py       # Comment vote routes (upvote/downvote)
+│   ├── favorites.py           # Favorites routes
 │   ├── users.py               # User profile routes
 │   ├── search.py              # Search routes
 │   ├── countries.py           # Country routes
+│   ├── states.py              # State routes
 │   └── home.py                # Homepage routes
 ├── utils/
 │   ├── __init__.py
@@ -51,6 +57,7 @@ snacklore/
 - Error handler registration
 - Application startup logic
 - Database table creation on startup
+- Countries initialization from static/countries.json
 
 **Key Components**:
 ```python
@@ -102,10 +109,14 @@ snacklore/
 ```python
 - User
 - Recipe
-- Ingredient
+- RecipeStep
+- RecipeIngredient
 - Comment
-- Vote
-- Rating
+- RecipeVote
+- CommentVote
+- Country
+- CountryState
+- Favorite
 ```
 
 ---
@@ -127,7 +138,6 @@ snacklore/
 - password_hash
 - country
 - bio
-- avatar_url
 - created_at
 - updated_at
 ```
@@ -144,51 +154,82 @@ snacklore/
 
 **Contents**:
 - Recipe SQLAlchemy model
-- Recipe relationships (user, ingredients, comments, votes, ratings)
+- Recipe relationships (author, state, steps, comments, recipe_votes, favorites)
 - Recipe serialization methods
 
 **Key Fields**:
 ```python
 - id
 - title
-- description
-- country
-- instructions (markdown/HTML)
-- user_id (foreign key)
+- slug
+- description (optional)
+- instructions (optional, markdown/HTML)
+- state_id (foreign key to country_states)
+- author_id (foreign key to users)
+- image_url (optional)
 - created_at
 - updated_at
 ```
 
 **Relationships**:
-- `user` - Recipe creator
-- `ingredients` - List of ingredients
+- `author` - Recipe creator
+- `state` - State where recipe is from
+- `steps` - Recipe steps
 - `comments` - Recipe comments
-- `votes` - Upvotes/downvotes
-- `ratings` - Star ratings
+- `recipe_votes` - Upvotes/downvotes
+- `favorites` - Users who favorited this recipe
 
 **Methods**:
 - `to_dict()` - Full recipe serialization
 - `get_score()` - Calculate vote score
-- `get_average_rating()` - Calculate average rating
 
 ---
 
-### `models/ingredient.py`
-**Purpose**: Ingredient database model
+### `models/recipe_step.py`
+**Purpose**: Recipe step database model
 
 **Contents**:
-- Ingredient SQLAlchemy model
-- Relationship to recipes
+- RecipeStep SQLAlchemy model
+- Relationship to recipes and ingredients
 
 **Key Fields**:
 ```python
 - id
 - recipe_id (foreign key)
-- name
-- amount
-- unit (optional)
-- order (for ordering in recipe)
+- step_number
+- instruction
+- image_url (optional)
+- duration_minutes (optional)
+- created_at
 ```
+
+**Relationships**:
+- `recipe` - Recipe this step belongs to
+- `ingredients` - Ingredients for this step
+
+---
+
+### `models/recipe_ingredient.py`
+**Purpose**: Recipe ingredient database model
+
+**Contents**:
+- RecipeIngredient SQLAlchemy model
+- Relationship to recipe steps
+
+**Key Fields**:
+```python
+- id
+- step_id (foreign key)
+- name
+- quantity (optional)
+- unit (optional)
+- notes (optional)
+- order
+- created_at
+```
+
+**Relationships**:
+- `step` - Recipe step this ingredient belongs to
 
 ---
 
@@ -206,6 +247,7 @@ snacklore/
 - user_id (foreign key)
 - parent_id (foreign key, optional for replies)
 - content
+- is_edited
 - created_at
 - updated_at
 ```
@@ -215,14 +257,15 @@ snacklore/
 - `recipe` - Recipe being commented on
 - `parent` - Parent comment (for replies)
 - `replies` - Child comments
+- `comment_votes` - Votes on this comment
 
 ---
 
-### `models/vote.py`
-**Purpose**: Vote database model (upvotes/downvotes)
+### `models/recipe_vote.py`
+**Purpose**: Recipe vote database model (upvotes/downvotes)
 
 **Contents**:
-- Vote SQLAlchemy model
+- RecipeVote SQLAlchemy model
 - Unique constraint on (user_id, recipe_id)
 
 **Key Fields**:
@@ -232,6 +275,7 @@ snacklore/
 - user_id (foreign key)
 - vote_type (enum: 'upvote' or 'downvote')
 - created_at
+- updated_at
 ```
 
 **Constraints**:
@@ -239,26 +283,91 @@ snacklore/
 
 ---
 
-### `models/rating.py`
-**Purpose**: Rating database model (star ratings 1-5)
+### `models/comment_vote.py`
+**Purpose**: Comment vote database model (upvotes/downvotes)
 
 **Contents**:
-- Rating SQLAlchemy model
-- Unique constraint on (user_id, recipe_id)
+- CommentVote SQLAlchemy model
+- Unique constraint on (user_id, comment_id)
 
 **Key Fields**:
 ```python
 - id
-- recipe_id (foreign key)
+- comment_id (foreign key)
 - user_id (foreign key)
-- rating (integer 1-5)
+- vote_type (enum: 'upvote' or 'downvote')
 - created_at
 - updated_at
 ```
 
 **Constraints**:
-- Unique (user_id, recipe_id) - one rating per user per recipe
-- Check constraint: rating between 1 and 5
+- Unique (user_id, comment_id) - one vote per user per comment
+
+---
+
+### `models/country.py`
+**Purpose**: Country database model
+
+**Contents**:
+- Country SQLAlchemy model
+- Populated from static/countries.json
+
+**Key Fields**:
+```python
+- id
+- name
+- code (optional)
+- continent
+- lat
+- lng
+- created_at
+```
+
+**Relationships**:
+- `states` - States in this country
+- `favorites` - Users who favorited this country
+
+---
+
+### `models/country_state.py`
+**Purpose**: State database model
+
+**Contents**:
+- CountryState SQLAlchemy model
+
+**Key Fields**:
+```python
+- id
+- country_id (foreign key)
+- name
+- created_at
+```
+
+**Relationships**:
+- `country` - Country this state belongs to
+- `recipes` - Recipes from this state
+- `favorites` - Users who favorited this state
+
+---
+
+### `models/favorite.py`
+**Purpose**: Favorite database model (polymorphic)
+
+**Contents**:
+- Favorite SQLAlchemy model
+- Supports users, recipes, states, countries
+
+**Key Fields**:
+```python
+- id
+- user_id (foreign key)
+- favorite_type (enum: 'user', 'recipe', 'state', 'country')
+- favorite_id (integer, polymorphic)
+- created_at
+```
+
+**Constraints**:
+- Unique (user_id, favorite_type, favorite_id) - one favorite per user per type/id
 
 ---
 
@@ -275,11 +384,13 @@ snacklore/
 - /api/auth -> auth blueprint
 - /api/recipes -> recipes blueprint
 - /api/comments -> comments blueprint
-- /api/votes -> votes blueprint
-- /api/ratings -> ratings blueprint
+- /api/recipes/<id>/upvote, /downvote, /remove-vote -> recipe_votes blueprint
+- /api/comments/<id>/upvote, /downvote, /remove-vote -> comment_votes blueprint
+- /api/favorites -> favorites blueprint
 - /api/users -> users blueprint
 - /api/search -> search blueprint
 - /api/countries -> countries blueprint
+- /api/states -> states blueprint
 - /api/home -> home blueprint
 ```
 
@@ -335,7 +446,9 @@ snacklore/
 - `utils.pagination` - Pagination helpers
 - `utils.validators` - Input validation
 - `models.recipe` - Recipe model
-- `models.ingredient` - Ingredient model
+- `models.recipe_step` - Recipe step model
+- `models.recipe_ingredient` - Recipe ingredient model
+- `models.country_state` - State model
 
 ---
 
@@ -361,8 +474,8 @@ snacklore/
 
 ---
 
-### `routes/votes.py`
-**Purpose**: Upvote/downvote routes
+### `routes/recipe_votes.py`
+**Purpose**: Recipe upvote/downvote routes
 
 **Routes**:
 - `POST /api/recipes/<recipe_id>/upvote` - Upvote recipe
@@ -376,26 +489,48 @@ snacklore/
 
 **Dependencies**:
 - `utils.auth` - Authentication decorators
-- `models.vote` - Vote model
+- `models.recipe_vote` - Recipe vote model
 - `models.recipe` - Recipe model
 
 ---
 
-### `routes/ratings.py`
-**Purpose**: Star rating routes
+### `routes/comment_votes.py`
+**Purpose**: Comment upvote/downvote routes
 
 **Routes**:
-- `POST /api/recipes/<recipe_id>/rate` - Rate recipe
-- `GET /api/recipes/<recipe_id>/rating` - Get rating stats
+- `POST /api/comments/<comment_id>/upvote` - Upvote comment
+- `POST /api/comments/<comment_id>/downvote` - Downvote comment
+- `POST /api/comments/<comment_id>/remove-vote` - Remove vote
 
 **Key Functions**:
-- `rate_recipe(recipe_id)` - Add/update rating
-- `get_rating(recipe_id)` - Get rating statistics
+- `upvote_comment(comment_id)` - Add/change to upvote
+- `downvote_comment(comment_id)` - Add/change to downvote
+- `remove_vote(comment_id)` - Remove user's vote
 
 **Dependencies**:
 - `utils.auth` - Authentication decorators
-- `models.rating` - Rating model
-- `models.recipe` - Recipe model
+- `models.comment_vote` - Comment vote model
+- `models.comment` - Comment model
+
+---
+
+### `routes/favorites.py`
+**Purpose**: Favorites routes (polymorphic)
+
+**Routes**:
+- `POST /api/favorites` - Create favorite
+- `DELETE /api/favorites/<favorite_id>` - Remove favorite
+- `GET /api/users/<username>/favorites` - Get user's favorites
+
+**Key Functions**:
+- `create_favorite()` - Add favorite (user, recipe, state, or country)
+- `remove_favorite(favorite_id)` - Remove favorite
+- `get_user_favorites(username)` - Get user's favorites with filtering
+
+**Dependencies**:
+- `utils.auth` - Authentication decorators
+- `utils.pagination` - Pagination helpers
+- `models.favorite` - Favorite model
 
 ---
 
@@ -430,11 +565,12 @@ snacklore/
 - `GET /api/search` - Search recipes
 
 **Key Functions**:
-- `search_recipes()` - Perform recipe search
+- `search_recipes()` - Perform recipe search (by query, state, country)
 
 **Dependencies**:
 - `utils.pagination` - Pagination helpers
 - `models.recipe` - Recipe model
+- `models.country_state` - State model
 
 ---
 
@@ -443,18 +579,41 @@ snacklore/
 
 **Routes**:
 - `GET /api/countries` - Get all countries
-- `GET /api/countries/<country_code>` - Get country details
-- `GET /api/countries/<country_code>/recipes` - Get recipes by country
+- `GET /api/countries/<country_id>` - Get country details
+- `GET /api/countries/<country_id>/states` - Get states for country
+- `GET /api/countries/<country_id>/recipes` - Get recipes by country
 
 **Key Functions**:
 - `get_countries()` - List all countries
-- `get_country(country_code)` - Get country details
-- `get_country_recipes(country_code)` - Get recipes for country
+- `get_country(country_id)` - Get country details
+- `get_country_states(country_id)` - Get states for country
+- `get_country_recipes(country_id)` - Get recipes for country (via states)
 
 **Dependencies**:
 - `utils.pagination` - Pagination helpers
+- `models.country` - Country model
+- `models.country_state` - State model
 - `models.recipe` - Recipe model
-- `static/countries.json` - Country data
+
+---
+
+### `routes/states.py`
+**Purpose**: State-related routes
+
+**Routes**:
+- `GET /api/states` - Get all states
+- `GET /api/states/<state_id>` - Get state details
+- `GET /api/states/<state_id>/recipes` - Get recipes by state
+
+**Key Functions**:
+- `get_states()` - List all states (with optional country filter)
+- `get_state(state_id)` - Get state details
+- `get_state_recipes(state_id)` - Get recipes for state
+
+**Dependencies**:
+- `utils.pagination` - Pagination helpers
+- `models.country_state` - State model
+- `models.recipe` - Recipe model
 
 ---
 
@@ -471,7 +630,7 @@ snacklore/
 
 **Dependencies**:
 - `models.recipe` - Recipe model
-- `static/countries.json` - Country data
+- `models.country` - Country model
 
 ---
 
@@ -511,7 +670,6 @@ snacklore/
 - validate_username(username)
 - validate_recipe_data(data)
 - validate_comment_data(data)
-- validate_rating(rating)
 ```
 
 ---
@@ -584,13 +742,15 @@ snacklore/
 
 ### Phase 3: Interactions
 10. `routes/comments.py` - Comments
-11. `routes/votes.py` - Voting system
-12. `routes/ratings.py` - Ratings
+11. `routes/recipe_votes.py` - Recipe voting system
+12. `routes/comment_votes.py` - Comment voting system
+13. `routes/favorites.py` - Favorites system
 
 ### Phase 4: Discovery
-13. `routes/search.py` - Search functionality
-14. `routes/countries.py` - Country routes
-15. `routes/home.py` - Homepage data
+14. `routes/search.py` - Search functionality
+15. `routes/countries.py` - Country routes
+16. `routes/states.py` - State routes
+17. `routes/home.py` - Homepage data
 
 ### Phase 5: Polish
 16. `utils/pagination.py` - Pagination helpers

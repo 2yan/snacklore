@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="text-center py-20 space-y-6">
+    <h1 class="font-cinzel text-5xl md:text-7xl font-bold text-foreground">
+        Taste the World
+    </h1>
+    <p class="text-xl text-muted-foreground max-w-2xl mx-auto font-light">
+        Discover authentic recipes from every corner of the globe. Share your heritage, explore new flavors, and preserve culinary traditions.
+    </p>
+    <div class="flex items-center justify-center gap-4 pt-4">
+        <a href="{{ url_for('world_map') }}" class="btn btn-primary btn-lg">
+            Explore Map
+        </a>
+        <a href="{{ url_for('directory') }}" class="btn btn-outline btn-lg">
+            Browse All
+        </a>
+    </div>
+</section>
+
+<section class="py-12">
+    <div class="flex items-center justify-between mb-8">
+        <h2 class="font-cinzel text-3xl font-bold">Recent Discoveries</h2>
+        <a href="{{ url_for('directory') }}" class="text-primary hover:underline">View all &rarr;</a>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for recipe in recent_recipes %}
+        <div class="card hover:shadow-lg transition-shadow">
+            <div class="p-6 space-y-4">
+                <div class="flex justify-between items-start">
+                    {% if recipe.primary_country %}
+                        {% with country=recipe.primary_country %}
+                            {% include 'includes/country_pill.html' %}
+                        {% endwith %}
+                    {% endif %}
+                    <span class="text-xs text-muted-foreground">{{ recipe.created_at.strftime('%b %d, %Y') }}</span>
+                </div>
+                
+                <h3 class="font-cinzel text-xl font-bold">
+                    <a href="{{ url_for('recipe_detail_country', country_slug=recipe.primary_country.name|lower|replace(' ', '-'), recipe_slug=recipe.slug) if recipe.primary_country else '#' }}" class="hover:text-primary transition-colors">
+                        {{ recipe.name }}
+                    </a>
+                </h3>
+                
+                <p class="text-sm text-muted-foreground line-clamp-2">
+                    By {{ recipe.owner.username }}
+                </p>
+                
+                <div class="pt-4 flex items-center justify-between border-t text-sm">
+                    <span class="flex items-center gap-1 text-muted-foreground">
+                        <i data-lucide="clock" class="w-4 h-4"></i> {{ recipe.steps|length }} Steps
+                    </span>
+                    <span class="flex items-center gap-1 text-muted-foreground">
+                        <i data-lucide="heart" class="w-4 h-4"></i> {{ recipe.favorited_by|length }}
+                    </span>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
+

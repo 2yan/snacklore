@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ country.name }} - Snacklore</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages.css') }}">
+</head>
+<body class="standalone-body">
+    {% include 'includes/header.html' %}
+    <div class="country-page-container">
+        <h1 class="standalone-h1">{{ country.name }}</h1>
+        
+        <div class="states-section">
+            <h2 class="country-page-section-title">States/Regions</h2>
+            {% if states %}
+            <div class="states-grid">
+                {% for state in states %}
+                <div class="state-card">
+                    <a href="#">{{ state.name }}</a>
+                    <span class="state-recipe-count">({{ state.recipes|length }} recipes)</span>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="country-empty-state">No states/regions available.</div>
+            {% endif %}
+        </div>
+        
+        <div class="recipes-section">
+            <h2 class="country-page-section-title">Recipes from {{ country.name }}</h2>
+            {% if recipes %}
+            <div class="recipes-grid">
+                {% for recipe in recipes %}
+                <div class="recipe-card">
+                    <a href="{% if recipe.primary_state %}{{ url_for('view_recipe', country_slug=country.name|country_slug, state_slug=recipe.primary_state.name|country_slug, recipe_slug=recipe.slug) }}{% elif recipe.primary_country %}{{ url_for('view_recipe_country_only', country_slug=country.name|country_slug, recipe_slug=recipe.slug) }}{% else %}{{ url_for('view_recipe_old', recipe_id=recipe.id) }}{% endif %}">
+                        <h4>{{ recipe.name }}</h4>
+                        <div class="recipe-meta">
+                            <div>👤 {{ recipe.owner.username }}</div>
+                            {% if recipe.primary_state %}
+                                <div>📍 {{ recipe.primary_state.name }}</div>
+                            {% endif %}
+                            {% if recipe.created_at %}
+                                <div>📅 {{ recipe.created_at.strftime('%Y-%m-%d') }}</div>
+                            {% endif %}
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="country-empty-state">No recipes from this country yet.</div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
+

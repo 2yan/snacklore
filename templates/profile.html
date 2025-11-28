@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ user.username }} - Snacklore{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto space-y-12">
+    <header class="flex items-center gap-6 pb-8 border-b">
+        <div class="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center text-3xl font-cinzel text-primary">
+            {{ user.username[0]|upper }}
+        </div>
+        <div>
+            <h1 class="font-cinzel text-4xl font-bold">{{ user.username }}</h1>
+            <p class="text-muted-foreground mt-2">
+                {% if user.primary_country %}
+                    {{ user.primary_country.name }}{% if user.primary_state %}, {{ user.primary_state.name }}{% endif %}
+                {% endif %}
+            </p>
+            <p class="text-sm text-muted-foreground mt-1">Joined {{ user.registered_on.strftime('%B %Y') }}</p>
+        </div>
+    </header>
+
+    <div class="grid md:grid-cols-2 gap-12">
+        <section class="space-y-6">
+            <h2 class="font-cinzel text-2xl font-bold flex items-center gap-2">
+                <i data-lucide="chef-hat"></i> Recipes
+            </h2>
+            {% if user.recipes %}
+            <div class="grid gap-4">
+                {% for recipe in user.recipes %}
+                <div class="card p-4 hover:shadow-md transition-shadow">
+                    <h3 class="font-bold">
+                        <a href="{{ url_for('recipe_detail_country', country_slug=recipe.primary_country.name|lower|replace(' ', '-'), recipe_slug=recipe.slug) if recipe.primary_country else '#' }}" class="hover:text-primary">
+                            {{ recipe.name }}
+                        </a>
+                    </h3>
+                    <p class="text-xs text-muted-foreground mt-1">
+                        {{ recipe.created_at.strftime('%b %d, %Y') }}
+                    </p>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-muted-foreground italic">No recipes shared yet.</p>
+            {% endif %}
+        </section>
+
+        {% if current_user.is_authenticated and current_user.id == user.id %}
+        <section class="space-y-6">
+            <h2 class="font-cinzel text-2xl font-bold flex items-center gap-2">
+                <i data-lucide="heart"></i> Favorites
+            </h2>
+            {% if user.favorite_recipes %}
+            <div class="grid gap-4">
+                {% for recipe in user.favorite_recipes %}
+                <div class="card p-4 hover:shadow-md transition-shadow">
+                    <h3 class="font-bold">
+                        <a href="{{ url_for('recipe_detail_country', country_slug=recipe.primary_country.name|lower|replace(' ', '-'), recipe_slug=recipe.slug) if recipe.primary_country else '#' }}" class="hover:text-primary">
+                            {{ recipe.name }}
+                        </a>
+                    </h3>
+                    <p class="text-xs text-muted-foreground mt-1">
+                        By {{ recipe.owner.username }}
+                    </p>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-muted-foreground italic">No favorites yet.</p>
+            {% endif %}
+        </section>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+

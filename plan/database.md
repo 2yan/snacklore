@@ -18,7 +18,6 @@ Stores user account information and profile data.
 | `password_hash` | VARCHAR(255) | NOT NULL | Hashed password (using Werkzeug) |
 | `bio` | TEXT | | User biography/description |
 | `country` | VARCHAR(100) | | User's country of residence |
-| `state` | VARCHAR(100) | | User's state of residence |
 | `created_at` | TIMESTAMP | NOT NULL, DEFAULT NOW() | Account creation timestamp |
 | `updated_at` | TIMESTAMP | NOT NULL, DEFAULT NOW() | Last profile update timestamp |
 
@@ -46,11 +45,11 @@ Stores snack recipe information and content.
 | `id` | INTEGER | PRIMARY KEY, AUTO_INCREMENT | Unique recipe identifier |
 | `title` | VARCHAR(255) | NOT NULL | Recipe title |
 | `slug` | VARCHAR(255) | UNIQUE, NOT NULL | URL-friendly identifier |
-| `content` | TEXT | NOT NULL | Full recipe content (markdown or HTML) |
+| `description` | TEXT | | Short description/summary (optional) |
+| `instructions` | TEXT | | Full recipe instructions (optional, can derive from steps) |
 | `author_id` | INTEGER | FOREIGN KEY, NOT NULL | Reference to `users.id` |
-| `country_id` | INTEGER | FOREIGN KEY | Reference to `countries.id` |
-| `state_region` | VARCHAR(100) | | State or region within country |
-| `is_published` | BOOLEAN | DEFAULT FALSE | Publication status |
+| `state_id` | INTEGER | FOREIGN KEY, NOT NULL | Reference to `country_states.id` |
+| `image_url` | VARCHAR(500) | | Optional recipe image URL |
 | `created_at` | TIMESTAMP | NOT NULL, DEFAULT NOW() | Recipe creation timestamp |
 | `updated_at` | TIMESTAMP | NOT NULL, DEFAULT NOW() | Last update timestamp |
 
@@ -58,14 +57,13 @@ Stores snack recipe information and content.
 - Primary key on `id`
 - Unique index on `slug`
 - Index on `author_id` (foreign key)
-- Index on `country_id` (foreign key)
+- Index on `state_id` (foreign key)
 - Index on `created_at` (for sorting)
-- Index on `is_published` (for filtering)
 - Full-text search index on `title` 
 
 **Relationships:**
 - Many-to-one with `users` (recipe belongs to one author)
-- Many-to-one with `countries` (recipe associated with one country)
+- Many-to-one with `country_states` (recipe associated with one state)
 - One-to-many with `comments` (recipe can have many comments)
 - One-to-many with `recipe_steps` (recipe has many steps)
 - One-to-many with `favorites` (recipe can be favorited by many users)
@@ -82,11 +80,10 @@ Stores country information for recipe association.
 |--------|------|-------------|-------------|
 | `id` | INTEGER | PRIMARY KEY, AUTO_INCREMENT | Unique country identifier |
 | `name` | VARCHAR(100) | UNIQUE, NOT NULL | Country name |
-| `code` | VARCHAR(2) | UNIQUE | ISO 3166-1 alpha-2 country code |
+| `code` | VARCHAR(2) | UNIQUE | ISO 3166-1 alpha-2 country code (optional) |
 | `continent` | VARCHAR(50) | | Continent name |
-| `latitude` | DECIMAL(10, 8) | | Geographic latitude |
-| `longitude` | DECIMAL(11, 8) | | Geographic longitude |
-| `flag_emoji` | VARCHAR(10) | | Country flag emoji |
+| `lat` | DECIMAL(10, 8) | | Geographic latitude |
+| `lng` | DECIMAL(11, 8) | | Geographic longitude |
 | `created_at` | TIMESTAMP | DEFAULT NOW() | Record creation timestamp |
 
 **Indexes:**
@@ -96,8 +93,8 @@ Stores country information for recipe association.
 - Index on `continent`
 
 **Relationships:**
-- One-to-many with `recipes` (country can have many recipes)
 - One-to-many with `country_states` (country can have many states/regions)
+- One-to-many with `favorites` (country can be favorited by many users)
 
 ---
 
@@ -120,6 +117,8 @@ Stores states/regions within countries.
 
 **Relationships:**
 - Many-to-one with `countries` (state belongs to one country)
+- One-to-many with `recipes` (state can have many recipes)
+- One-to-many with `favorites` (state can be favorited by many users)
 
 ---
 
@@ -136,7 +135,6 @@ Stores user comments on recipes.
 | `parent_id` | INTEGER | FOREIGN KEY | Reference to `comments.id` (for nested replies) |
 | `content` | TEXT | NOT NULL | Comment text content |
 | `is_edited` | BOOLEAN | DEFAULT FALSE | Whether comment was edited |
-| `is_deleted` | BOOLEAN | DEFAULT FALSE | Soft delete flag |
 | `created_at` | TIMESTAMP | NOT NULL, DEFAULT NOW() | Comment creation timestamp |
 | `updated_at` | TIMESTAMP | NOT NULL, DEFAULT NOW() | Last update timestamp |
 
@@ -151,7 +149,7 @@ Stores user comments on recipes.
 - Many-to-one with `recipes` (comment belongs to one recipe)
 - Many-to-one with `users` (comment belongs to one user)
 - Self-referential: `parent_id` references `comments.id` (for comment threads)
-- One-to-many with `comment_likes` (comment can be liked by many users)
+- One-to-many with `comment_votes` (comment can be voted on by many users)
 
 ---
 
@@ -208,7 +206,7 @@ Stores step-by-step instructions for recipes.
 ---
 
 ### 8. Favorites Table
-Stores user favorite recipes (bookmarks).
+Stores user favorites (users, recipes, states, or countries).
 
 **Table Name:** `favorites`
 
@@ -216,19 +214,19 @@ Stores user favorite recipes (bookmarks).
 |--------|------|-------------|-------------|
 | `id` | INTEGER | PRIMARY KEY, AUTO_INCREMENT | Unique favorite identifier |
 | `user_id` | INTEGER | FOREIGN KEY, NOT NULL | Reference to `users.id` |
-| `recipe_id` | INTEGER | FOREIGN KEY, NOT NULL | Reference to `recipes.id` |
+| `favorite_type` | VARCHAR(20) | NOT NULL, CHECK (favorite_type IN ('user', 'recipe', 'state', 'country')) | Type of favorite |
+| `favorite_id` | INTEGER | NOT NULL | ID of the favorited item (polymorphic) |
 | `created_at` | TIMESTAMP | NOT NULL, DEFAULT NOW() | Favorite creation timestamp |
 
 **Indexes:**
 - Primary key on `id`
-- Unique constraint on (`user_id`, `recipe_id`) (user can only favorite once)
+- Unique constraint on (`user_id`, `favorite_type`, `favorite_id`) (user can only favorite once per type/id)
 - Index on `user_id` (foreign key)
-- Index on `recipe_id` (foreign key)
+- Index on `favorite_type` (for filtering)
 - Index on `created_at` (for sorting)
 
 **Relationships:**
 - Many-to-one with `users` (favorite belongs to one user)
-- Many-to-one with `recipes` (favorite belongs to one recipe)
 
 ---
 
@@ -259,27 +257,30 @@ Stores user upvotes and downvotes for recipes.
 
 ---
 
-### 10. Comment Likes Table
-Stores user likes on comments.
+### 10. Comment Votes Table
+Stores user upvotes and downvotes for comments.
 
-**Table Name:** `comment_likes`
+**Table Name:** `comment_votes`
 
 | Column | Type | Constraints | Description |
 |--------|------|-------------|-------------|
-| `id` | INTEGER | PRIMARY KEY, AUTO_INCREMENT | Unique like identifier |
+| `id` | INTEGER | PRIMARY KEY, AUTO_INCREMENT | Unique vote identifier |
 | `user_id` | INTEGER | FOREIGN KEY, NOT NULL | Reference to `users.id` |
 | `comment_id` | INTEGER | FOREIGN KEY, NOT NULL | Reference to `comments.id` |
-| `created_at` | TIMESTAMP | NOT NULL, DEFAULT NOW() | Like creation timestamp |
+| `vote_type` | VARCHAR(10) | NOT NULL, CHECK (vote_type IN ('upvote', 'downvote')) | Type of vote: 'upvote' or 'downvote' |
+| `created_at` | TIMESTAMP | NOT NULL, DEFAULT NOW() | Vote creation timestamp |
+| `updated_at` | TIMESTAMP | NOT NULL, DEFAULT NOW() | Last update timestamp |
 
 **Indexes:**
 - Primary key on `id`
-- Unique constraint on (`user_id`, `comment_id`) (user can only like once)
+- Unique constraint on (`user_id`, `comment_id`) (user can only vote once per comment)
 - Index on `user_id` (foreign key)
 - Index on `comment_id` (foreign key)
+- Index on `vote_type` (for filtering)
 
 **Relationships:**
-- Many-to-one with `users` (like belongs to one user)
-- Many-to-one with `comments` (like belongs to one comment)
+- Many-to-one with `users` (vote belongs to one user)
+- Many-to-one with `comments` (vote belongs to one comment)
 
 ---
 
@@ -295,22 +296,22 @@ Stores user likes on comments.
 5. **Country States** - Sub-regions within countries
 6. **Recipe Steps** - Step-by-step instructions for recipes
 7. **Recipe Ingredients** - Ingredients associated with recipe steps
-8. **Favorites** - User bookmarks
+8. **Favorites** - User favorites (users, recipes, states, countries)
 9. **Recipe Votes** - User upvotes and downvotes on recipes
-10. **Comment Likes** - User engagement on comments
+10. **Comment Votes** - User upvotes and downvotes on comments
 
 ## Key Relationships
 
 ### User Relationships
 - Users → Recipes (1:N) - Users create recipes
 - Users → Comments (1:N) - Users make comments
-- Users → Favorites (1:N) - Users favorite recipes
+- Users → Favorites (1:N) - Users favorite items (polymorphic)
 - Users → Recipe Votes (1:N) - Users vote on recipes
-- Users → Comment Likes (1:N) - Users like comments
+- Users → Comment Votes (1:N) - Users vote on comments
 
 ### Recipe Relationships
 - Recipes → Users (N:1) - Recipes have authors
-- Recipes → Countries (N:1) - Recipes are from countries
+- Recipes → Country States (N:1) - Recipes are from states
 - Recipes → Comments (1:N) - Recipes have comments
 - Recipes → Recipe Steps (1:N) - Recipes have steps
 - Recipes → Favorites (1:N) - Recipes are favorited
@@ -324,18 +325,19 @@ Stores user likes on comments.
 - Comments → Recipes (N:1) - Comments belong to recipes
 - Comments → Users (N:1) - Comments belong to users
 - Comments → Comments (N:1, self-referential) - Comments can be replies
-- Comments → Comment Likes (1:N) - Comments can be liked
+- Comments → Comment Votes (1:N) - Comments can be voted on
 
 ### Country Relationships
-- Countries → Recipes (1:N) - Countries have recipes
 - Countries → Country States (1:N) - Countries have states/regions
+- Countries → Favorites (1:N) - Countries can be favorited
 
 ## Database Constraints
 
 ### Foreign Key Constraints
 - All foreign keys use CASCADE DELETE or SET NULL as appropriate
 - `recipes.author_id` → `users.id` (CASCADE on user delete)
-- `recipes.country_id` → `countries.id` (SET NULL on country delete)
+- `recipes.state_id` → `country_states.id` (SET NULL on state delete)
+- `country_states.country_id` → `countries.id` (CASCADE on country delete)
 - `comments.recipe_id` → `recipes.id` (CASCADE on recipe delete)
 - `comments.user_id` → `users.id` (CASCADE on user delete)
 - `comments.parent_id` → `comments.id` (CASCADE on parent delete)
@@ -343,22 +345,23 @@ Stores user likes on comments.
 - `recipe_ingredients.step_id` → `recipe_steps.id` (CASCADE on step delete)
 - `recipe_votes.user_id` → `users.id` (CASCADE on user delete)
 - `recipe_votes.recipe_id` → `recipes.id` (CASCADE on recipe delete)
+- `comment_votes.user_id` → `users.id` (CASCADE on user delete)
+- `comment_votes.comment_id` → `comments.id` (CASCADE on comment delete)
 - `favorites.user_id` → `users.id` (CASCADE on user delete)
-- `favorites.recipe_id` → `recipes.id` (CASCADE on recipe delete)
-- `comment_likes.user_id` → `users.id` (CASCADE on user delete)
-- `comment_likes.comment_id` → `comments.id` (CASCADE on comment delete)
 
 ### Unique Constraints
 - `users.username` - Unique usernames
 - `users.email` - Unique email addresses
 - `recipes.slug` - Unique recipe slugs
 - `countries.name` - Unique country names
-- `favorites(user_id, recipe_id)` - One favorite per user per recipe
+- `favorites(user_id, favorite_type, favorite_id)` - One favorite per user per type/id
 - `recipe_votes(user_id, recipe_id)` - One vote per user per recipe
-- `comment_likes(user_id, comment_id)` - One like per user per comment
+- `comment_votes(user_id, comment_id)` - One vote per user per comment
 
 ### Check Constraints
 - `recipe_votes.vote_type` - Must be 'upvote' or 'downvote'
+- `comment_votes.vote_type` - Must be 'upvote' or 'downvote'
+- `favorites.favorite_type` - Must be 'user', 'recipe', 'state', or 'country'
 
 ## Indexes
 

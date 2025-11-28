@@ -15,13 +15,13 @@ su - postgres -c "psql -c \"SELECT 1 FROM pg_database WHERE datname = 'snacklore
 
 # Initialize database schema
 echo "Initializing database schema..."
-su - postgres -c "psql -d snacklore -f /app/init_db.sql" || {
+su - postgres -c "psql -d snacklore -f /app/boot/init_db.sql" || {
   echo "Warning: Database schema initialization may have failed or tables already exist"
 }
 
 # Seed countries and states
 echo "Seeding countries and states..."
-cd /app && python3 seed_data.py
+cd /app && python3 boot/seed_data.py
 
 # Keep PostgreSQL running and start Flask
 exec python app.py

@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+
+{% block title %}Site Directory - Snacklore{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="home-container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Hero Section -->
+    <div class="section-header">
+        <h1>Site Directory</h1>
+        <p>Explore all recipes, countries, and users in Snacklore</p>
+    </div>
+
+    <!-- Site Navigation -->
+    <div class="site-structure">
+        <div class="section-header">
+            <h2>Site Navigation</h2>
+            <p>Quick links to explore the site</p>
+        </div>
+        
+        <div class="grid">
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-category">Authentication</div>
+                    <h3 class="card-title">Account Access</h3>
+                    <ul class="site-map-links">
+                        {% if not current_user.is_authenticated %}
+                        <li><a href="{{ url_for('login') }}">Login</a></li>
+                        <li><a href="{{ url_for('register') }}">Register</a></li>
+                        {% else %}
+                        <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-category">World & Location</div>
+                    <h3 class="card-title">Explore Locations</h3>
+                    <ul class="site-map-links">
+                        <li><a href="{{ url_for('world_map') }}">World Map</a></li>
+                        {% if countries %}
+                        <li class="countries-header">Countries:</li>
+                        {% for country in countries[:5] %}
+                        <li class="country-item"><a href="{{ url_for('view_country', country_slug=country.name|country_slug) }}">{{ country.name }}</a></li>
+                        {% endfor %}
+                        {% if countries|length > 5 %}
+                        <li class="directory-empty-state">... and {{ countries|length - 5 }} more</li>
+                        {% endif %}
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-category">User Profiles</div>
+                    <h3 class="card-title">Community</h3>
+                    <ul class="site-map-links">
+                        {% if current_user.is_authenticated %}
+                        <li><a href="{{ url_for('user_profile', username=current_user.username) }}">My Profile</a></li>
+                        {% endif %}
+                        {% if users %}
+                            {% for user in users[:5] %}
+                            <li><a href="{{ url_for('user_profile', username=user.username) }}">{{ user.username }}</a></li>
+                            {% endfor %}
+                            {% if users|length > 5 %}
+                            <li class="directory-empty-state">... and {{ users|length - 5 }} more</li>
+                            {% endif %}
+                        {% else %}
+                            <li class="directory-empty-state">No users yet</li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-category">API</div>
+                    <h3 class="card-title">API Endpoints</h3>
+                    <ul class="site-map-links">
+                        <li><a href="/api/states/1">Get States by Country</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- All Recipes Section -->
+    {% if recipes %}
+    <div class="recipes-section">
+        <div class="section-header">
+            <h2>All Recipes</h2>
+            <p>Browse all recipes in the collection</p>
+        </div>
+        
+        <div class="grid">
+            {% for recipe in recipes %}
+            <div class="card">
+                <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1543353071-873f17a7a088?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60');"></div>
+                <div class="card-content">
+                    {% if recipe.primary_country %}
+                    <div class="card-category">{{ recipe.primary_country.name }}</div>
+                    {% else %}
+                    <div class="card-category">Global</div>
+                    {% endif %}
+                    <h3 class="card-title">
+                        <a href="{% if recipe.primary_state %}{{ url_for('view_recipe', country_slug=recipe.primary_country.name|country_slug, state_slug=recipe.primary_state.name|country_slug, recipe_slug=recipe.slug) }}{% elif recipe.primary_country %}{{ url_for('view_recipe_country_only', country_slug=recipe.primary_country.name|country_slug, recipe_slug=recipe.slug) }}{% else %}{{ url_for('view_recipe_old', recipe_id=recipe.id) }}{% endif %}">
+                            {{ recipe.name }}
+                        </a>
+                    </h3>
+                    <div class="card-meta">
+                        {% if recipe.primary_state %}
+                            <span>📍 {{ recipe.primary_state.name }}</span>
+                        {% endif %}
+                        {% if recipe.owner %}
+                            <span>👤 {{ recipe.owner.username }}</span>
+                        {% endif %}
+                        {% if recipe.steps %}
+                            <span>📝 {{ recipe.steps|length }} step{{ 's' if recipe.steps|length != 1 else '' }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% else %}
+    <div class="section-header">
+        <h2>All Recipes</h2>
+        <p>No recipes available yet</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

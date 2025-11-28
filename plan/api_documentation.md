@@ -65,8 +65,9 @@ This document outlines all backend methods (routes/endpoints) required for the S
   - **Query Parameters**:
     - `page`: integer (default: 1)
     - `per_page`: integer (default: 20)
-    - `sort`: string (options: "newest", "popular", "score", "rating", "alphabetical")
-    - `country`: string (filter by country)
+    - `sort`: string (options: "newest", "popular", "score", "alphabetical")
+    - `state`: integer (filter by state_id)
+    - `country`: integer (filter by country_id)
   - **Response**: `200 OK` with paginated recipe list
   ```json
   {
@@ -92,16 +93,27 @@ This document outlines all backend methods (routes/endpoints) required for the S
     ```json
     {
       "title": "string",
-      "description": "string",
-      "country": "string",
-      "ingredients": [
+      "description": "string (optional)",
+      "state_id": integer,
+      "image_url": "string (optional)",
+      "instructions": "string (optional, markdown or HTML)",
+      "steps": [
         {
-          "name": "string",
-          "amount": "string",
-          "unit": "string (optional)"
+          "step_number": integer,
+          "instruction": "string",
+          "image_url": "string (optional)",
+          "duration_minutes": integer (optional),
+          "ingredients": [
+            {
+              "name": "string",
+              "quantity": number (optional),
+              "unit": "string (optional)",
+              "notes": "string (optional)",
+              "order": integer
+            }
+          ]
         }
-      ],
-      "instructions": "string (markdown or HTML)"
+      ]
     }
     ```
   - **Response**: `201 Created` with created recipe data
@@ -138,7 +150,8 @@ This document outlines all backend methods (routes/endpoints) required for the S
   - **Description**: Search recipes by query string
   - **Query Parameters**:
     - `q`: string (search query)
-    - `country`: string (filter by country)
+    - `state`: integer (filter by state_id)
+    - `country`: integer (filter by country_id)
     - `page`: integer (default: 1)
     - `per_page`: integer (default: 20)
   - **Response**: `200 OK` with search results
@@ -165,14 +178,6 @@ This document outlines all backend methods (routes/endpoints) required for the S
   - **Query Parameters**:
     - `limit`: integer (default: 10)
   - **Response**: `200 OK` with list of recent recipes
-
-### Get Recipes by Country
-- **GET** `/api/countries/<country_code>/recipes`
-  - **Description**: Get all recipes from a specific country
-  - **Query Parameters**:
-    - `page`: integer (default: 1)
-    - `per_page`: integer (default: 20)
-  - **Response**: `200 OK` with paginated recipe list
 
 ---
 
@@ -279,28 +284,96 @@ This document outlines all backend methods (routes/endpoints) required for the S
   ```
   - **Errors**: `401 Unauthorized`, `404 Not Found`
 
-### Rate Recipe
-- **POST** `/api/recipes/<recipe_id>/rate`
-  - **Description**: Rate a recipe (1-5 stars)
+### Upvote Comment
+- **POST** `/api/comments/<comment_id>/upvote`
+  - **Description**: Upvote a comment
+  - **Authentication**: Required
+  - **Response**: `200 OK` with updated vote counts and user's vote status
+  ```json
+  {
+    "user_vote": "upvote" | "downvote" | null,
+    "upvotes": integer,
+    "downvotes": integer,
+    "score": integer
+  }
+  ```
+  - **Errors**: `401 Unauthorized`, `404 Not Found`
+
+### Downvote Comment
+- **POST** `/api/comments/<comment_id>/downvote`
+  - **Description**: Downvote a comment
+  - **Authentication**: Required
+  - **Response**: `200 OK` with updated vote counts and user's vote status
+  ```json
+  {
+    "user_vote": "upvote" | "downvote" | null,
+    "upvotes": integer,
+    "downvotes": integer,
+    "score": integer
+  }
+  ```
+  - **Errors**: `401 Unauthorized`, `404 Not Found`
+
+### Remove Comment Vote
+- **POST** `/api/comments/<comment_id>/remove-vote`
+  - **Description**: Remove user's vote from a comment
+  - **Authentication**: Required
+  - **Response**: `200 OK` with updated vote counts
+  ```json
+  {
+    "user_vote": null,
+    "upvotes": integer,
+    "downvotes": integer,
+    "score": integer
+  }
+  ```
+  - **Errors**: `401 Unauthorized`, `404 Not Found`
+
+---
+
+## Favorites
+
+### Create Favorite
+- **POST** `/api/favorites`
+  - **Description**: Add a favorite (user, recipe, state, or country)
   - **Authentication**: Required
   - **Request Body**:
     ```json
     {
-      "rating": integer (1-5)
+      "favorite_type": "string (user|recipe|state|country)",
+      "favorite_id": integer
     }
     ```
-  - **Response**: `200 OK` with updated average rating
-  - **Errors**: `400 Bad Request` (invalid rating), `401 Unauthorized`
+  - **Response**: `201 Created` with favorite data
+  - **Errors**: `400 Bad Request`, `401 Unauthorized`, `404 Not Found`
 
-### Get Recipe Rating
-- **GET** `/api/recipes/<recipe_id>/rating`
-  - **Description**: Get rating statistics for a recipe
-  - **Response**: `200 OK`
+### Remove Favorite
+- **DELETE** `/api/favorites/<favorite_id>`
+  - **Description**: Remove a favorite
+  - **Authentication**: Required (must be favorite owner)
+  - **Response**: `204 No Content`
+  - **Errors**: `401 Unauthorized`, `403 Forbidden`, `404 Not Found`
+
+### Get User's Favorites
+- **GET** `/api/users/<username>/favorites`
+  - **Description**: Get user's favorites
+  - **Query Parameters**:
+    - `type`: string (optional, filter by favorite_type: user|recipe|state|country)
+    - `page`: integer (default: 1)
+    - `per_page`: integer (default: 20)
+  - **Response**: `200 OK` with paginated favorites list
   ```json
   {
-    "average_rating": float,
-    "total_ratings": integer,
-    "user_rating": integer (if authenticated)
+    "favorites": [
+      {
+        "id": integer,
+        "favorite_type": "string",
+        "favorite_id": integer,
+        "favorite_data": {...},
+        "created_at": "datetime"
+      }
+    ],
+    "total": integer
   }
   ```
 
@@ -318,8 +391,7 @@ This document outlines all backend methods (routes/endpoints) required for the S
     "country": "string",
     "joined_at": "datetime",
     "recipe_count": integer,
-    "bio": "string",
-    "avatar_url": "string"
+    "bio": "string"
   }
   ```
   - **Errors**: `404 Not Found`
@@ -340,8 +412,7 @@ This document outlines all backend methods (routes/endpoints) required for the S
     ```json
     {
       "bio": "string",
-      "country": "string",
-      "avatar_url": "string"
+      "country": "string"
     }
     ```
   - **Response**: `200 OK` with updated profile
@@ -392,7 +463,6 @@ This document outlines all backend methods (routes/endpoints) required for the S
   ```json
   {
     "countries": [...],
-    "categories": [...],
     "user": {...} (if authenticated)
   }
   ```
@@ -417,18 +487,23 @@ This document outlines all backend methods (routes/endpoints) required for the S
   ```
 
 ### Get Country Details
-- **GET** `/api/countries/<country_code>`
+- **GET** `/api/countries/<country_id>`
   - **Description**: Get detailed information about a country
   - **Response**: `200 OK` with country data
   - **Errors**: `404 Not Found`
 
-### Get Recipes by Country
-- **GET** `/api/countries/<country_code>/recipes`
-  - **Description**: Get all recipes from a specific country
+### Get All States
+- **GET** `/api/states`
+  - **Description**: Get list of all states
   - **Query Parameters**:
-    - `page`: integer (default: 1)
-    - `per_page`: integer (default: 20)
-  - **Response**: `200 OK` with paginated recipe list
+    - `country_id`: integer (optional, filter by country)
+  - **Response**: `200 OK` with list of states
+
+### Get State Details
+- **GET** `/api/states/<state_id>`
+  - **Description**: Get detailed information about a state
+  - **Response**: `200 OK` with state data
+  - **Errors**: `404 Not Found`
 
 ---
 
