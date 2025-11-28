@@ -7,11 +7,11 @@
     <h1 class="text-center mb-2">Step-by-Step Editor</h1>
     
     <div class="text-center mb-2">
-        <a href="{{ url_for('recipes.create', mode='text') }}" class="btn">Switch to Text Editor</a>
+        <a href="{{ url_for('new_recipe_page', mode='text') }}" class="btn">Switch to Text Editor</a>
         <span class="btn btn-primary">Step-by-Step Editor</span>
     </div>
 
-    <form id="recipeForm" action="{{ url_for('recipes.create') if not recipe else url_for('recipes.update', recipe_id=recipe.id) }}" method="post" enctype="multipart/form-data">
+    <form id="recipeForm" action="{{ url_for('new_recipe_page') if not recipe else url_for('recipes.update', recipe_id=recipe.id) }}" method="post" enctype="multipart/form-data">
         <input type="hidden" name="mode" value="gui">
         
         <!-- Basic Info -->
@@ -65,7 +65,7 @@
         </div>
 
         <div class="text-center mt-2">
-            <a href="{{ url_for('home.index') }}" class="btn">Cancel</a>
+            <a href="{{ url_for('index') }}" class="btn">Cancel</a>
             <button type="submit" class="btn btn-primary" style="margin-left: 1rem;">Save Recipe</button>
         </div>
     </form>

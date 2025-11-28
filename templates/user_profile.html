@@ -27,8 +27,8 @@
 </div>
 
 <div class="profile-tabs mb-2 text-center">
-    <a href="{{ url_for('users.profile', username=user.username, tab='recipes') }}" class="btn {% if active_tab == 'recipes' %}btn-primary{% endif %}">Recipes</a>
-    <a href="{{ url_for('users.profile', username=user.username, tab='favorites') }}" class="btn {% if active_tab == 'favorites' %}btn-primary{% endif %}">Favorites</a>
+    <a href="{{ url_for('user_profile_page', username=user.username, tab='recipes') }}" class="btn {% if active_tab == 'recipes' %}btn-primary{% endif %}">Recipes</a>
+    <a href="{{ url_for('user_profile_page', username=user.username, tab='favorites') }}" class="btn {% if active_tab == 'favorites' %}btn-primary{% endif %}">Favorites</a>
 </div>
 
 <div class="profile-content">

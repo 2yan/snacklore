@@ -17,10 +17,14 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY app.py .
+COPY db.py .
+COPY models/ models/
+COPY routes/ routes/
+COPY utils/ utils/
 COPY templates/ templates/
 COPY static/ static/
 COPY boot/ boot/
-RUN chmod +x boot/boot.sh boot/seed_data.py
+RUN chmod +x boot/boot.sh boot/seed_data.py boot/seed_recipes.py
 
 EXPOSE 5000
 

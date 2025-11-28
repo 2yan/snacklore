@@ -6,7 +6,7 @@
 <div class="recipe-detail">
     <!-- Breadcrumb -->
     <div class="mb-1" style="font-size: 0.9rem;">
-        <a href="{{ url_for('home.index') }}">Home</a> &gt; 
+        <a href="{{ url_for('index') }}">Home</a> &gt; 
         <a href="{{ url_for('countries.detail', country_id=recipe.state.country.id) }}">{{ recipe.state.country.name }}</a> &gt; 
         <a href="{{ url_for('states.detail', state_id=recipe.state.id) }}">{{ recipe.state.name }}</a> &gt; 
         <span>{{ recipe.title }}</span>
@@ -17,10 +17,10 @@
             <h1 style="margin-top: 0;">{{ recipe.title }}</h1>
             
             <div class="mb-1">
-                By <a href="{{ url_for('users.profile', username=recipe.author.username) }}">{{ recipe.author.username }}</a>
+                By <a href="{{ url_for('user_profile_page', username=recipe.author.username) }}">{{ recipe.author.username }}</a>
                 | ⭐ {{ recipe.get_score() }}
                 {% if current_user.is_authenticated and current_user.id == recipe.author_id %}
-                    | <a href="{{ url_for('recipes.edit', recipe_id=recipe.id) }}">Edit</a>
+                    | <a href="{{ url_for('edit_recipe_page', recipe_id=recipe.id) }}">Edit</a>
                 {% endif %}
             </div>
 

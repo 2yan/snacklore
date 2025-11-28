@@ -23,6 +23,10 @@ su - postgres -c "psql -d snacklore -f /app/boot/init_db.sql" || {
 echo "Seeding countries and states..."
 cd /app && python3 boot/seed_data.py
 
+# Seed recipes
+echo "Seeding recipes..."
+cd /app && python3 boot/seed_recipes.py
+
 # Keep PostgreSQL running and start Flask
 exec python app.py
 

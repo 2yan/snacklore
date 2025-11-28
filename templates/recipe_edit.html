@@ -8,10 +8,10 @@
     
     <div class="text-center mb-2">
         <span class="btn btn-primary">Text Editor</span>
-        <a href="{{ url_for('recipes.create', mode='gui') }}" class="btn">Switch to Step-by-Step Editor</a>
+        <a href="{{ url_for('new_recipe_page', mode='gui') }}" class="btn">Switch to Step-by-Step Editor</a>
     </div>
 
-    <form action="{{ url_for('recipes.create') if not recipe else url_for('recipes.update', recipe_id=recipe.id) }}" method="post" enctype="multipart/form-data" class="squiggly-box">
+    <form action="{{ url_for('new_recipe_page') if not recipe else url_for('recipes.update', recipe_id=recipe.id) }}" method="post" enctype="multipart/form-data" class="squiggly-box">
         <input type="hidden" name="mode" value="text">
         
         <div class="form-group">
@@ -63,7 +63,7 @@
         </div>
 
         <div class="text-center mt-2">
-            <a href="{{ url_for('home.index') }}" class="btn">Cancel</a>
+            <a href="{{ url_for('index') }}" class="btn">Cancel</a>
             <button type="submit" class="btn btn-primary" style="margin-left: 1rem;">Save Recipe</button>
         </div>
     </form>

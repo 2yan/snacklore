@@ -8,7 +8,7 @@
     {% endif %}
     
     <div class="recipe-content">
-        <h3><a href="{{ url_for('recipes.detail', recipe_id=recipe.id) }}" style="border: none;">{{ recipe.title }}</a></h3>
+        <h3><a href="{{ url_for('recipe_detail', recipe_id=recipe.id) }}" style="border: none;">{{ recipe.title }}</a></h3>
         
         <div class="mb-1">
             <span style="font-size: 0.9em; color: #555;">
@@ -17,7 +17,7 @@
         </div>
 
         <div class="recipe-meta">
-            <span title="Author">👤 <a href="{{ url_for('users.profile', username=recipe.author.username) }}" style="border: none;">{{ recipe.author.username }}</a></span>
+            <span title="Author">👤 <a href="{{ url_for('user_profile_page', username=recipe.author.username) }}" style="border: none;">{{ recipe.author.username }}</a></span>
             <span>⭐ {{ recipe.get_score() }}</span>
         </div>
     </div>

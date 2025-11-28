@@ -7,7 +7,7 @@
     <div class="squiggly-box">
         <h1 class="text-center">Welcome Back</h1>
         
-        <form action="{{ url_for('auth.login') }}" method="post">
+        <form action="{{ url_for('login_page') }}" method="post">
             <div class="form-group">
                 <label for="email">Email or Username</label>
                 <input type="text" id="email" name="login" required>
@@ -24,7 +24,7 @@
         </form>
         
         <div class="text-center mt-1">
-            <p>Don't have an account? <a href="{{ url_for('auth.register') }}">Sign up here</a>.</p>
+            <p>Don't have an account? <a href="{{ url_for('register_page') }}">Sign up here</a>.</p>
         </div>
     </div>
 </div>
