@@ -80,7 +80,7 @@
         
         <div class="form-group">
             <label>Instructions</label>
-            <textarea name="steps[{index}][instruction]" rows="3" required></textarea>
+            <textarea name="steps[{index}][instruction]" id="instruction-{index}" rows="3" required oninput="checkInstruction({index})"></textarea>
         </div>
 
         <div class="grid grid-2">
@@ -99,7 +99,8 @@
             <div class="step-ingredients-list" id="ingredients-list-{index}">
                 <!-- Ingredients added here -->
             </div>
-            <button type="button" class="btn mt-1" onclick="addIngredient({index})">+ Add Ingredient</button>
+            <button type="button" class="btn mt-1" id="add-ingredient-btn-{index}" onclick="addIngredient({index})" disabled>+ Add Ingredient</button>
+            <p class="text-muted" id="ingredient-hint-{index}" style="font-size: 0.85rem; margin-top: 0.5rem; color: #666; display: none;">Add instructions first before adding ingredients</p>
         </div>
     </div>
 </template>
@@ -131,6 +132,9 @@ function addStep() {
     div.innerHTML = html;
     container.appendChild(div.firstElementChild);
     
+    // Check instruction state for the new step
+    checkInstruction(index);
+    
     stepCount++;
 }
 
@@ -140,7 +144,33 @@ function removeStep(btn) {
     // or just let backend handle sparse arrays
 }
 
+function checkInstruction(stepIndex) {
+    const instructionField = document.getElementById(`instruction-${stepIndex}`);
+    const addBtn = document.getElementById(`add-ingredient-btn-${stepIndex}`);
+    const hint = document.getElementById(`ingredient-hint-${stepIndex}`);
+    
+    if (!instructionField || !addBtn) return;
+    
+    const hasInstruction = instructionField.value.trim().length > 0;
+    
+    if (hasInstruction) {
+        addBtn.disabled = false;
+        if (hint) hint.style.display = 'none';
+    } else {
+        addBtn.disabled = true;
+        if (hint) hint.style.display = 'block';
+    }
+}
+
 function addIngredient(stepIndex) {
+    const instructionField = document.getElementById(`instruction-${stepIndex}`);
+    
+    // Double-check that instruction exists before allowing ingredient
+    if (!instructionField || !instructionField.value.trim()) {
+        alert('Please add instructions for this step before adding ingredients.');
+        return;
+    }
+    
     const list = document.getElementById(`ingredients-list-${stepIndex}`);
     const template = document.getElementById('ingredient-template').innerHTML;
     const ingIndex = list.children.length;

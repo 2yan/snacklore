@@ -186,37 +186,138 @@ def login_page():
 def new_recipe_page():
     """New recipe page route."""
     if request.method == 'POST':
-        # Handle form submission for text mode (simplified)
-        # TODO: Handle GUI mode submission (JSON) or separate endpoint
+        mode = request.form.get('mode', 'text')
         title = request.form.get('title')
         description = request.form.get('description')
-        instructions = request.form.get('instructions')
-        ingredients_text = request.form.get('ingredients_text')
         state_id = request.form.get('state_id')
         image_url = request.form.get('image_url')
-        
-        slug = Recipe.generate_slug(title)
-        # Unique slug check omitted for brevity, should use while loop
-        
         current_user = get_current_user()
         
-        recipe = Recipe(
-            title=title,
-            slug=slug,
-            description=description,
-            instructions=instructions,
-            author_id=current_user.id,
-            state_id=state_id,
-            image_url=image_url
-        )
+        if not title or not state_id:
+            flash('Title and State are required', 'error')
+            countries = Country.query.order_by(Country.name.asc()).all()
+            template = 'recipe_edit_gui.html' if mode == 'gui' else 'recipe_edit.html'
+            return render_template(template, countries=countries, recipe=None)
         
-        try:
-            db.session.add(recipe)
-            db.session.commit()
-            return redirect(url_for('recipe_detail', recipe_id=recipe.id))
-        except Exception as e:
-            db.session.rollback()
-            flash(f'Error: {str(e)}', 'error')
+        slug = Recipe.generate_slug(title)
+        # Ensure slug is unique
+        base_slug = slug
+        counter = 1
+        while Recipe.query.filter_by(slug=slug).first():
+            slug = f"{base_slug}-{counter}"
+            counter += 1
+        
+        if mode == 'gui':
+            # Handle GUI mode with steps
+            recipe = Recipe(
+                title=title,
+                slug=slug,
+                description=description,
+                author_id=current_user.id,
+                state_id=state_id,
+                image_url=image_url
+            )
+            
+            try:
+                db.session.add(recipe)
+                db.session.flush()  # Get recipe.id
+                
+                # Process steps
+                steps_data = {}
+                for key, value in request.form.items():
+                    if key.startswith('steps['):
+                        # Parse key like "steps[0][instruction]" -> step_index=0, field="instruction"
+                        import re
+                        match = re.match(r'steps\[(\d+)\]\[(\w+)\]', key)
+                        if match:
+                            step_idx = int(match.group(1))
+                            field = match.group(2)
+                            if step_idx not in steps_data:
+                                steps_data[step_idx] = {}
+                            steps_data[step_idx][field] = value
+                
+                # Process ingredients nested in steps
+                for key, value in request.form.items():
+                    if 'ingredients' in key:
+                        # Parse key like "steps[0][ingredients][0][name]"
+                        match = re.match(r'steps\[(\d+)\]\[ingredients\]\[(\d+)\]\[(\w+)\]', key)
+                        if match:
+                            step_idx = int(match.group(1))
+                            ing_idx = int(match.group(2))
+                            field = match.group(3)
+                            if step_idx not in steps_data:
+                                steps_data[step_idx] = {}
+                            if 'ingredients' not in steps_data[step_idx]:
+                                steps_data[step_idx]['ingredients'] = {}
+                            if ing_idx not in steps_data[step_idx]['ingredients']:
+                                steps_data[step_idx]['ingredients'][ing_idx] = {}
+                            steps_data[step_idx]['ingredients'][ing_idx][field] = value
+                
+                # Create steps and ingredients
+                step_number = 1
+                for step_idx in sorted(steps_data.keys()):
+                    step_data = steps_data[step_idx]
+                    instruction = step_data.get('instruction', '').strip()
+                    
+                    # Only create step if instruction is provided
+                    if instruction:
+                        step = RecipeStep(
+                            recipe_id=recipe.id,
+                            step_number=step_number,
+                            instruction=instruction,
+                            image_url=step_data.get('image_url') or None,
+                            duration_minutes=int(step_data.get('duration')) if step_data.get('duration') else None
+                        )
+                        db.session.add(step)
+                        db.session.flush()  # Get step.id
+                        
+                        # Create ingredients for this step
+                        if 'ingredients' in step_data:
+                            ing_order = 0
+                            for ing_idx in sorted(step_data['ingredients'].keys()):
+                                ing_data = step_data['ingredients'][ing_idx]
+                                name = ing_data.get('name', '').strip()
+                                
+                                # Only create ingredient if name is provided
+                                if name:
+                                    ingredient = RecipeIngredient(
+                                        step_id=step.id,
+                                        name=name,
+                                        quantity=float(ing_data.get('quantity')) if ing_data.get('quantity') else None,
+                                        unit=ing_data.get('unit') or None,
+                                        notes=ing_data.get('notes') or None,
+                                        order=ing_order
+                                    )
+                                    db.session.add(ingredient)
+                                    ing_order += 1
+                        
+                        step_number += 1
+                
+                db.session.commit()
+                return redirect(url_for('recipe_detail', recipe_id=recipe.id))
+            except Exception as e:
+                db.session.rollback()
+                flash(f'Error: {str(e)}', 'error')
+        else:
+            # Handle text mode
+            instructions = request.form.get('instructions')
+            recipe = Recipe(
+                title=title,
+                slug=slug,
+                description=description,
+                instructions=instructions,
+                author_id=current_user.id,
+                state_id=state_id,
+                image_url=image_url
+            )
+            
+            try:
+                db.session.add(recipe)
+                db.session.commit()
+                return redirect(url_for('recipe_detail', recipe_id=recipe.id))
+            except Exception as e:
+                db.session.rollback()
+                flash(f'Error: {str(e)}', 'error')
             
     countries = Country.query.order_by(Country.name.asc()).all()
     mode = request.args.get('mode', 'text')
@@ -235,11 +336,91 @@ def edit_recipe_page(recipe_id):
         return "Forbidden", 403
         
     if request.method == 'POST':
+        mode = request.form.get('mode', 'text')
         recipe.title = request.form.get('title')
         recipe.description = request.form.get('description')
-        recipe.instructions = request.form.get('instructions')
         recipe.state_id = request.form.get('state_id')
         recipe.image_url = request.form.get('image_url')
+        
+        if mode == 'gui':
+            # Delete existing steps and ingredients (cascade will handle ingredients)
+            RecipeStep.query.filter_by(recipe_id=recipe.id).delete()
+            
+            # Process steps (same logic as new_recipe_page)
+            steps_data = {}
+            for key, value in request.form.items():
+                if key.startswith('steps['):
+                    import re
+                    match = re.match(r'steps\[(\d+)\]\[(\w+)\]', key)
+                    if match:
+                        step_idx = int(match.group(1))
+                        field = match.group(2)
+                        if step_idx not in steps_data:
+                            steps_data[step_idx] = {}
+                        steps_data[step_idx][field] = value
+            
+            # Process ingredients nested in steps
+            for key, value in request.form.items():
+                if 'ingredients' in key:
+                    match = re.match(r'steps\[(\d+)\]\[ingredients\]\[(\d+)\]\[(\w+)\]', key)
+                    if match:
+                        step_idx = int(match.group(1))
+                        ing_idx = int(match.group(2))
+                        field = match.group(3)
+                        if step_idx not in steps_data:
+                            steps_data[step_idx] = {}
+                        if 'ingredients' not in steps_data[step_idx]:
+                            steps_data[step_idx]['ingredients'] = {}
+                        if ing_idx not in steps_data[step_idx]['ingredients']:
+                            steps_data[step_idx]['ingredients'][ing_idx] = {}
+                        steps_data[step_idx]['ingredients'][ing_idx][field] = value
+            
+            # Create steps and ingredients
+            step_number = 1
+            for step_idx in sorted(steps_data.keys()):
+                step_data = steps_data[step_idx]
+                instruction = step_data.get('instruction', '').strip()
+                
+                # Only create step if instruction is provided
+                if instruction:
+                    step = RecipeStep(
+                        recipe_id=recipe.id,
+                        step_number=step_number,
+                        instruction=instruction,
+                        image_url=step_data.get('image_url') or None,
+                        duration_minutes=int(step_data.get('duration')) if step_data.get('duration') else None
+                    )
+                    db.session.add(step)
+                    db.session.flush()  # Get step.id
+                    
+                    # Create ingredients for this step
+                    if 'ingredients' in step_data:
+                        ing_order = 0
+                        for ing_idx in sorted(step_data['ingredients'].keys()):
+                            ing_data = step_data['ingredients'][ing_idx]
+                            name = ing_data.get('name', '').strip()
+                            
+                            # Only create ingredient if name is provided
+                            if name:
+                                ingredient = RecipeIngredient(
+                                    step_id=step.id,
+                                    name=name,
+                                    quantity=float(ing_data.get('quantity')) if ing_data.get('quantity') else None,
+                                    unit=ing_data.get('unit') or None,
+                                    notes=ing_data.get('notes') or None,
+                                    order=ing_order
+                                )
+                                db.session.add(ingredient)
+                                ing_order += 1
+                    
+                    step_number += 1
+            
+            recipe.instructions = None  # Clear text instructions when using steps
+        else:
+            # Text mode
+            recipe.instructions = request.form.get('instructions')
+            # Delete steps if switching from GUI to text mode
+            RecipeStep.query.filter_by(recipe_id=recipe.id).delete()
         
         try:
             db.session.commit()
