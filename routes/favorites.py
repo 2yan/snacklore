@@ -109,3 +109,4 @@ def get_user_favorites(username):
     
     return jsonify(format_pagination_response(favorites, total, page, per_page, pages)), 200
 
+

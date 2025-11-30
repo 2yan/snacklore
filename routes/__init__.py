@@ -29,3 +29,4 @@ def register_blueprints(app):
     app.register_blueprint(states_bp, url_prefix='/api')
     app.register_blueprint(home_bp, url_prefix='/api')
 
+

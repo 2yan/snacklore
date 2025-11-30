@@ -74,3 +74,4 @@ def get_country_recipes(country_id):
     
     return jsonify(format_pagination_response(recipes, total, page, per_page, pages)), 200
 
+

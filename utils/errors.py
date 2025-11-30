@@ -26,3 +26,4 @@ def format_error_response(error, message, details=None):
         response['details'] = details
     return response
 
+

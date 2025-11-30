@@ -129,3 +129,4 @@ def update_current_profile():
         db.session.rollback()
         return jsonify({'error': 'InternalServerError', 'message': str(e)}), 500
 
+

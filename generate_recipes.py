@@ -462,3 +462,4 @@ with open("static/system_recipes.json", "w", encoding="utf-8") as f:
 
 print(f"✓ Created JSON file with {len(all_recipes)} detailed recipes")
 
+

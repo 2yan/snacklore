@@ -267,3 +267,4 @@ def get_recent_recipes():
     
     return jsonify([recipe.to_dict(include_steps=False, include_votes=True, user_id=user_id) for recipe in recipes]), 200
 
+

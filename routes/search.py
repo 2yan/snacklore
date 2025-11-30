@@ -59,3 +59,4 @@ def search_recipes():
         'pages': pages
     }), 200
 
+

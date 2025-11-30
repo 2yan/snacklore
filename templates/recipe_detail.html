@@ -7,8 +7,8 @@
     <!-- Breadcrumb -->
     <div class="mb-1" style="font-size: 0.9rem;">
         <a href="{{ url_for('index') }}">Home</a> &gt; 
-        <a href="{{ url_for('countries.detail', country_id=recipe.state.country.id) }}">{{ recipe.state.country.name }}</a> &gt; 
-        <a href="{{ url_for('states.detail', state_id=recipe.state.id) }}">{{ recipe.state.name }}</a> &gt; 
+        <a href="{{ url_for('search_page', country=recipe.state.country.id) }}">{{ recipe.state.country.name }}</a> &gt; 
+        <a href="{{ url_for('search_page', state=recipe.state.id) }}">{{ recipe.state.name }}</a> &gt; 
         <span>{{ recipe.title }}</span>
     </div>
 

@@ -107,3 +107,4 @@ def remove_recipe_vote(recipe_id):
             'score': vote_counts['score']
         }), 200
 
+

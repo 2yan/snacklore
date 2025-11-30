@@ -87,3 +87,4 @@ def auth_status():
         return jsonify(user.to_dict()), 200
     return jsonify({'error': 'Unauthorized', 'message': 'Not authenticated'}), 401
 
+

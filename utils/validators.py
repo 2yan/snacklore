@@ -84,3 +84,4 @@ def validate_user_data(data, is_update=False):
     
     return errors
 
+

@@ -107,3 +107,4 @@ def remove_comment_vote(comment_id):
             'score': vote_counts['score']
         }), 200
 
+
